@@ -1,0 +1,195 @@
+code: CK-002
+kind: sheet
+name: Pumpkin chocolate chip cookie bars
+cls: Cookie · Bar
+lede: Brown butter, pumpkin and warm spice. No eggs, so the bars stay dense and chewy.
+source: NYT Cooking · Adapted, metric
+contains:
+- Wheat
+- Milk
+- Soy
+equipment:
+- 23 × 33 cm metal or glass pan
+- Parchment sling
+- Light-colored saucepan
+- 0.1 g scale
+key_figures:
+- label: Yield · 9 × 13 in pan
+  value: 24 squares
+- label: Dough
+  value: 1,329 g
+- label: Sugar ÷ flour
+  value: 120%
+- label: Bake
+  value: 30–45 min
+- label: Oven · 325 °F
+  value: 165 °C
+last_change: Rev 01 · First issue
+method_rail:
+- sub: Tick each step as done
+  notes: null
+method:
+- head: Brown butter.
+  text: Melt in a light saucepan, stirring, until foamy, light amber and nutty.
+  time: 3–4 min
+  target: after melting
+- head: Cool.
+  text: Scrape the butter and browned bits into a large bowl. Cool until warm, not hot.
+  time: 20 min
+  target: Warm
+- head: Prep.
+  text: Heat the oven. Grease the pan and lay a parchment sling over the long sides (fig. 1).
+  time: —
+  target: 165 °C
+  target_f: 325 °F
+- head: Wet.
+  text: Whisk part B into the butter until smooth and glossy.
+  time: 1 min
+- head: Dry.
+  text: Add part C and stir just until no flour pockets remain. Stir in the dough chips.
+  time: —
+  target: Don’t overmix
+- head: Press.
+  text: Press into an even layer with oiled hands. Press the top chips in.
+  time: —
+  target: 39 g on top
+- head: Bake.
+  text: Until puffed and lightly browned; a skewer shows moist crumbs or melted chocolate.
+  time: 30–45 min
+  target: 165 °C
+  target_f: 325 °F
+- head: Cool + cut.
+  text: At least 1 h in the pan. Lift out by the sling and cut 6 × 4 (fig. 1).
+  time: 1 h
+  target: 24 squares
+formula:
+  basis: '% · flour = 100'
+  notes:
+  - Teaspoon amounts are converted to grams; weigh them on a 0.1 g scale.
+  - 'Salt by weight: 1 tsp Diamond Crystal ≈ 3 g. Other brands are denser by the spoon.'
+  - † Doesn’t scale in a straight line. Past 2×, trial spices and leavening first.
+  parts:
+  - id: A
+    name: Brown butter
+    rows:
+    - name: Unsalted butter
+      note: weigh before browning
+      g: 170
+  - id: B
+    name: Wet
+    rows:
+    - name: Light brown sugar
+      note: packed
+      g: 385
+    - name: Pumpkin purée
+      note: not pie filling
+      g: 170
+    - name: Vanilla extract
+      dagger: true
+      g: 8
+  - id: C
+    name: Dry
+    rows:
+    - name: All-purpose flour
+      basis: true
+      g: 320
+    - name: Ground cinnamon
+      dagger: true
+      g: 5
+    - name: Baking soda
+      dagger: true
+      g: 6
+    - name: Baking powder
+      dagger: true
+      g: 4
+    - name: Kosher salt
+      note: Diamond Crystal
+      g: 3
+    - name: Ground ginger
+      dagger: true
+      g: 2
+    - name: Ground cloves
+      dagger: true
+      g: 0.5
+    - name: Ground nutmeg
+      dagger: true
+      g: 0.5
+  - id: D
+    name: Chocolate
+    rows:
+    - name: Chips, into the dough
+      g: 216
+    - name: Chips, on top
+      g: 39
+    note: bittersweet or semisweet chips, check label
+  total:
+    label: Total dough
+  scale_by_pan:
+  - pan: 9 × 13 in
+    factor: '1'
+    count: '24'
+    bold: true
+  - pan: Half sheet
+    factor: '1.75'
+    count: '42'
+figures:
+  title: Cut map
+  sub: Drawn to scale
+  items:
+  - svg: CK-002-fig1.svg
+    label: Fig. 1
+    caption: Sling and cut. Cut only after the full hour.
+done_when:
+- - Top
+  - Puffed, lightly browned
+- - Skewer
+  - Moist crumbs or chocolate
+keeps:
+- - Room temp
+  - 5 days, airtight
+- - Cut
+  - After 1 h in the pan
+trials:
+  sub: Change one variable per trial
+  notes:
+  - B tests the altitude rule for 4,700 ft.
+  columns:
+  - Trial A
+  - Trial B
+  - Trial C
+  rows:
+  - var: Date
+    values:
+    - ''
+    - ''
+    - ''
+  - var: Change
+    values:
+    - As written
+    - Soda + powder −20%
+    - Half sheet, × 1.75
+  - var: Bake time
+    values:
+    - ''
+    - ''
+    - ''
+  - var: Staff rating 1–5
+    values:
+    - ''
+    - ''
+    - ''
+pages:
+- - formula
+- - method:1-8
+  - figures
+  - done_when
+  - trials
+foot: method, cut map, done when, trials
+tent:
+  name: Pumpkin chocolate chip bars
+  note: Egg-free. One each, please.
+revisions:
+- rev: Rev 01
+  date: '2026-09-26'
+  change: First issue, adapted from NYT Cooking
+  source: —

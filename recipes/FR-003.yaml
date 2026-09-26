@@ -1,0 +1,51 @@
+code: FR-003
+kind: card
+name: Cream cheese frosting
+yield: ≈ 385 g
+keeps: 5 days, 4 °C
+basis: cream cheese = 100
+contains:
+- Milk
+source: NYT Cooking · Adapted, metric
+formula:
+  rows:
+  - name: Cream cheese
+    note: block, soft
+    basis: true
+    g: 113
+  - name: Unsalted butter
+    note: room temp
+    g: 57
+  - name: Vanilla extract
+    note: 1 tsp
+    dagger: true
+    g: 4
+  - name: Kosher salt
+    note: DC, ¼ tsp
+    g: 0.7
+  - name: Confectioners’ sugar
+    g: 213
+  total: Total
+formula_note: 'Scale by weight: target ÷ 3.431 = cream cheese; then × each %. † Vanilla doesn’t scale
+  in a straight line past 2×.'
+method:
+- head: Cream.
+  text: Beat cream cheese, butter, vanilla, salt until smooth.
+  time: 1–2 min
+  target: Medium
+- head: Sugar.
+  text: Add on low, a spoonful at a time; scrape the bowl.
+  time: —
+  target: Low
+- head: Whip.
+  text: High until light and fluffy; more sugar if it slumps.
+  time: 2–3 min
+  target: High
+- head: Hold.
+  text: Use at once, or chill covered; beat again before use.
+  time: —
+  target: 4 °C
+note: One batch frosts 12 cupcakes at ≈ 32 g, or a single 20 cm layer. Frosted bakes go in the fridge.
+  Used in CA-011.
+revisions:
+- {rev: Rev 01, date: '2026-09-26', change: First issue, adapted from NYT Cooking, source: —}

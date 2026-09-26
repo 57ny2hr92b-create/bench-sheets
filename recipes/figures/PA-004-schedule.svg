@@ -1,0 +1,34 @@
+<svg aria-label="One day, about 5 hours. Cream: infuse and cook in the first 45 minutes, chill until cold, about 3 hours, then fold in whipped cream. Puffs: craquelin at 45 minutes and freeze; choux at 90 minutes; bake two trays and cool; fill at about 4 hours 15." fill="none" height="100" stroke="#000000" stroke-width="1" viewbox="0 0 520 100" width="520">
+<rect fill="#000000" height="14" width="23.4" x="48.0" y="18"></rect>
+<rect fill="#FFFFFF" height="13" width="15.6" x="71.4" y="18.5"></rect>
+<rect fill="#000000" height="14" width="31.2" x="87.0" y="18"></rect>
+<rect fill="#FFFFFF" height="13" width="280.8" x="118.2" y="18.5"></rect>
+<rect fill="#000000" height="14" width="23.4" x="422.4" y="18"></rect>
+<text fill="#000000" font-family="IBM Plex Sans, sans-serif" font-size="12" font-weight="600" stroke="none" x="0" y="29">Cream</text>
+<text fill="#000000" font-family="IBM Plex Sans, sans-serif" font-size="12" stroke="none" x="50.0" y="12">Cook</text>
+<text fill="#000000" font-family="IBM Plex Sans, sans-serif" font-size="12" stroke="none" x="120.2" y="12">Chill until cold</text>
+<text fill="#000000" font-family="IBM Plex Sans, sans-serif" font-size="12" stroke="none" x="424.4" y="12">Fold</text>
+<rect fill="#000000" height="14" width="23.4" x="118.2" y="58"></rect>
+<rect fill="#FFFFFF" height="13" width="46.8" x="141.6" y="58.5"></rect>
+<rect fill="#000000" height="14" width="46.8" x="188.4" y="58"></rect>
+<rect fill="#FFFFFF" height="13" width="140.4" x="235.2" y="58.5"></rect>
+<rect fill="#FFFFFF" height="13" width="46.8" x="375.6" y="58.5"></rect>
+<rect fill="#000000" height="14" width="46.8" x="445.8" y="58"></rect>
+<text fill="#000000" font-family="IBM Plex Sans, sans-serif" font-size="12" font-weight="600" stroke="none" x="0" y="69">Puffs</text>
+<text fill="#000000" font-family="IBM Plex Sans, sans-serif" font-size="12" stroke="none" x="120.2" y="52">Craquelin</text>
+<text fill="#000000" font-family="IBM Plex Sans, sans-serif" font-size="12" stroke="none" x="237.2" y="52">Bake 2 trays, cool</text>
+<text fill="#000000" font-family="IBM Plex Sans, sans-serif" font-size="12" stroke="none" x="447.8" y="52">Fill</text>
+<line stroke="#BDBDBD" x1="48" x2="516" y1="80.5" y2="80.5"></line>
+<line x1="48.5" x2="48.5" y1="77.0" y2="84.0"></line>
+<text fill="#5C5C5C" font-family="IBM Plex Sans, sans-serif" font-size="12" stroke="none" text-anchor="start" x="48.0" y="96.0">0 h</text>
+<line x1="142.1" x2="142.1" y1="77.0" y2="84.0"></line>
+<text fill="#5C5C5C" font-family="IBM Plex Sans, sans-serif" font-size="12" stroke="none" text-anchor="middle" x="141.6" y="96.0">1 h</text>
+<line x1="235.7" x2="235.7" y1="77.0" y2="84.0"></line>
+<text fill="#5C5C5C" font-family="IBM Plex Sans, sans-serif" font-size="12" stroke="none" text-anchor="middle" x="235.2" y="96.0">2 h</text>
+<line x1="329.3" x2="329.3" y1="77.0" y2="84.0"></line>
+<text fill="#5C5C5C" font-family="IBM Plex Sans, sans-serif" font-size="12" stroke="none" text-anchor="middle" x="328.8" y="96.0">3 h</text>
+<line x1="422.9" x2="422.9" y1="77.0" y2="84.0"></line>
+<text fill="#5C5C5C" font-family="IBM Plex Sans, sans-serif" font-size="12" stroke="none" text-anchor="middle" x="422.4" y="96.0">4 h</text>
+<line x1="516.5" x2="516.5" y1="77.0" y2="84.0"></line>
+<text fill="#5C5C5C" font-family="IBM Plex Sans, sans-serif" font-size="12" stroke="none" text-anchor="end" x="516.0" y="96.0">5 h</text>
+</svg>

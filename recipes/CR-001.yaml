@@ -1,0 +1,63 @@
+code: CR-001
+kind: card
+name: Royal milk tea pastry cream
+yield: ≈ 820 g
+keeps: 3 days, 4 °C
+basis: milk + cream = 100
+contains:
+- Milk
+- Egg
+source: House formula · Original
+formula:
+  rows:
+  - name: Water
+    note: boiling
+    g: 60
+  - name: Assam
+    note: broken leaf
+    g: 16
+  - name: Whole milk
+    g: 450
+    basis: true
+  - name: Heavy cream
+    g: 100
+    basis: true
+  - name: Egg yolks
+    note: ≈ 6
+    g: 110
+  - name: Sugar
+    g: 55
+  - name: Light brown sugar
+    g: 40
+  - name: Cornstarch
+    g: 45
+  - name: Fine salt
+    g: 2
+  - name: Unsalted butter
+    note: cold
+    g: 40
+  total: Total in
+method:
+- head: Bloom.
+  text: Boil the water, add the tea; simmer until the leaves open.
+  time: 2 min
+  target: Low simmer
+- head: Infuse.
+  text: Add milk and cream. Heat to steaming, then off heat, lid on.
+  time: 10 min
+  target: 85 °C
+- head: Strain.
+  text: Fine sieve; press the leaves hard. Weigh; top up with milk to 550 g.
+  time: —
+  target: 550 g
+- head: Cook.
+  text: Whisk yolks, sugars, starch, salt; temper. Whisk over heat; boil 1 min.
+  time: 3–4 min
+  target: Boiling
+- head: Finish.
+  text: Off heat, whisk in butter. Sieve into a tray, film on the surface, chill.
+  time: Until cold
+  target: 2–4 h, 4 °C
+note: Leaves hold back ≈ 50 g; the top-up milk puts it back. Boil a full minute or it thins overnight. Used in PA-004.
+revisions:
+- {rev: Rev 01, date: '2026-09-26', change: First issue · house formula, source: —}

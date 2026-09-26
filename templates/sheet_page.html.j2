@@ -1,0 +1,59 @@
+{% import 'macros.html.j2' as m %}
+{% set page_body %}
+<div style="width: 816px; height: 1056px; box-sizing: border-box; padding: 48px 60px; display: flex; flex-direction: column; gap: {{ page.gap }}px; background: #FFFFFF; color: #000000; font-family: 'IBM Plex Sans', sans-serif; overflow: hidden">
+{{ m.running_head(r.code, r.name, r.cls, r.rev, r.date, page.n ~ ' / ' ~ page.total) }}
+
+{% if page.n == 1 %}{{ m.title_block(r, r.last_change) }}
+
+{{ m.key_figures(r.key_figures) }}
+{% endif %}
+{% for sec in page.sections %}
+{% if sec.type == 'formula' %}
+{% set F = r.formula %}
+{% call m.section_open('Formula', F.basis, F.notes, first_note_margin=F.note_gap|default(10)) %}{% if F.scale_by_pan %}{{ m.scale_by_pan(F.scale_by_pan) }}{% endif %}{% if F.scale_by_weight %}{{ m.scale_by_weight(F.total.divisor, F.scale_by_weight if F.scale_by_weight is string else 'flour') }}{% endif %}{% endcall %}
+{{ m.formula_table(F) }}
+</section>
+{% elif sec.type == 'components' %}
+{% call m.section_open('Components', r.components.sub, r.components.notes) %}{% endcall %}
+{{ components_table(r.components) }}
+</section>
+{% elif sec.type == 'schedule' %}
+{% call m.section_open('Schedule', r.schedule.sub, r.schedule.notes) %}{{ m.schedule_legend() }}{% endcall %}
+{{ r.schedule.svg }}
+</section>
+{% elif sec.type == 'method' %}
+{% call m.section_open(sec.title, sec.sub, sec.notes) %}{% endcall %}
+{{ m.steps(sec.steps, dense=page.gap == 16) }}
+</section>
+{% elif sec.type == 'figures' %}
+{% call m.section_open(r.figures.title, r.figures.sub) %}{% endcall %}
+{{ m.figures(sec['items']) }}
+</section>
+{% elif sec.type == 'done_when' %}
+{% call m.section_open('Done when', 'And how it keeps') %}{% endcall %}
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 24px">{{ m.kv_list('Done when', r.done_when) }}{{ m.kv_list('Keeps', r.keeps) }}</div>
+</section>
+{% elif sec.type == 'fixes' %}
+{% call m.section_open('If it goes wrong', r.fixes.sub) %}{% endcall %}
+{{ m.fixes(r.fixes.rows, r.fixes.label_width|default(128)) }}
+</section>
+{% elif sec.type == 'trials' %}
+{% call m.section_open('Trials', r.trials.sub, r.trials.notes) %}{% endcall %}
+{{ m.trials(r.trials) }}
+</section>
+{% elif sec.type == 'revisions' %}
+{% call m.section_open('Revisions', 'Newest last') %}{% endcall %}
+{{ m.revisions(r.revisions, r.revisions_blank|default(true)) }}
+</section>
+{% elif sec.type == 'batch_log' %}
+{% call m.section_open('Batch log', 'Fill in by hand') %}{% endcall %}
+{{ m.batch_log(r.batch_log) }}
+</section>
+{% endif %}
+{% endfor %}
+{% if page.n == 1 and page.total > 1 %}
+{{ m.foot_continues(r.foot, 'Continues on page 2' if page.total == 2 else 'Continues on pages 2–' ~ page.total) }}
+{% endif %}
+</div>
+{% endset %}
+{{ m.doc(r.name ~ ' — Bench Sheet, page ' ~ page.n, 816, 1056, page_body) }}

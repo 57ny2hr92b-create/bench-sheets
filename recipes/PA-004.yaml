@@ -1,0 +1,241 @@
+code: PA-004
+kind: sheet
+name: Royal milk tea cream puffs
+cls: Pastry · Choux au craquelin
+lede: Craquelin choux filled with an Assam pastry cream, lightened with whipped cream. The tea opens in
+  boiling water first, then steeps in the milk, the way royal milk tea is made.
+source: House formula · Original
+contains:
+- Wheat
+- Milk
+- Egg
+equipment:
+- 2 half sheets, parchment
+- Piping bag, 12 mm and 6 mm tips
+- 4 cm cutter
+- Fine sieve
+- Stand mixer
+- Probe
+key_figures:
+- label: Yield · puffs
+  value: '30'
+- label: Filling · each
+  value: ≈ 33 g
+- label: Tea · % of dairy
+  value: 2.9%
+- label: Plan
+  value: 5 h
+- label: Oven · 375 °F
+  value: 190 °C
+last_change: Rev 01 · First issue
+method_rail:
+- sub: Tick each step
+  notes: null
+- sub: Cool and fill
+  notes: null
+method:
+- head: Cream.
+  text: Make card CR-001. Film on the surface; chill until cold and set.
+  time: Until cold
+  target: 2–4 h, 4 °C
+- head: Craquelin.
+  text: Beat butter, brown sugar, ground tea and salt. Add flour; mix until it clumps.
+  time: 2 min
+  target: Low
+- head: Roll, cut.
+  text: Roll between parchment to 2 mm. Freeze flat until firm; cut 30 discs at 4 cm.
+  time: 30 min
+  target: Freezer
+- head: Panade.
+  text: Bring water, milk, butter, sugar and salt to a boil. Off heat, add all the flour.
+  time: —
+  target: Rolling boil
+- head: Dry.
+  text: Back on medium, stir and press the paste until a film forms on the pan.
+  time: 2–3 min
+  target: Medium
+- head: Eggs.
+  text: Paddle to cool. Eggs in four adds; stop when the paste falls from the paddle in a V.
+  time: 5 min
+  target: Paste ≤ 60 °C
+- head: Pipe.
+  text: 4 cm mounds, 15 per tray (fig. 1), a frozen disc on each. Tray 2 to the fridge.
+  time: 10 min
+  target: 15 per tray
+- head: Bake.
+  text: Mid rack, one tray at a time. Door shut 20 min, then drop the heat.
+  time: 40–45 min
+  target: 190 → 165 °C
+  target_f: 375 → 325 °F
+- head: Vent.
+  text: Poke a 6 mm hole in each base. Back in the oven, heat off, door ajar.
+  time: 10 min
+- head: Cool.
+  text: On a rack until cold; the shell should sound hollow.
+  time: Until cold
+  target: 20–30 min
+- head: Lighten.
+  text: Whip cream to soft peaks. Beat the cold CR-001 smooth; fold in the whip in two adds.
+  time: 5 min
+  target: Soft peaks
+- head: Fill.
+  text: 6 mm tip into the base hole; fill until heavy (fig. 2). Serve within 4 h.
+  time: ≈ 33 g
+  target: each
+formula:
+  basis: '% · each part''s flour = 100'
+  notes:
+  - Craquelin and choux each take their own flour as 100. The filling is made from card CR-001 and sits
+    outside.
+  - 'Tea: loose Assam, broken leaf (BOP) or CTC. Grind the craquelin tea in a spice grinder.'
+  - 'Eggs: stop when the paste falls in a V. Dry air can take all 240 g.'
+  - † Tea strength doesn't scale in a straight line; taste before trusting a multiply.
+  parts:
+  - id: A
+    name: Craquelin
+    rows:
+    - name: Unsalted butter
+      note: soft
+      g: 45
+    - name: Light brown sugar
+      g: 50
+    - name: All-purpose flour
+      basis: true
+      g: 55
+    - name: Assam
+      note: ground fine
+      dagger: true
+      g: 2
+    - name: Fine salt
+      note: pinch
+      g: —
+    note: '% · its flour = 100'
+    subtotal:
+      label: Craquelin
+  - id: B
+    name: Choux
+    rows:
+    - name: Water
+      g: 120
+    - name: Whole milk
+      g: 120
+    - name: Unsalted butter
+      g: 100
+    - name: Sugar
+      g: 5
+    - name: Fine salt
+      g: 3
+    - name: All-purpose flour
+      basis: true
+      g: 140
+    - name: Whole eggs
+      note: ≈ 5, hold back 40 g
+      g: 240
+    note: '% · flour = 100'
+    subtotal:
+      label: Choux paste
+  - id: C
+    name: Filling
+    rows:
+    - name: Royal milk tea pastry cream
+      note: CR-001
+      g: 820
+      approx: true
+    - name: Heavy cream
+      note: cold, 36%
+      g: 200
+    outside: true
+    subtotal:
+      label: Filling
+schedule:
+  sub: One day, about 5 h
+  notes:
+  - Or make the cream and craquelin the day before; start at choux.
+  svg: PA-004-schedule.svg
+trials:
+  sub: Change one variable per trial
+  notes:
+  - Water boils near 95 °C at 4,700 ft, so the bloom pulls less. B adds tea; C tries a cold steep for
+    less bitterness.
+  columns:
+  - Trial A
+  - Trial B
+  - Trial C
+  rows:
+  - var: Date
+    values:
+    - ''
+    - ''
+    - ''
+  - var: Assam in cream
+    values:
+    - 16 g
+    - 20 g
+    - 16 g
+  - var: Steep
+    values:
+    - 10 min, 85 °C
+    - 10 min, 85 °C
+    - 12 h cold, 4 °C
+  - var: Tea taste 1–5
+    values:
+    - ''
+    - ''
+    - ''
+  - var: Staff rating 1–5
+    values:
+    - ''
+    - ''
+    - ''
+figures:
+  title: Figures
+  sub: Fig. 1 to scale
+  items:
+  - svg: PA-004-fig1.svg
+    label: Fig. 1
+    caption: Half sheet, 15 mounds of 4 cm; dashed = baked size.
+  - svg: PA-004-fig2.svg
+    label: Fig. 2
+    caption: Fill from the base until the puff feels heavy.
+done_when:
+- - Shell
+  - Golden in the cracks
+- - Weight
+  - Light, sounds hollow
+- - Cream
+  - Holds a line, cold
+keeps:
+- - Shells
+  - 1 day, airtight
+- - Re-crisp
+  - 5 min, 165 °C
+- - Filled
+  - 4 h, then 4 °C
+fixes:
+  label_width: 200
+  sub: Most likely cause first
+  rows:
+  - - Puffs collapsed
+    - Underbaked or door opened early. Bake until the cracks color
+  - - Flat, spread
+    - Paste too loose. Hold back more egg
+  - - Tea tastes weak
+    - Whole leaf or leaves not pressed. Use broken leaf; press hard
+  - - Cream thin once cold
+    - Not boiled long enough. Bubble a full minute
+revisions:
+- rev: Rev 01
+  date: '2026-09-26'
+  change: First issue, house formula
+  source: —
+pages:
+- - formula
+- - schedule
+  - method:1-9
+  - trials
+- - method:10-12
+  - figures
+  - done_when
+  - fixes
+  - revisions
+foot: schedule, method, trials, figures, fixes

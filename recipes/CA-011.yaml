@@ -1,0 +1,186 @@
+code: CA-011
+kind: sheet
+name: Carrot cake cupcakes
+cls: Cake · Cupcake, one bowl
+lede: A melted-butter carrot cake batter mixed in one bowl, heavy on cinnamon and grated carrot, finished
+  with a swoosh of cream cheese frosting from card FR-003.
+source: NYT Cooking · Adapted, metric
+contains:
+- Wheat
+- Milk
+- Egg
+- Nuts if added
+equipment:
+- 12-cup muffin tin, paper liners
+- Box grater
+- Cookie scoop
+- Stand or hand mixer
+- Offset spatula or piping bag
+key_figures:
+- label: Yield · cupcakes
+  value: '12'
+- label: Batter · each
+  value: ≈ 66 g
+- label: Carrot · % flour
+  value: 100%
+- label: Plan
+  value: 1.5 h
+- label: Oven · 350 °F
+  value: 175 °C
+last_change: Rev 01 · First issue
+method_rail:
+- sub: Tick each step as done
+  notes:
+  - Make FR-003 while the cupcakes cool. Frost only when fully cold.
+method:
+- head: Prep.
+  text: Rack in the middle; heat the oven. Line the 12-cup tin with paper liners.
+  time: —
+  target: 175 °C
+  target_f: 350 °F
+- head: Wet.
+  text: In a large bowl whisk melted butter, brown sugar, vanilla and salt until smooth and glossy.
+  time: 20 s
+- head: Eggs.
+  text: Add one at a time, whisking until no streaks of white remain before the next.
+  time: 1 min
+- head: Dry.
+  text: Whisk flour, cinnamon, soda and powder; fold in with a spatula until no flour pockets remain.
+  time: —
+  target: Don’t overmix
+- head: Carrots.
+  text: Fold in the carrots and any add-ins just until the shreds are even through the batter.
+  time: —
+- head: Portion.
+  text: Scoop into the liners, three-quarters full. Weigh the first cup to set the scoop.
+  time: —
+  target: ≈ 66 g each
+- head: Bake.
+  text: Until the tops dome slightly and a toothpick comes out clean with a few moist crumbs.
+  time: 17–20 min
+  target: 175 °C
+  target_f: 350 °F
+- head: Cool.
+  text: Completely, in the tin. Make the frosting from card FR-003 meanwhile.
+  time: Until cool
+  target: 45–60 min
+- head: Frost.
+  text: Pipe, or swoosh on with an offset spatula or the back of a large spoon.
+  time: 10 min
+  target: ≈ 32 g each
+formula:
+  basis: '% · flour = 100'
+  notes:
+  - 'Carrots: 3 or 4 medium, grated on the fine holes of a box grater. Weigh after grating.'
+  - Add-ins are optional and outside the batter total; with them the batter is ≈ 857 g, ≈ 71 g each.
+  - Frosting is made from card FR-003, ≈ 32 g per cupcake, and sits outside the formula.
+  - 'Altitude, 4,700 ft: soda and powder −12–25%. Run as trial B before changing the sheet.'
+  - † Doesn't scale in a straight line past 2×.
+  parts:
+  - id: A
+    name: Batter
+    rows:
+    - name: Unsalted butter
+      note: melted, warm
+      g: 170
+    - name: Light brown sugar
+      note: packed
+      g: 165
+    - name: Vanilla extract
+      note: 2 tsp
+      dagger: true
+      g: 8
+    - name: Kosher salt
+      note: Diamond Crystal, ½ tsp
+      g: 1.5
+    - name: Whole eggs
+      note: 2 large
+      g: 100
+    - name: All-purpose flour
+      basis: true
+      g: 170
+    - name: Ground cinnamon
+      note: 2 tsp
+      dagger: true
+      g: 5
+    - name: Baking soda
+      note: ¾ tsp
+      dagger: true
+      g: 3.5
+    - name: Baking powder
+      note: ¾ tsp
+      dagger: true
+      g: 3
+    - name: Carrots
+      note: finely grated
+      g: 170
+    note: '% · flour = 100'
+    subtotal:
+      label: Batter
+      note: without add-ins
+  - id: B
+    name: Add-ins
+    rows:
+    - name: Walnuts, pecans or raisins
+      note: chopped
+      g: 61
+    note: optional · % · flour = 100
+  - id: C
+    name: Frosting
+    rows:
+    - name: Cream cheese frosting
+      note: FR-003
+      g: 385
+      approx: true
+    outside: true
+done_when:
+- - Top
+  - Domed, set to the touch
+- - Toothpick
+  - Clean, a few crumbs
+keeps:
+- - Unfrosted
+  - 2 days, airtight
+- - Frosted
+  - 3 days, 4 °C
+trials:
+  sub: Change one variable per trial
+  notes:
+  - B tests the altitude rule for 4,700 ft.
+  columns:
+  - Trial A
+  - Trial B
+  - Trial C
+  rows:
+  - var: Date
+    values:
+    - ''
+    - ''
+    - ''
+  - var: Change
+    values:
+    - As written
+    - Leavening −20%
+    - Pecans, 61 g
+  - var: Bake time
+    values:
+    - ''
+    - ''
+    - ''
+  - var: Staff rating 1–5
+    values:
+    - ''
+    - ''
+    - ''
+revisions:
+- rev: Rev 01
+  date: '2026-09-26'
+  change: First issue, adapted from NYT Cooking
+  source: —
+pages:
+- - formula
+- - method:1-9
+  - done_when
+  - trials
+  - revisions
+foot: method, done when, trials, revisions

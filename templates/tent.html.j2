@@ -1,0 +1,22 @@
+{% import 'macros.html.j2' as m %}
+{% macro face(rotated) -%}
+<div style="height: 408px; box-sizing: border-box; padding: 40px 44px; display: flex; flex-direction: column; justify-content: space-between;{% if rotated %} transform: rotate(180deg);{% endif %}">
+<div style="display: flex; justify-content: space-between; font-size: 12px; line-height: 16px"><span style="font-weight: 600">Test kitchen</span><span style="color: #5C5C5C">{{ r.code }} · {{ r.rev }}</span></div>
+<div style="display: flex; flex-direction: column; gap: 10px">
+<h2 style="margin: 0; font-size: 44px; line-height: 46px; font-weight: 600; letter-spacing: -0.02em">{{ r.tent.name }}</h2>
+<p style="margin: 0; font-size: 15px; line-height: 22px; color: #5C5C5C">{{ r.tent.note }}</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px; padding-top: 12px; border-top: 1px solid #000000">
+<div style="display: flex; gap: 12px; align-items: baseline"><span style="width: 72px; font-size: 12px; line-height: 16px; color: #5C5C5C">Contains</span><span style="font-size: 18px; line-height: 24px; font-weight: 600">{{ r.contains|join(' · ') }}</span></div>
+<div style="display: flex; gap: 12px; align-items: baseline"><span style="width: 72px; font-size: 12px; line-height: 16px; color: #5C5C5C">Baked</span><span style="flex-grow: 1; height: 18px; border-bottom: 1px solid #000000"></span><span style="width: 56px; font-size: 12px; line-height: 16px; color: #5C5C5C">Best by</span><span style="flex-grow: 1; height: 18px; border-bottom: 1px solid #000000"></span></div>
+</div>
+</div>
+{%- endmacro %}
+{% set body %}
+<div style="width: 528px; height: 816px; box-sizing: border-box; display: flex; flex-direction: column; background: #FFFFFF; color: #000000; font-family: 'IBM Plex Sans', sans-serif; overflow: hidden">
+{{ face(true) }}
+<div style="height: 0; border-top: 1px dashed #000000; position: relative"><span style="position: absolute; right: 16px; top: -8px; background: #FFFFFF; padding: 0 6px; font-size: 12px; line-height: 16px; color: #5C5C5C">Fold</span></div>
+{{ face(false) }}
+</div>
+{% endset %}
+{{ m.doc(r.tent.name ~ ' — Tent Card', 528, 816, body) }}

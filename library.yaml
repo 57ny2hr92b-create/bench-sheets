@@ -1,0 +1,26 @@
+title: Test kitchen library
+lede: Every sheet, card and tent card, by code. Front of the binder; update it with every new Rev.
+
+# Bump when the index changes materially (a row added, a Rev changed).
+index:
+  rev: 6
+  date: 2026-09-26
+  blank_rows: 6
+
+# Code order, as the Bench Sheet README lists it. Add a family here before assigning a new prefix.
+families:
+- {code: BR, name: Bread}
+- {code: PA, name: Pastry}
+- {code: CA, name: Cake}
+- {code: CK, name: Cookie}
+- {code: CF, name: Confection}
+- {code: CR, name: Cream & custard}
+- {code: FR, name: Frosting}
+- {code: GA, name: Ganache}
+
+canvas:
+  title: Test Kitchen
+  url: https://claude.ai/artifact/ERw3a4SAwQm9HUoS8cJVNd
+  createdOnFiles: {v: 1, at: '2026-09-26T21:05:00Z'}
+  designSystems:
+  - {title: Bench Sheet, namespace: benchsheet, artifact: 'https://claude.ai/artifact/2VUkCiCwaiByjKiyEqXJbi', version: null, copiedAt: '2026-09-26T21:05:00Z'}

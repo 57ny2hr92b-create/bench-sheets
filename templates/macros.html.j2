@@ -1,0 +1,154 @@
+{# Bench Sheet markup vocabulary. Every artboard is assembled from these macros. #}
+{% set INK = '#000000' %}{% set GREY = '#5C5C5C' %}{% set RULE = '#BDBDBD' %}
+
+{% macro doc(title, w, h, body) -%}
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>{{ title }}</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#FFFFFF;color:#000000;font-family:'IBM Plex Sans',sans-serif}
+a{color:#000000}a:hover{color:#5C5C5C}
+</style>
+</helmet>
+{{ body }}
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":{{ w }},"height":{{ h }}}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>
+{%- endmacro %}
+
+{% macro running_head(code, name, cls, rev, date, page_label) -%}
+<div style="display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 8px; border-bottom: 1px solid #000000; font-size: 12px; line-height: 16px; margin-bottom: 4px">
+<div style="display: flex; gap: 16px"><span style="font-weight: 600">{{ code }}</span><span>{{ name }}</span><span style="color: #5C5C5C">{{ cls }}</span></div>
+<div style="display: flex; gap: 16px; color: #5C5C5C"><span>{{ rev }}</span><span>{{ date }}</span><span style="color: #000000; font-weight: 600">{{ page_label }}</span></div>
+</div>
+{%- endmacro %}
+
+{% macro title_block(r, last_change) -%}
+<div style="display: flex; flex-direction: column; gap: 4px">
+<h1 style="margin: 0; font-size: 40px; line-height: 44px; font-weight: 600; letter-spacing: -0.02em">{{ r.name }}</h1>
+<p style="margin: 0; font-size: 15px; line-height: 22px; color: #5C5C5C; max-width: 640px">{{ r.lede }}</p>
+<div style="display: flex; gap: 24px; margin-top: 6px; font-size: 12px; line-height: 16px; white-space: nowrap"><span><span style="color: #5C5C5C; margin-right: 8px">Source</span>{{ r.source }}</span><span><span style="color: #5C5C5C; margin-right: 8px">Contains</span><span style="font-weight: 600">{{ r.contains|join(' · ') }}</span></span><span style="margin-left: auto; white-space: nowrap"><span style="color: #5C5C5C; margin-right: 8px">Last change</span>{{ last_change }}</span></div>
+{% if r.equipment %}<div style="display: flex; gap: 24px; font-size: 12px; line-height: 16px"><span><span style="color: #5C5C5C; margin-right: 8px">Equipment</span>{{ r.equipment|join(' · ') }}</span></div>{% endif %}
+</div>
+{%- endmacro %}
+
+{% macro key_figures(figs) -%}
+<div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border-top: 1px solid #000000; font-variant-numeric: tabular-nums">
+{% for f in figs %}<div style="padding: 8px 12px 9px{% if loop.first %} 0{% endif %};{% if not loop.first %} border-left: 1px solid #BDBDBD;{% endif %} display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; line-height: 16px; color: #5C5C5C">{{ f.label }}</span><span style="font-size: 22px; line-height: 28px; font-weight: 500">{{ f.value }}</span></div>
+{% endfor %}</div>
+{%- endmacro %}
+
+{% macro section_open(title, sub=None, notes=None, first_note_margin=10) -%}
+<section style="display: grid; grid-template-columns: 152px minmax(0, 1fr); column-gap: 24px; padding-top: 10px; border-top: 1px solid #000000">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<h2 style="margin: 0; font-size: 14px; line-height: 18px; font-weight: 600">{{ title }}</h2>
+{% if sub %}<span style="font-size: 12px; line-height: 16px; color: #5C5C5C">{{ sub }}</span>{% endif %}
+{% for n in notes or [] %}<p style="margin: {{ first_note_margin if loop.first else 10 }}px 0 0; font-size: 12px; line-height: 17px; color: #5C5C5C">{{ n }}</p>
+{% endfor %}{{ caller() if caller is defined else '' }}
+</div>
+{%- endmacro %}
+
+{% macro scale_by_pan(rows) -%}
+<div style="display: flex; flex-direction: column; margin-top: 14px; font-size: 12px; line-height: 16px; font-variant-numeric: tabular-nums">
+<div style="padding-bottom: 4px; border-bottom: 1px solid #000000; font-weight: 600">Scale by pan</div>
+{% for r in rows %}<div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #BDBDBD"><span{% if r.bold %} style="font-weight: 600"{% endif %}>{{ r.pan }}</span><span{% if r.bold %} style="font-weight: 600"{% endif %}>× {{ r.factor }} · {{ r.count }}</span></div>
+{% endfor %}</div>
+{%- endmacro %}
+
+{% macro scale_by_weight(divisor, basis_name='flour') -%}
+<div style="display: flex; flex-direction: column; margin-top: 14px; font-size: 12px; line-height: 16px; font-variant-numeric: tabular-nums">
+<div style="padding-bottom: 4px; border-bottom: 1px solid #000000; font-weight: 600">Scale by weight</div>
+<div style="display: flex; align-items: baseline; gap: 4px; padding-top: 8px"><span style="flex-grow: 1; height: 14px; border-bottom: 1px solid #000000"></span><span>g dough ÷ {{ divisor }}</span></div>
+<div style="display: flex; align-items: baseline; gap: 4px; padding-top: 8px">= <span style="flex-grow: 1; height: 14px; border-bottom: 1px solid #000000"></span><span>g {{ basis_name }}</span></div>
+<span style="color: #5C5C5C; padding-top: 6px">Then {{ basis_name }} × each %.</span><span style="color: #5C5C5C; padding-top: 4px">† Trial past 2×.</span>
+</div>
+{%- endmacro %}
+
+{% macro schedule_legend() -%}
+<div style="display: flex; gap: 12px; margin-top: 6px; font-size: 12px; line-height: 16px">
+<span style="display: flex; align-items: center; gap: 4px"><span style="width: 10px; height: 10px; background: #000000"></span>Hands-on</span>
+<span style="display: flex; align-items: center; gap: 4px"><span style="width: 8px; height: 8px; border: 1px solid #000000"></span>Waiting</span>
+</div>
+<div style="display: flex; align-items: baseline; gap: 6px; margin-top: 10px; font-size: 12px; line-height: 16px; color: #5C5C5C">Start<span style="flex-grow: 1; height: 14px; border-bottom: 1px solid #000000"></span></div>
+{%- endmacro %}
+
+{# ---------- formula table ---------- #}
+{% macro box() %}<span style="display: inline-block; width: 10px; height: 10px; border: 1px solid #000000"></span>{% endmacro %}
+
+{% macro th(w, align, label, extra='') -%}
+<th style="width: {{ w }}; padding: 0 0 6px; border-bottom: 1px solid #000000; font-size: 12px; line-height: 16px; font-weight: 500; color: #5C5C5C; text-align: {{ align }}{{ extra }}">{{ label }}</th>
+{%- endmacro %}
+
+{% macro formula_table(F) -%}
+{% set stages = F.stages %}
+<table style="width: 100%; border-collapse: collapse; table-layout: fixed; font-variant-numeric: tabular-nums">
+<thead>
+{% if stages %}{% set sw = stage_widths(stages) %}<tr><th style="width: 24px; padding: 0"></th><th style="padding: 0"></th><th style="width: 52px; padding: 0"></th><th colspan="{{ stages|length + 1 }}" style="width: {{ sw|sum }}px; padding: 0 0 4px; font-size: 12px; line-height: 16px; font-weight: 600; text-align: center; border-bottom: 1px solid #BDBDBD; border-left: 1px solid #BDBDBD">Grams by stage</th></tr><tr>{{ th('24px', 'right', '') }}<th style="padding: 0 0 6px; border-bottom: 1px solid #000000; font-size: 12px; line-height: 16px; font-weight: 500; color: #5C5C5C; text-align: left">Ingredient</th>{{ th('52px', 'right', '% flour', '; padding-right: 10px') }}{% for s in stages %}{{ th(sw[loop.index0] ~ 'px', 'right', s, '; border-left: 1px solid #BDBDBD' if loop.first else '') }}{% endfor %}{{ th(sw[-1] ~ 'px', 'right', 'Total') }}</tr>
+{% else %}<tr>{{ th('24px', 'right', '') }}{{ th('auto', 'left', 'Ingredient') }}{{ th('64px', 'right', '%') }}{{ th('72px', 'right', 'Grams') }}<th style="width: 96px; padding: 0 0 6px; border-bottom: 1px solid #000000; font-size: 12px; line-height: 16px; font-weight: 500; color: #5C5C5C; text-align: right">Scaled × <span style="display: inline-block; width: 24px; border-bottom: 1px solid #000000"></span></th></tr>
+{% endif %}</thead>
+<tbody>
+{% for part in F.parts %}{% if part.id %}<tr><td colspan="{{ 5 if not stages else stages|length + 4 }}" style="padding: 10px 0 4px; border-bottom: 1px solid #000000; font-size: 12px; line-height: 16px; font-weight: 600">{{ part.id }}&nbsp;&nbsp;{{ part.name }}{% if part.outside %} <span style="font-weight: 400; color: #5C5C5C">· outside the formula</span>{% elif part.note %} <span style="font-weight: 400; color: #5C5C5C">· {{ part.note }}</span>{% endif %}</td></tr>
+{% endif %}{% for row in part.rows %}{% set last = loop.last %}{% set b = '1px solid #000000' if last else '1px solid #BDBDBD' %}
+<tr><td style="padding: 4px 0; border-bottom: {{ b }}; ">{{ box() }}</td><td style="padding: 4px 0; border-bottom: {{ b }}; font-size: 14px; line-height: 18px;">{{ row.name }}{% if row.dagger %} †{% endif %}{% if row.note %} <span style="color: #5C5C5C">· {{ row.note }}</span>{% endif %}</td><td style="padding: 4px 0; border-bottom: {{ b }}; font-size: 14px; line-height: 18px; text-align: right; color: #5C5C5C{% if stages %}; padding-right: 10px{% endif %}">{{ row.pct }}</td>{% if stages %}{% for g in row.g_fmt %}<td style="padding: 4px 0; border-bottom: {{ b }}; font-size: 14px; line-height: 18px; text-align: right;{% if g not in ('—', '→') %} font-weight: 500{% else %} color: #5C5C5C{% endif %}">{{ g }}</td>{% endfor %}<td style="padding: 4px 0; border-bottom: {{ b }}; font-size: 14px; line-height: 18px; text-align: right;{% if row.total_fmt != '—' %} font-weight: 500{% else %} color: #5C5C5C{% endif %}">{{ row.total_fmt }}</td>{% else %}<td style="padding: 4px 0; border-bottom: {{ b }}; font-size: 14px; line-height: 18px; text-align: right;{% if row.g_fmt != '—' %} font-weight: 500{% else %} color: #5C5C5C{% endif %}">{{ row.g_fmt }}</td><td style="padding: 4px 0; border-bottom: {{ b }}"></td>{% endif %}</tr>
+{% endfor %}{% if part.subtotal %}<tr><td style="padding: 4px 0"></td><td style="padding: 4px 0; font-size: 14px; line-height: 18px; font-weight: 600">{{ part.subtotal.label }}{% if part.subtotal.note %} <span style="font-weight: 400; color: #5C5C5C">· {{ part.subtotal.note }}</span>{% endif %}</td><td style="padding: 4px 0; font-size: 14px; line-height: 18px; text-align: right; color: #5C5C5C">{{ part.subtotal.pct }}</td><td style="padding: 4px 0; font-size: 14px; line-height: 18px; text-align: right; font-weight: 600">{{ part.subtotal.g_fmt }}</td><td style="padding: 4px 0"></td></tr>
+{% endif %}{% endfor %}{% if F.total %}<tr><td style="padding: 4px 0"></td><td style="padding: 4px 0; font-size: 14px; line-height: 18px; font-weight: 600">{{ F.total.label }}</td><td style="padding: 4px 0; font-size: 14px; line-height: 18px; text-align: right; color: #5C5C5C{% if stages %}; padding-right: 10px{% endif %}">{{ F.total.pct }}</td>{% if stages %}{% for g in F.total.g_fmt %}<td style="padding: 4px 0; font-size: 14px; line-height: 18px; text-align: right; font-weight: 600">{{ g }}</td>{% endfor %}<td style="padding: 4px 0; font-size: 14px; line-height: 18px; text-align: right; font-weight: 600">{{ F.total.total_fmt }}</td>{% else %}<td style="padding: 4px 0; font-size: 14px; line-height: 18px; text-align: right; font-weight: 600">{{ F.total.g_fmt }}</td><td style="padding: 4px 0"></td>{% endif %}</tr>
+{% endif %}</tbody>
+</table>
+{%- endmacro %}
+
+{# ---------- method ---------- #}
+{% macro steps(list, dense=True) -%}
+{% set pad = 5 if dense else 6 %}
+<ol style="margin: -{{ pad }}px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column">
+{% for s in list %}<li style="display: grid; grid-template-columns: 28px minmax(0, 1fr) 112px 16px; column-gap: 12px; padding: {{ pad }}px 0; border-bottom: 1px solid {{ '#000000' if loop.last else '#BDBDBD' }}; font-size: 14px; line-height: 19px"><span style="font-weight: 600; font-variant-numeric: tabular-nums">{{ '%02d' % s.n }}</span><p style="margin: 0"><strong style="font-weight: 600">{{ s.head }}</strong> {{ s.text }}</p><span style="font-size: 13px; text-align: right; font-variant-numeric: tabular-nums">{% if s.time == '—' or not s.time %}<span style="color: #5C5C5C">—</span>{% else %}{{ s.time }}{% endif %}{% if s.target %}<br>{{ s.target }}{% if s.target_f and not s.target_f_line %} <span style="color: #5C5C5C">{{ s.target_f }}</span>{% endif %}{% endif %}{% if s.target_f_line %}<br><span style="color: #5C5C5C">{{ s.target_f }}</span>{% endif %}</span><span style="width: 10px; height: 10px; border: 1px solid #000000; margin-top: 4px; justify-self: end"></span></li>
+{% endfor %}</ol>
+{%- endmacro %}
+
+{# ---------- small lists ---------- #}
+{% macro kv_list(title, rows) -%}
+<div style="display: flex; flex-direction: column"><span style="padding-bottom: 4px; border-bottom: 1px solid #000000; font-size: 12px; line-height: 16px; font-weight: 600">{{ title }}</span>{% for k, v in rows %}<div style="display: grid; grid-template-columns: 96px minmax(0, 1fr); column-gap: 8px; padding: 3px 0; border-bottom: 1px solid #BDBDBD; font-size: 13px; line-height: 18px"><span style="color: #5C5C5C">{{ k }}</span><span>{{ v }}</span></div>{% endfor %}</div>
+{%- endmacro %}
+
+{% macro fixes(rows, label_width=128) -%}
+{% if label_width == 128 %}<div style="display: flex; flex-direction: column">{% for k, v in rows %}<div style="display: grid; grid-template-columns: 128px minmax(0, 1fr); column-gap: 8px; padding: 3px 0; border-bottom: 1px solid #BDBDBD; font-size: 13px; line-height: 18px"><span style="font-weight: 600">{{ k }}</span><span>{{ v }}</span></div>{% endfor %}</div>
+{% else %}<div style="display: flex; flex-direction: column; margin-top: -3px; font-size: 13px; line-height: 18px">{% for k, v in rows %}<div style="display: grid; grid-template-columns: {{ label_width }}px minmax(0, 1fr); column-gap: 12px; padding: 2px 0; border-bottom: 1px solid #BDBDBD"><span style="font-weight: 600">{{ k }}</span><span>{{ v }}</span></div>{% endfor %}</div>{% endif %}
+{%- endmacro %}
+
+{% macro trials(T) -%}
+<table style="width: 100%; border-collapse: collapse; table-layout: fixed; font-variant-numeric: tabular-nums"><thead><tr><th style="width: 120px; padding: 0 0 6px; border-bottom: 1px solid #000000; font-size: 12px; line-height: 16px; font-weight: 500; color: #5C5C5C; text-align: left">Variable</th>{% for c in T.columns %}<th style="padding: 0 0 6px; border-bottom: 1px solid #000000; font-size: 12px; line-height: 16px; font-weight: 600; text-align: left">{{ c }}</th>{% endfor %}</tr></thead><tbody>{% for r in T.rows %}<tr><td style="padding: 5px 0; border-bottom: 1px solid #BDBDBD; font-size: 12px; line-height: 16px; color: #5C5C5C">{{ r.var }}</td>{% for v in r['values'] %}<td style="padding: 5px 0; height: 16px; border-bottom: 1px solid #BDBDBD; font-size: 13px; line-height: 16px">{{ v }}</td>{% endfor %}</tr>{% endfor %}</tbody></table>
+{%- endmacro %}
+
+{% macro revisions(rows, blank=true) -%}
+<table style="width: 100%; border-collapse: collapse; table-layout: fixed; font-variant-numeric: tabular-nums"><thead><tr><th style="width: 56px; padding: 0 0 6px; border-bottom: 1px solid #000000; font-size: 12px; line-height: 16px; font-weight: 500; color: #5C5C5C; text-align: left">Rev</th><th style="width: 96px; padding: 0 0 6px; border-bottom: 1px solid #000000; font-size: 12px; line-height: 16px; font-weight: 500; color: #5C5C5C; text-align: left">Date</th><th style="width: auto; padding: 0 0 6px; border-bottom: 1px solid #000000; font-size: 12px; line-height: 16px; font-weight: 500; color: #5C5C5C; text-align: left">Change</th><th style="width: 80px; padding: 0 0 6px; border-bottom: 1px solid #000000; font-size: 12px; line-height: 16px; font-weight: 500; color: #5C5C5C; text-align: left">From</th></tr></thead><tbody>{% for r in rows %}<tr><td style="padding: 4px 0; height: 18px; border-bottom: 1px solid #BDBDBD; font-size: 13px; line-height: 18px">{{ r.rev }}</td><td style="padding: 4px 0; height: 18px; border-bottom: 1px solid #BDBDBD; font-size: 13px; line-height: 18px">{{ r.date }}</td><td style="padding: 4px 0; height: 18px; border-bottom: 1px solid #BDBDBD; font-size: 13px; line-height: 18px">{{ r.change }}</td><td style="padding: 4px 0; height: 18px; border-bottom: 1px solid #BDBDBD; font-size: 13px; line-height: 18px">{{ r.source }}</td></tr>{% endfor %}{% if blank %}<tr><td style="padding: 4px 0; height: 18px; border-bottom: 1px solid #BDBDBD; font-size: 13px; line-height: 18px"></td><td style="padding: 4px 0; height: 18px; border-bottom: 1px solid #BDBDBD; font-size: 13px; line-height: 18px"></td><td style="padding: 4px 0; height: 18px; border-bottom: 1px solid #BDBDBD; font-size: 13px; line-height: 18px"></td><td style="padding: 4px 0; height: 18px; border-bottom: 1px solid #BDBDBD; font-size: 13px; line-height: 18px"></td></tr>{% endif %}</tbody></table>
+{%- endmacro %}
+
+{% macro batch_log(fields) -%}
+<div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: 24px; row-gap: 10px">{% for f in fields %}<div style="display: flex; flex-direction: column; gap: 4px"><span style="font-size: 12px; line-height: 16px; color: #5C5C5C">{{ f }}</span><span style="height: 20px; border-bottom: 1px solid #000000"></span></div>{% endfor %}</div>
+{%- endmacro %}
+
+{% macro figures(items) -%}
+{% if items|length > 1 %}<div style="display: flex; gap: 24px">{% endif %}{% for f in items %}<figure style="margin: 0; display: flex; flex-direction: column; gap: 6px">
+{{ f.svg }}
+<figcaption style="font-size: 12px; line-height: 16px"><span style="font-weight: 600">{{ f.label }}</span> <span style="color: #5C5C5C">{{ f.caption }}</span></figcaption>
+</figure>{% endfor %}{% if items|length > 1 %}</div>{% endif %}
+{%- endmacro %}
+
+{% macro foot_continues(pages_text, plural) -%}
+<div style="margin-top: auto; display: flex; justify-content: flex-end; padding-top: 8px; border-top: 1px solid #BDBDBD; font-size: 12px; line-height: 16px"><span style="color: #5C5C5C">{{ plural }}:&nbsp;</span><span style="font-weight: 600">{{ pages_text }} →</span></div>
+{%- endmacro %}
