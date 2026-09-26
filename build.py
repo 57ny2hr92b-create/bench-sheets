@@ -376,7 +376,7 @@ def write_publish_plan(order):
     pub_file = ROOT / 'published.yaml'
     published = yaml.safe_load(pub_file.read_text()) if pub_file.exists() else {}
     on_canvas = set(published.get('artboards') or [])
-    files = {f'project/{fn}': f'project/{fn}' for fn in order}
+    files = {f'project/{fn}': f'project/{fn}' for fn in order if fn != 'Index.dc.html'}  # the index is file_path
     files['project/canvas.json'] = 'project/canvas.json'
     for fn in sorted(on_canvas - set(order)):
         files[f'project/{fn}'] = None
