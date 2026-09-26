@@ -8,6 +8,7 @@ CODE = re.compile(r'^[A-Z]{2}-\d{3}$')
 DATE = re.compile(r'^\d{4}-\d{2}-\d{2}$')
 ALLERGENS = {'Wheat', 'Milk', 'Egg', 'Nuts', 'Tree nuts', 'Peanut', 'Soy', 'Sesame', 'Fish', 'Shellfish', 'None'}
 KINDS = {'sheet', 'card'}
+STATUSES = ('draft', 'trial', 'standard', 'retired')
 SECTIONS = {'formula', 'components', 'schedule', 'method', 'figures', 'done_when', 'fixes', 'trials', 'revisions', 'batch_log'}
 SHEET_REQUIRED = ['code', 'name', 'cls', 'lede', 'source', 'contains', 'key_figures', 'formula', 'method', 'done_when', 'keeps', 'revisions']
 CARD_REQUIRED = ['code', 'name', 'yield', 'keeps', 'basis', 'contains', 'source', 'formula', 'method', 'revisions']
@@ -31,6 +32,7 @@ def lint_recipe(r, lib, recs, L, figs_dir):
     code = r.get('code', r.get('_file', '?'))
     kind = r.get('kind', 'sheet')
     if kind not in KINDS: L.err(code, f'kind must be one of {sorted(KINDS)}')
+    if r.get('status', 'standard') not in STATUSES: L.err(code, f'status must be one of {STATUSES}')
     if not CODE.match(str(r.get('code', ''))): L.err(code, 'code must look like BR-023')
     if r.get('_file') and r['_file'] != f'{r.get("code")}.yaml': L.err(code, f'file is named {r["_file"]}; rename it to {r.get("code")}.yaml')
     fam = str(r.get('code', ''))[:2]

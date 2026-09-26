@@ -116,6 +116,15 @@ def compute_formula(F):
 
 # ----------------------------------------------------------------------------- loading
 
+STATUSES = ('draft', 'trial', 'standard', 'retired')
+
+
+def live(recs):
+    """Recipes that go on the canvas and in the index: trial + standard. Drafts render to out/drafts/
+    for review; retired sheets stay in the repo as the record but are not rendered."""
+    return {c: r for c, r in recs.items() if r.get('status', 'standard') in ('trial', 'standard')}
+
+
 def load_library():
     return yaml.safe_load((ROOT / 'library.yaml').read_text())
 
@@ -245,6 +254,18 @@ def env():
     return e
 
 
+def render_recipe(e, r):
+    """[(filename, html)] for every artboard of one recipe."""
+    out = []
+    for fn, title, w, h in artboard_files(r):
+        tpl = 'card.html.j2' if r.get('kind') == 'card' else ('tent.html.j2' if fn.endswith('-tent.dc.html') else 'sheet_page.html.j2')
+        ctx = dict(r=r)
+        if tpl == 'sheet_page.html.j2':
+            ctx['page'] = r['_pages'][int(fn.rsplit('-', 1)[1].split('.')[0]) - 1]
+        out.append((fn, e.get_template(tpl).render(**ctx)))
+    return out
+
+
 def artboard_files(r):
     """(filename, title, w, h) for every artboard a recipe produces."""
     out = []
@@ -259,6 +280,7 @@ def artboard_files(r):
 
 
 def index_entries(recs, lib):
+    recs = live(recs)
     fams = {}
     used_by = {}
     for r in recs.values():
@@ -277,6 +299,7 @@ def index_entries(recs, lib):
             else:
                 pp = str(n)
         linked = sorted(set(r['_uses']) | used_by.get(r['code'], set()))
+        if r.get('status') == 'trial': fmt += ' · trial'
         fams.setdefault(fam, []).append(dict(code=r['code'], name=r['name'], format=fmt, pages=pp, rev=r['_revnum'],
                                             linked=' · '.join(linked), contains=' · '.join(r['contains'])))
     order = [f['code'] for f in lib['families']]
@@ -316,8 +339,16 @@ def build(check_only=False):
     recs = load_recipes()
     from tools import schema
     L = schema.run(lib, recs, FIGS)
-    if L.errors:
-        raise SystemExit(f'{len(L.errors)} lint error(s); nothing rendered')
+    # a half-written draft never blocks the build: its errors are reported and it is left out
+    draft_codes = {c for c, r in recs.items() if r.get('status') == 'draft'}
+    blocking = [e for e in L.errors if e.split(':')[0] not in draft_codes]
+    broken_drafts = {e.split(':')[0] for e in L.errors if e.split(':')[0] in draft_codes}
+    for c in sorted(broken_drafts): print(f'  (draft {c} has lint errors and is skipped)')
+    if blocking:
+        raise SystemExit(f'{len(blocking)} lint error(s); nothing rendered')
+    for c in broken_drafts: recs.pop(c)
+    retired = [c for c, r in recs.items() if r.get('status') == 'retired']
+    for c in retired: recs.pop(c)
     for r in recs.values():
         derive(r, recs)
     for r in recs.values():
@@ -338,10 +369,17 @@ def build(check_only=False):
         (proj / fn).write_text(e.get_template('index.html.j2').render(lib=lib, page=pg))
         boards[fn] = dict(x=(pg['n'] - 1) * (LETTER[0] + COL_GAP), y=0, w=LETTER[0], h=LETTER[1], title=f'IX-00 library index · page {pg["n"]}', paper='letter')
         order.append(fn)
+    # drafts: rendered for review only
+    drafts = OUT / 'drafts'
+    for old in drafts.glob('*.dc.html'): old.unlink()
+    for r in recs.values():
+        if r.get('status') == 'draft':
+            drafts.mkdir(exist_ok=True)
+            for fn, html in render_recipe(e, r): (drafts / fn).write_text(html)
     # one canvas page per family
     fam_names = {f['code']: f['name'] for f in lib['families']}
     by_fam = {}
-    for r in recs.values():
+    for r in live(recs).values():
         by_fam.setdefault(r['code'].split('-')[0], []).append(r)
     for fam in [f['code'] for f in lib['families']]:
         if fam not in by_fam: continue
@@ -349,12 +387,9 @@ def build(check_only=False):
         y = 0
         for r in sorted(by_fam[fam], key=lambda r: r['code']):
             x = 0; row_h = 0
+            rendered = dict(render_recipe(e, r))
             for fn, title, w, h in artboard_files(r):
-                tpl = 'card.html.j2' if r.get('kind') == 'card' else ('tent.html.j2' if fn.endswith('-tent.dc.html') else 'sheet_page.html.j2')
-                ctx = dict(r=r)
-                if tpl == 'sheet_page.html.j2':
-                    ctx['page'] = r['_pages'][int(fn.rsplit('-', 1)[1].split('.')[0]) - 1]
-                (proj / fn).write_text(e.get_template(tpl).render(**ctx))
+                (proj / fn).write_text(rendered[fn])
                 boards[fn] = dict(x=x, y=y, w=w, h=h, title=title, page=fam.lower())
                 if h == LETTER[1]: boards[fn]['paper'] = 'letter'
                 order.append(fn)
@@ -398,11 +433,55 @@ def record_published():
     print(f'recorded {len(manifest["artboards"])} artboards as published' + (f'; {len(gone)} removed: {", ".join(gone)}' if gone else ''))
 
 
+def pdf(codes):
+    """out/pdf/<CODE>.pdf per recipe (pages of a sheet in one file; tent and cards at their own size).
+    Renders from the last build, so run `build` first. Drafts come from out/drafts/."""
+    import re
+    from playwright.sync_api import sync_playwright
+    from tools import fit
+    faces = fit.font_css()
+    recs = load_recipes()
+    codes = [c.upper() for c in codes] or sorted(live(recs))
+    (OUT / 'pdf').mkdir(parents=True, exist_ok=True)
+    written = []
+    with sync_playwright() as pw:
+        b = pw.chromium.launch(); pg = b.new_page()
+        for code in codes:
+            r = recs.get(code)
+            if not r: raise SystemExit(f'no recipe {code}')
+            src_dir = OUT / ('drafts' if r.get('status') == 'draft' else 'project')
+            groups = {code: [], f'{code}-tent': []}
+            for f in sorted(src_dir.glob(f'{code}*.dc.html')):
+                (groups[f'{code}-tent'] if f.name.endswith('-tent.dc.html') else groups[code]).append(f)
+            for name, files in groups.items():
+                if not files: continue
+                pages = []
+                for f in files:
+                    src = f.read_text()
+                    inner = re.search(r'</helmet>\s*(.*?)\s*</x-dc>', src, re.S).group(1)
+                    w, h = map(int, re.search(r'"\$preview":\{"width":(\d+),"height":(\d+)', src).groups())
+                    pages.append(inner)
+                size = f'{w / 96}in {h / 96}in'
+                html = (f"<!doctype html><html><head><meta charset='utf-8'><style>{faces}@page{{size:{size};margin:0}}"
+                        f"body{{margin:0}}.pg{{width:{w}px;height:{h}px;page-break-after:always;overflow:hidden}}</style></head><body>"
+                        + ''.join(f'<div class="pg">{p}</div>' for p in pages) + '</body></html>')
+                tmp = OUT / '_pdf.html'; tmp.write_text(html)
+                pg.goto('file://' + str(tmp)); pg.wait_for_timeout(300)
+                out = OUT / 'pdf' / f'{name}.pdf'
+                pg.pdf(path=str(out), width=f'{w / 96}in', height=f'{h / 96}in', print_background=True, prefer_css_page_size=True)
+                written.append(out)
+        b.close()
+    (OUT / '_pdf.html').unlink(missing_ok=True)
+    for o in written: print('wrote', o.relative_to(ROOT))
+    return written
+
+
 def scaffold(family, name, recs):
     code = next_code(recs, family)
     today = datetime.date.today().isoformat()
     doc = f'''code: {code}
 kind: sheet
+status: draft            # draft -> trial -> standard (-> retired); only trial and standard reach the canvas
 name: {name}
 cls: {dict(BR='Bread', PA='Pastry', CA='Cake', CK='Cookie', CF='Confection', CR='Cream & custard', FR='Frosting', GA='Ganache').get(family, family)} ·
 lede:
@@ -448,7 +527,7 @@ pages:
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('cmd', choices=['build', 'check', 'lint', 'next-code', 'new', 'published'])
+    ap.add_argument('cmd', choices=['build', 'check', 'lint', 'next-code', 'new', 'published', 'pdf'])
     ap.add_argument('args', nargs='*')
     a = ap.parse_args()
     if a.cmd == 'lint':
@@ -463,6 +542,8 @@ def main():
             raise SystemExit(1)
     elif a.cmd == 'published':
         record_published()
+    elif a.cmd == 'pdf':
+        build(); pdf(a.args)
     elif a.cmd == 'next-code':
         print(next_code(load_recipes(), a.args[0].upper()))
     elif a.cmd == 'new':

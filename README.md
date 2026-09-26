@@ -36,15 +36,26 @@ cd tools/fonts && npm pack @fontsource/ibm-plex-sans@5 && tar xzf *.tgz && cd ..
 | `python build.py new CA "Olive oil cake"` | Scaffold `recipes/CA-012.yaml` with the next free code. |
 | `python build.py next-code BR` | Just print the next free code. |
 | `python build.py published` | After a successful publish, record this build as what is on the canvas. |
+| `python build.py pdf [CODE …]` | Print `out/pdf/CODE.pdf` (all pages of a sheet; tent and cards as their own files at their own size). No codes = every live recipe. |
 | `python -m pytest -q` | Regression tests (math, links, rendering, fit). |
+
+## Recipe status
+
+Every recipe has a `status`: `draft` → `trial` → `standard` → (`retired`).
+
+- **draft** — renders to `out/drafts/` for review and PDF, but never reaches the canvas or the index. Lint errors on a draft are reported and the draft is skipped; they never block the build. New recipes scaffold as drafts.
+- **trial** — on the canvas and in the index, marked "· trial" in the Format column.
+- **standard** — the default when the field is absent; the binder.
+- **retired** — kept in the repo as the record (history, revisions, cross-links from old sheets still resolve in git), not rendered, not indexed. Retire rather than delete.
 
 ## Adding a recipe
 
 1. `python build.py new <FAMILY> "<Name>"` — families are `BR PA CA CK CF CR FR GA` (see `library.yaml`; add a family there before using a new prefix).
 2. Fill in the YAML. Grams only; percentages, subtotals, totals, the scale-by-weight divisor, step numbers, Rev/date in the running head, index rows and cross-links are all computed.
-3. `python build.py check`. Fix whatever it flags — shorten a step, move a section to the next page in `pages:`, drop the blank revisions row (`revisions_blank: false`). Don't shrink type or padding; those are the design system's.
-4. Bump `index.rev` and `index.date` in `library.yaml` (any new row or Rev change is a new index rev).
-5. Publish `out/publish.json` to the canvas (below), then `python build.py published`, then commit.
+3. Set `status: trial` (or `standard`) when it's ready for the canvas; leave it `draft` while you work — `python build.py pdf CODE` prints a draft too.
+4. `python build.py check`. Fix whatever it flags — shorten a step, move a section to the next page in `pages:`, drop the blank revisions row (`revisions_blank: false`). Don't shrink type or padding; those are the design system's.
+5. Bump `index.rev` and `index.date` in `library.yaml` (any new row or Rev change is a new index rev).
+6. Publish `out/publish.json` to the canvas (below), then `python build.py published`, then commit.
 
 ## Revising a recipe
 
@@ -67,6 +78,7 @@ Sheets (`kind: sheet`, the default):
 
 ```yaml
 code: CA-011                    # XX-NNN, unique across the library; must match the file name
+status: standard                # draft | trial | standard | retired (see Recipe status)
 name: Carrot cake cupcakes
 cls: Cake · Cupcake, one bowl   # family · form, shown grey in the running head
 lede: One sentence under the title.

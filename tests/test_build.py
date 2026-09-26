@@ -65,3 +65,22 @@ def test_everything_fits(built):
     pytest.importorskip('playwright')
     from tools import fit
     assert fit.check(sorted((ROOT / 'out' / 'project').glob('*.dc.html'))) == 0
+
+
+def test_status_gates_canvas(tmp_path, monkeypatch):
+    """A draft renders to out/drafts only; a retired recipe is not rendered; neither is indexed."""
+    import shutil, yaml
+    src = ROOT / 'recipes' / 'FR-003.yaml'
+    d = yaml.safe_load(src.read_text()); d['code'] = 'FR-999'; d['status'] = 'draft'
+    r = yaml.safe_load(src.read_text()); r['code'] = 'FR-998'; r['status'] = 'retired'
+    (ROOT / 'recipes' / 'FR-999.yaml').write_text(yaml.safe_dump(d, allow_unicode=True))
+    (ROOT / 'recipes' / 'FR-998.yaml').write_text(yaml.safe_dump(r, allow_unicode=True))
+    try:
+        order = build.build()
+        assert 'FR-999.dc.html' not in order and 'FR-998.dc.html' not in order
+        assert (ROOT / 'out' / 'drafts' / 'FR-999.dc.html').exists()
+        idx = (ROOT / 'out' / 'project' / 'Index.dc.html').read_text()
+        assert 'FR-999' not in idx and 'FR-998' not in idx
+    finally:
+        (ROOT / 'recipes' / 'FR-999.yaml').unlink(); (ROOT / 'recipes' / 'FR-998.yaml').unlink()
+        build.build()
