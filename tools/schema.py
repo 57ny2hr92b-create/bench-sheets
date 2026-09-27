@@ -11,6 +11,13 @@ KINDS = {'sheet', 'card'}
 ROW_KEYS = {'name', 'note', 'g', 'basis', 'dagger', 'approx', 'pct', 'carry', 'total', 'outside'}
 STATUSES = ('draft', 'trial', 'standard', 'retired')
 SECTIONS = {'formula', 'components', 'schedule', 'method', 'figures', 'done_when', 'fixes', 'trials', 'revisions', 'batch_log', 'variants'}
+# Reading order across the sheet (the design system's page anatomy): make it, then judge it, then record it.
+# method chunks run in step order; figures and variants may sit between chunks (the steps point to them);
+# nothing that judges the bake (done when, fixes) may come before the last method step. Trials is the
+# one movable section: its variable is chosen before mixing, so it may sit beside the steps (a long
+# two-day sheet balances its pages that way) or after the checks, but always before revisions.
+ORDER = {'formula': 0, 'components': 1, 'schedule': 2, 'method': 3, 'figures': 3, 'variants': 3,
+         'done_when': 4, 'fixes': 5, 'trials': None, 'revisions': 7, 'batch_log': 8}
 VARIANT_KEYS = {'name', 'note', 'rows', 'steps'}
 SHEET_REQUIRED = ['code', 'name', 'cls', 'lede', 'source', 'contains', 'key_figures', 'formula', 'method', 'done_when', 'keeps', 'revisions']
 CARD_REQUIRED = ['code', 'name', 'yield', 'keeps', 'basis', 'contains', 'source', 'formula', 'method', 'revisions']
@@ -97,6 +104,23 @@ def lint_recipe(r, lib, recs, L, figs_dir):
                     L.err(code, f'pages lists {name} but the recipe has no {name}')
         if sorted(covered) != list(range(1, len(steps) + 1)):
             L.err(code, f'pages cover method steps {sorted(covered)} but there are {len(steps)} steps')
+        # reading order
+        flat = [sec.partition(':')[0] for p in r['pages'] for sec in p]
+        fixed = [n for n in flat if ORDER.get(n) is not None]
+        ranks = [ORDER[n] for n in fixed]
+        if ranks != sorted(ranks):
+            bad = next(fixed[i] for i in range(1, len(fixed)) if ranks[i] < ranks[i - 1])
+            L.err(code, f'pages: "{bad}" comes before a section that belongs earlier — order is formula, schedule, method (figures/variants beside their steps), done_when, fixes, revisions, batch_log; trials goes anywhere after the formula and before revisions')
+        if 'trials' in flat and flat.index('trials') < flat.index('formula') + 1 if 'formula' in flat else False:
+            L.err(code, 'pages: trials before the formula')
+        if 'trials' in flat and 'revisions' in flat and flat.index('trials') > flat.index('revisions'):
+            L.err(code, 'pages: trials must come before revisions')
+        if covered != sorted(covered):
+            L.err(code, 'pages: method chunks must run in step order')
+        for name in ('done_when', 'revisions'):
+            if name not in flat: L.err(code, f'pages never places {name}; every sheet shows it after the last step')
+        for name in ('fixes', 'trials', 'batch_log'):
+            if r.get(name) and name not in flat: L.warn(code, f'recipe has {name} but pages never places it')
     # variants: named sub-formulas on top of the main formula, each a % of it
     V = r.get('variants')
     if V is not None:

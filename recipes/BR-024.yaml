@@ -189,7 +189,6 @@ pages:
 - [formula]
 - [method:1-7, variants]
 - [method:8-12, done_when, fixes, trials, revisions]
-foot: method, variants, done when, fixes, trials, revisions
 tent:
   name: Focaccia
   note: Contains wheat. Topping as labeled on the pan.

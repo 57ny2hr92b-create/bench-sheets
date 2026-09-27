@@ -59,6 +59,11 @@ row whenever the basis names flour.
   the method by day, not by page count: `pages: [[formula], [schedule, method:1-9, trials],
   [method:10-15, figures, done_when, fixes, revisions]]`. Balance the pages; a near-empty page 3
   usually means `fixes` belongs on page 2.
+- **Sections read in bake order.** Nothing that judges the bake — Done when, If it goes wrong —
+  comes before the last method step, and figures and variants sit beside the steps that point to
+  them. Trials is the exception: the variable is chosen before mixing, so it may sit beside the
+  day-1 steps to balance a long sheet. The lint refuses a `pages` list that breaks this; balance
+  pages by moving trials or splitting the method, never by pulling a check above the steps.
 - A card holds about 10 formula rows and 5 one-line steps. Past nine rows the renderer tightens row
   padding on its own; past that, move a row into a step or the card note.
 - Figures only when words need geometry — fold, dimension, portion map, score, cross-section, tray

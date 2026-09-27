@@ -144,7 +144,6 @@ pages:
 - [method, done_when]
 - [fixes, trials, revisions, batch_log]
 batch_log: [Date, Batch ×, Puree brand, Oven, Bake time, Inside °C, Finish, Notes]
-foot: method, done when, fixes, trials, batch log
 tent:
   name: Cocoa-swirled pumpkin Bundt
   note: Contains wheat, egg — and milk if frosted.

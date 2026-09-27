@@ -139,10 +139,9 @@ revisions:
 - {rev: Rev 01, date: '2026-09-27', change: First issue, adapted from Cookies (Szewczyk), source: —}
 pages:
 - [formula]
-- [method, done_when, fixes]
-- [figures, trials, revisions, batch_log]
+- [method, figures, done_when, fixes]
+- [trials, revisions, batch_log]
 batch_log: [Date, Batch ×, Chocolate, Oven, Bake time, Spread, Rested, Notes]
-foot: method, done when, fixes, figure, trials, batch log
 tent:
   name: Chocolate chunk gingersnaps
   note: Contains wheat, egg, milk, soy. One each, please.

@@ -141,7 +141,6 @@ pages:
 - [method, done_when]
 - [fixes, trials, revisions, batch_log]
 batch_log: [Date, Batch ×, Chickpeas, Cook time, Ice water, Salt, Served with, Notes]
-foot: method, done when, fixes, trials, batch log
 tent:
   name: Kalamata olive hummus
   note: Vegan, gluten-free. Contains sesame. Pita and vegetables alongside.

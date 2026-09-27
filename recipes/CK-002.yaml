@@ -183,8 +183,10 @@ pages:
 - - method:1-8
   - figures
   - done_when
-  - trials
-foot: method, cut map, done when, trials
+- - trials
+  - revisions
+  - batch_log
+batch_log: [Date, Batch ×, Pan, Oven, Bake time, Rested before cut, Served, Notes]
 tent:
   name: Pumpkin chocolate chip bars
   note: Egg-free. One each, please.
@@ -193,3 +195,7 @@ revisions:
   date: '2026-09-26'
   change: First issue, adapted from NYT Cooking
   source: —
+- rev: Rev 02
+  date: '2026-09-27'
+  change: Revisions and batch log on page 3
+  source: Review

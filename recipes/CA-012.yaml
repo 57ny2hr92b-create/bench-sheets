@@ -146,7 +146,6 @@ pages:
 - [formula]
 - [method, done_when, fixes]
 - [trials, revisions, batch_log]
-foot: method, done when, fixes, trials, batch log
 tent:
   name: Apple cider donut cake
   note: Contains wheat, milk, egg. One slice each, please.

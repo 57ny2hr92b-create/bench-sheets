@@ -113,3 +113,18 @@ def test_variants_math_and_lint():
     del bad['variants']['items'][1]['rows']
     L = schema.Lint(); schema.lint_recipe(bad, build.load_library(), recs, L, build.FIGS)
     assert any('unknown keys' in e for e in L.errors) and any('no rows' in e for e in L.errors)
+
+
+def test_pages_read_in_bake_order():
+    """A check section placed before the last method chunk is refused; trials may float."""
+    from tools import schema
+    import copy
+    recs = build.load_recipes(); lib = build.load_library()
+    bad = copy.deepcopy(recs['BR-024'])
+    bad['pages'] = [['formula'], ['method:1-7', 'done_when', 'fixes'], ['method:8-12', 'variants', 'revisions']]
+    L = schema.Lint(); schema.lint_recipe(bad, lib, recs, L, build.FIGS)
+    assert any('belongs earlier' in e for e in L.errors)
+    ok = copy.deepcopy(recs['BR-024'])
+    ok['pages'] = [['formula'], ['method:1-7', 'trials', 'variants'], ['method:8-12', 'done_when', 'fixes', 'revisions']]
+    L = schema.Lint(); schema.lint_recipe(ok, lib, recs, L, build.FIGS)
+    assert not [e for e in L.errors if 'pages' in e]

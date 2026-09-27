@@ -150,7 +150,8 @@ Card steps are one line of text plus `time` and `target`; keep the text under ~7
 What the lint enforces: codes and file names agree, the family exists, five key figures, every
 row has grams (or `—`), stage lists match the stage count, a flour basis has a `basis: true` row,
 step heads end in a period, `pages` cover every method step exactly once, figure files exist,
-revisions run 01, 02, … with ISO dates, cited codes exist, every variant has a name and rows with grams.
+revisions run 01, 02, … with ISO dates, cited codes exist, every variant has a name and rows with grams,
+`pages` reads in bake order and places done_when and revisions.
 
 ## Conventions the renderer owns
 
