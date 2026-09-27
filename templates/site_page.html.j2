@@ -30,7 +30,7 @@
 </style>
 </head>
 <body>
-<nav><a href="./">Test kitchen library</a>{% if code %}<span class="grey">{{ code }}</span><span>{{ name }}</span>{% endif %}<span class="sp"></span>{% if pdf %}<a href="{{ pdf }}">PDF</a>{% endif %}<a href="#" onclick="window.print();return false">Print</a></nav>
+<nav><a href="./">Test kitchen library</a>{% if code %}<span class="grey">{{ code }}</span><span>{{ name }}</span>{% endif %}<span class="sp"></span>{% if tent %}<a href="{{ tent }}">Tent card</a>{% endif %}{% if pdf %}<a href="{{ pdf }}">PDF</a>{% endif %}<a href="#" onclick="window.print();return false">Print</a></nav>
 <main>
 {% for b in boards %}
 <div class="board" data-w="{{ b.w }}" data-h="{{ b.h }}" style="width: {{ b.w }}px; height: {{ b.h }}px">{{ b.html }}</div>

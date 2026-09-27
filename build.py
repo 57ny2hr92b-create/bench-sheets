@@ -521,7 +521,8 @@ def site():
         w, h = CARD if r.get('kind') == 'card' else LETTER
         boards = [dict(w=w, h=h, html=inner_html(html)) for fn, html in sheets]
         (out / f'{code}.html').write_text(tpl.render(title=f'{code} {r["name"]}', code=code, name=r['name'], boards=boards,
-                                                     page_size=f'{w / 96}in {h / 96}in', pdf=f'pdf/{code}.pdf'))
+                                                     page_size=f'{w / 96}in {h / 96}in', pdf=f'pdf/{code}.pdf',
+                                                     tent=f'{code}-tent.html' if tents else None))
         if tents:
             boards = [dict(w=TENT[0], h=TENT[1], html=inner_html(html)) for fn, html in tents]
             (out / f'{code}-tent.html').write_text(tpl.render(title=f'{code} tent card', code=code, name=r['name'] + ' · tent card', boards=boards,
