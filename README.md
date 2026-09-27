@@ -18,6 +18,9 @@ tests/              pytest regression suite
 out/                build output (ignored by git)
 ```
 
+`CONTRIBUTING.md` is the judgment side — how to write a recipe well (basis, voice, ranges, altitude,
+what to cut when a page is full). Read it before writing a YAML file.
+
 ## Setup
 
 ```
