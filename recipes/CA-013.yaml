@@ -1,6 +1,6 @@
 code: CA-013
 kind: sheet
-status: draft            # draft -> trial -> standard (-> retired); only trial and standard reach the site
+status: trial
 name: Cocoa-swirled pumpkin Bundt
 cls: Cake · Bundt, oil
 dense: true
