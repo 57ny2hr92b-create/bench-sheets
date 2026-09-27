@@ -1,0 +1,174 @@
+code: CA-014
+kind: sheet
+status: trial            # draft -> trial -> standard (-> retired); only trial and standard reach the site
+name: Apple cider doughnut cake
+cls: Cake · Bundt, sour cream
+lede: A doughnut in Bundt form. Cider boiled down to a third, a sour cream crumb, and a cinnamon-sugar
+  butter coat pressed on warm. Or glaze it with FR-004.
+source: House formula · Original
+contains:
+- Wheat
+- Egg
+- Milk
+equipment:
+- 12-cup Bundt
+- Small saucepan
+- Stand mixer, paddle
+- Pastry brush
+- Wire rack
+key_figures:
+- label: Yield · 12-cup Bundt
+  value: 16 slices
+- label: Cider · from 360 g
+  value: → 120 g
+- label: Sugar · % flour
+  value: 80%
+- label: Plan · to coated
+  value: 2 h
+- label: Oven · 350 °F
+  value: 175 °C
+method_rail:
+- sub: Tick each step as done
+  notes:
+  - Reduce the cider first; it needs to be cool by step 06.
+  - Every ingredient at room temp; cold sour cream splits the butter.
+- sub: Finish
+  notes:
+  - Pick the coat or the glaze before the cake comes out; the coat wants a warm cake, the glaze a cool one.
+formula:
+  basis: '% · flour = 100'
+  notes:
+  - Fresh cider, not juice. Reduced to a syrup, 360 g comes down to about 120 g.
+  - 'Idaho Falls, 4,700 ft: leavening is the sea-level amount. Trial B cuts it 15%.'
+  - † Doesn't scale in a straight line past 2×.
+  scale_by_pan:
+  - {pan: 12-cup Bundt, factor: '1', count: '16', bold: true}
+  - {pan: 10-cup, factor: '0.85', count: 50 min}
+  - {pan: 9 × 13 in, factor: '1', count: 40 min}
+  - {pan: Two 9 × 5, factor: '1', count: 50 min}
+  scale_by_weight: true
+  parts:
+  - id: A
+    name: Batter
+    rows:
+    - {name: All-purpose flour, g: 375, basis: true}
+    - {name: Apple cider, note: 'reduced from 360', g: 120}
+    - {name: Sour cream, note: full fat, g: 240}
+    - {name: Unsalted butter, note: soft, g: 170}
+    - {name: Granulated sugar, g: 200}
+    - {name: Light brown sugar, note: packed, g: 100}
+    - {name: Eggs, note: 3 large, g: 150}
+    - {name: Baking powder, note: 2 tsp, g: 8, dagger: true}
+    - {name: Baking soda, note: ½ tsp, g: 3, dagger: true}
+    - {name: Fine salt, g: 6}
+    - {name: Cinnamon, note: 1½ tsp, g: 4, dagger: true}
+    - {name: Nutmeg, note: 'fresh, ½ tsp', g: 1, dagger: true}
+    - {name: Vanilla extract, note: 1 tsp, g: 4, dagger: true}
+  total: {label: Total batter}
+variants:
+  title: Finish
+  sub: One of two · each as % of batter
+  of: batter
+  notes:
+  - Cinnamon sugar is the doughnut; the glaze is the test-kitchen week.
+  - Halve the coat for a 10-cup pan. Leftover cinnamon sugar keeps in a jar.
+  items:
+  - name: Cinnamon sugar coat
+    note: the doughnut
+    rows:
+    - {name: Unsalted butter, note: melted, g: 70}
+    - {name: Granulated sugar, g: 200}
+    - {name: Cinnamon, note: 1 tsp, g: 3, dagger: true}
+    steps:
+    - Cake still warm, step 10. Brush all over with butter.
+    - Press the sugar on by hand; twice for a real crust.
+  - name: Pink grapefruit glaze
+    note: card FR-004
+    rows:
+    - {name: FR-004 glaze, note: one card, g: 305}
+    steps:
+    - Cake fully cool. Pour over the top; let it run.
+    - Set 20 min until matte.
+method:
+- head: Reduce.
+  text: Simmer the cider in a small pan, uncovered, until 120 g remains. Cool to room temp.
+  time: 15–20 min
+  target: 120 g
+- head: Pan.
+  text: Butter and flour the Bundt, every crease. Rack lower-middle; heat the oven.
+  time: —
+  target: 175 °C
+  target_f: 350 °F
+- head: Dry.
+  text: Whisk flour, powder, soda, salt, cinnamon, nutmeg in a bowl.
+  time: 1 min
+  target: No streaks
+- head: Cream.
+  text: Paddle butter and both sugars on medium until pale and fluffy. Scrape.
+  time: 3–4 min
+  target: Medium
+- head: Eggs.
+  text: One at a time on medium-low, scraping between. Then the vanilla.
+  time: 2 min
+  target: Smooth
+- head: Wet.
+  text: Stir the cooled cider into the sour cream.
+  time: —
+  target: Room temp
+- head: Alternate.
+  text: Dry in three, wet in two, starting and ending dry. Low speed, just combined.
+  time: 2 min
+  target: Low
+- head: Fill.
+  text: Batter into the pan; smooth the top; rap the pan twice on the counter.
+  time: 1 min
+  target: Even
+- head: Bake.
+  text: Until a skewer comes out clean and the cake pulls from the sides.
+  time: 55–65 min
+  target: 175 °C
+  target_f: 350 °F
+- head: Unmould.
+  text: In the pan 10 min, no longer. Turn out onto the rack.
+  time: 10 min
+  target: Still warm
+- head: Finish.
+  text: Coat while warm, or glaze once cool. See Finish.
+  time: —
+  target: See Finish
+done_when:
+- [Skewer, 'Clean, or a dry crumb']
+- [Sides, 'Pulling from the pan']
+- [Inside, '≈ 96 °C, if you probe']
+keeps:
+- [Room temp, '3 days, covered; the coat softens by day 2']
+- [Frozen, '1 month, uncoated; thaw in the wrapper']
+- [Refresh, 'Recoat a day-old cake; brush again first']
+fixes:
+  sub: Most likely cause first
+  rows:
+  - [Stuck in the pan, 'Cooled past 10 min, or a missed crease. Time it; flour every ridge']
+  - [Coat slides off, 'Cake too cool, or too much butter. Brush thin; press the sugar on']
+  - ['Dense, gummy band', 'Overmixed after the flour, or underbaked. Low speed; skewer test']
+  - [Sunk middle, 'Too much leavening for altitude, or oven door early. Run Trial B']
+  - [Flat cider flavor, 'Not reduced enough. To 120 g, a syrup; it should smell like doughnuts']
+trials:
+  sub: Change one variable per trial
+  notes:
+  - A is the sheet as written. B is the altitude check. C is the staff-room finish test.
+  columns: [Trial A, Trial B, Trial C]
+  rows:
+  - {var: Date, values: ['', '', '']}
+  - {var: Change, values: [As written, 'Powder + soda −15%', 'Coat vs FR-004']}
+  - {var: Rise · crumb, values: ['', '', '']}
+  - {var: Staff rating 1–5, values: ['', '', '']}
+revisions_blank: false
+revisions:
+- {rev: Rev 01, date: '2026-09-27', change: First issue, source: —}
+pages:
+- [formula]
+- [method:1-9, variants]
+- [method:10-11, done_when, fixes, trials, revisions]
+tent:
+  name: Apple cider doughnut cake
+  note: Contains wheat, egg, milk.

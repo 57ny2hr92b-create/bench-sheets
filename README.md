@@ -115,6 +115,7 @@ trials: {sub: ..., columns: [Trial A, Trial B], rows: [{var: Date, values: ['', 
 variants:                       # optional; named sub-formulas laid over the main formula (toppings, inclusions, finishes)
   title: Variants               # rail title (default Variants); sub defaults to "Each as % of dough weight"
   sub: Toppings · each as % of dough
+  of: dough                     # the word after "% of" on each variant head: dough (default), batter, base
   notes: [Two variants on one pan → halve each.]
   items:
   - name: Kalamata and rosemary

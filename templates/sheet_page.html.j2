@@ -51,7 +51,7 @@
 </section>
 {% elif sec.type == 'variants' %}
 {% call m.section_open(r.variants.title|default('Variants'), r.variants.sub|default('Each as % of dough weight'), r.variants.notes) %}{% endcall %}
-{{ m.variants(r.variants['items']) }}
+{{ m.variants(r.variants['items'], r.variants.of|default('dough')) }}
 </section>
 {% endif %}
 {% endfor %}

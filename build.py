@@ -156,7 +156,7 @@ def load_recipes():
 
 
 def uses_of(r):
-    """Codes this recipe cites: explicit `uses:` plus any XX-000 in formula rows or components."""
+    """Codes this recipe cites: explicit `uses:` plus any XX-000 in formula rows, components or variant rows."""
     found = set(r.get('uses', []))
     pat = re.compile(r'\b([A-Z]{2}-\d{3})\b')
     def scan(obj):
@@ -164,12 +164,12 @@ def uses_of(r):
             found.update(pat.findall(obj))
         elif isinstance(obj, dict):
             for k, v in obj.items():
-                if k in ('lede', 'notes', 'text', 'source'):
+                if k in ('lede', 'notes', 'text', 'source', 'steps'):
                     continue  # prose mentions don't count
                 scan(v)
         elif isinstance(obj, list):
             for v in obj: scan(v)
-    scan(r.get('formula', {})); scan(r.get('components', {}))
+    scan(r.get('formula', {})); scan(r.get('components', {})); scan(r.get('variants', {}))
     found.discard(r['code'])
     return sorted(found)
 
@@ -333,8 +333,8 @@ def index_entries(recs, lib):
 
 def paginate_index(families, blank_rows):
     """Rows per page: 21 data-ish rows fit under the title. Split families across pages if needed."""
-    # weights: family header 32px, entry 27px; budget ~ 600px on page 1 (title+lede), ~ 730 on later pages
-    pages, cur, h, budget = [], [], 0, 600
+    # weights: family header 32px, entry 27px; budget ~ 560px on page 1 (title+lede), ~ 730 on later pages
+    pages, cur, h, budget = [], [], 0, 560
     for fam in families:
         fh = 32 + 27 * len(fam['entries'])
         if cur and h + fh > budget:
@@ -345,7 +345,7 @@ def paginate_index(families, blank_rows):
     for i, fams in enumerate(pages, 1):
         blanks = 0
         if i == len(pages):
-            room = (600 if i == 1 else 730) - sum(32 + 27 * len(f['entries']) for f in fams) - 32
+            room = (560 if i == 1 else 730) - sum(32 + 27 * len(f['entries']) for f in fams) - 32
             blanks = max(0, min(blank_rows, room // 27))
         out.append(dict(n=i, total=len(pages), families=fams, blank_rows=blanks))
     return out
