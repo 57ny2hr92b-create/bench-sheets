@@ -8,6 +8,7 @@ CODE = re.compile(r'^[A-Z]{2}-\d{3}$')
 DATE = re.compile(r'^\d{4}-\d{2}-\d{2}$')
 ALLERGENS = {'Wheat', 'Milk', 'Egg', 'Nuts', 'Tree nuts', 'Peanut', 'Soy', 'Sesame', 'Fish', 'Shellfish', 'None'}
 KINDS = {'sheet', 'card'}
+ROW_KEYS = {'name', 'note', 'g', 'basis', 'dagger', 'approx', 'pct', 'carry', 'total', 'outside'}
 STATUSES = ('draft', 'trial', 'standard', 'retired')
 SECTIONS = {'formula', 'components', 'schedule', 'method', 'figures', 'done_when', 'fixes', 'trials', 'revisions', 'batch_log'}
 SHEET_REQUIRED = ['code', 'name', 'cls', 'lede', 'source', 'contains', 'key_figures', 'formula', 'method', 'done_when', 'keeps', 'revisions']
@@ -61,6 +62,8 @@ def lint_recipe(r, lib, recs, L, figs_dir):
             seen_ids.add(pid)
         for row in part.get('rows', []):
             if not row.get('name'): L.err(code, f'formula row without a name in part {pid}')
+            stray = set(row) - ROW_KEYS
+            if stray: L.err(code, f'{row.get("name")}: unknown row keys {sorted(stray)} — a note with a comma must be quoted')
             g = row.get('g')
             if g is None and not row.get('carry'): L.err(code, f'{row.get("name")}: no grams (use "—" for none)')
             if isinstance(g, list) and F.get('stages') and len(g) != len(F['stages']):

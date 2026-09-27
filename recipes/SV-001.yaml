@@ -1,0 +1,147 @@
+code: SV-001
+kind: sheet
+status: draft            # draft -> trial -> standard (-> retired); only trial and standard reach the site
+name: Kalamata olive hummus
+cls: Savory · Dip, chickpea
+dense: true
+lede: Olive three ways — brine, blended in, on top — over a soda-cooked, tahini-heavy base.
+source: House formula · Original
+contains:
+- Sesame
+equipment:
+- Large pot
+- Food processor
+- Fine sieve
+- Microplane
+- Shallow serving dish
+key_figures:
+- label: Yield · serves 16
+  value: ≈ 1.15 kg
+- label: Tahini · % chickpeas
+  value: 45%
+- label: Olives · in + on
+  value: 60 + 60 g
+- label: Plan · after soak
+  value: 2 h
+- label: Serve · not cold
+  value: Cool
+method_rail:
+- sub: Tick each step as done
+  notes:
+  - Buy pitted kalamata in brine, not oil-cured; the brine is part of the seasoning.
+  - Process longer than feels right. Smoothness comes from time, not from adding oil.
+formula:
+  basis: '% · cooked chickpeas = 100'
+  notes:
+  - 'Chickpeas: 250 g dried cooks to ≈ 600 g. Canned: 4 cans, drained and rinsed, simmered 10 min with 2 g soda first.'
+  - 'Salt is set low on purpose: olives and brine carry salt. Season at step 08, not before.'
+  - 'Altitude, 4,700 ft: water boils at 95 °C, so the cook runs 15–20 min longer than the range. Go by feel, not the clock.'
+  - † Doesn't scale in a straight line past 2×.
+  parts:
+  - id: A
+    name: Chickpeas
+    note: cooked from dried
+    outside: true
+    rows:
+    - {name: Dried chickpeas, g: 250}
+    - {name: Baking soda, note: soak + cook, g: 8, dagger: true}
+  - id: B
+    name: Hummus
+    rows:
+    - {name: Cooked chickpeas, note: 'hot, from A', g: 600, basis: true}
+    - {name: Tahini, note: 'stirred, runny', g: 270}
+    - {name: Lemon juice, g: 60}
+    - {name: Kalamata brine, g: 30}
+    - {name: Garlic, note: 2 cloves, g: 12}
+    - {name: Kalamata olives, note: pitted, g: 60}
+    - {name: Ice water, note: to texture, g: 110, approx: true}
+    - {name: Fine salt, note: to taste, g: 4}
+    - {name: Ground cumin, g: 2, dagger: true}
+    subtotal: {label: Hummus}
+  - id: C
+    name: Finish
+    outside: true
+    rows:
+    - {name: Kalamata olives, note: 'pitted, chopped', g: 60}
+    - {name: Extra virgin olive oil, g: 40}
+    - {name: Lemon zest, note: 1 lemon, g: —}
+    - {name: Dried oregano, note: rubbed, g: 1, dagger: true}
+    - {name: Flat-leaf parsley, note: chopped, g: 5}
+method:
+- head: Soak.
+  text: Chickpeas in 1 L water with 4 g of the soda. Overnight on the counter.
+  time: 8–12 h
+- head: Cook.
+  text: Drain, rinse. Cover by 5 cm with the rest of the soda; simmer, skimming, until they collapse.
+  time: 45–75 min
+  target: No resistance
+- head: Steep.
+  text: Meanwhile mince the garlic; steep in the lemon juice and brine so it mellows.
+  time: 10 min
+- head: Tehina.
+  text: Process tahini with the garlic-lemon; it seizes, then loosens. Ice water until pale, pourable.
+  time: 2 min
+  target: Pale, smooth
+- head: Blend.
+  text: Drain chickpeas hot. Process alone until a paste forms and the skins vanish.
+  time: 2 min
+  target: Hot chickpeas
+- head: Combine.
+  text: Add tehina, salt, cumin. Process, scraping twice; thin with ice water to a soft peak.
+  time: 3–4 min
+  target: Holds a swoosh
+- head: Olives.
+  text: Add the 60 g olives. Pulse until flecked through — stop before it turns purple.
+  time: 8–10 pulses
+  target: Flecked
+- head: Season.
+  text: Taste for salt, lemon and brine, in that order. It firms and dulls slightly as it chills.
+  time: —
+  target: A touch loose
+- head: Chill.
+  text: Film on the surface. The olive and garlic settle into the base overnight.
+  time: 2 h+
+  target: Best next day
+- head: Serve.
+  text: Out of the fridge 30 min. Swoosh into the dish; pile olives, zest, oregano, parsley; pour the oil.
+  time: Just before
+  target: Cool, not cold
+done_when:
+- [Chickpeas, Collapse between two fingers; skins gone]
+- [Texture, 'Glossy, holds a swoosh, no grain on the tongue']
+- [Taste, 'Olive reads as one flavor, not as bits']
+keeps:
+- [Fridge, '5 days, filmed; add the finish when serving']
+- [Frozen, '1 month, base only; whip 30 s after thawing']
+fixes:
+  sub: Most likely cause first
+  rows:
+  - [Grainy, 'Chickpeas undercooked, or blended cold. Cook until they collapse; blend hot']
+  - [Bitter or purple, 'Too much olive in the base. Keep to 60 g; put the rest on top']
+  - ['Stiff, pasty', 'Not enough ice water. Whip in 20 g at a time; it should be a touch loose']
+  - [Harsh garlic, 'Skipped the steep. 10 min in the lemon and brine tames it']
+  - [Flat, 'Underseasoned. Brine first, then lemon, then salt']
+trials:
+  sub: Change one variable per trial
+  notes:
+  - A is the sheet as written.
+  - B blends 90 g olives in and skips the topping — one-note, for a spread.
+  - C swaps cumin for 1 g Aleppo pepper in the finish.
+  columns: [Trial A, Trial B, Trial C]
+  rows:
+  - {var: Date, values: ['', '', '']}
+  - {var: Change, values: [As written, 'Olives 90 in · none on', 'Aleppo, no cumin']}
+  - {var: Chickpea cook, values: ['', '', '']}
+  - {var: Texture, values: ['', '', '']}
+  - {var: Staff rating 1–5, values: ['', '', '']}
+revisions:
+- {rev: Rev 01, date: '2026-09-27', change: First issue, source: —}
+pages:
+- [formula]
+- [method, done_when]
+- [fixes, trials, revisions, batch_log]
+batch_log: [Date, Batch ×, Chickpeas, Cook time, Ice water, Salt, Served with, Notes]
+foot: method, done when, fixes, trials, batch log
+tent:
+  name: Kalamata olive hummus
+  note: Vegan, gluten-free. Contains sesame. Pita and vegetables alongside.

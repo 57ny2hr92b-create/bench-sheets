@@ -538,7 +538,7 @@ def scaffold(family, name, recs):
 kind: sheet
 status: draft            # draft -> trial -> standard (-> retired); only trial and standard reach the canvas
 name: {name}
-cls: {dict(BR='Bread', PA='Pastry', CA='Cake', CK='Cookie', CF='Confection', CR='Cream & custard', FR='Frosting', GA='Ganache').get(family, family)} ·
+cls: {dict(BR='Bread', PA='Pastry', CA='Cake', CK='Cookie', CF='Confection', CR='Cream & custard', FR='Frosting', GA='Ganache', SV='Savory').get(family, family)} ·
 lede:
 source:
 contains: [Wheat]

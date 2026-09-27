@@ -17,6 +17,7 @@ families:
 - {code: CR, name: Cream & custard}
 - {code: FR, name: Frosting}
 - {code: GA, name: Ganache}
+- {code: SV, name: Savory}
 
 canvas:
   title: Test Kitchen
