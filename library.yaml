@@ -19,9 +19,3 @@ families:
 - {code: GA, name: Ganache}
 - {code: SV, name: Savory}
 
-canvas:
-  title: Test Kitchen
-  url: https://claude.ai/artifact/ERw3a4SAwQm9HUoS8cJVNd
-  createdOnFiles: {v: 1, at: '2026-09-26T21:05:00Z'}
-  designSystems:
-  - {title: Bench Sheet, namespace: benchsheet, artifact: 'https://claude.ai/artifact/2VUkCiCwaiByjKiyEqXJbi', version: null, copiedAt: '2026-09-26T21:05:00Z'}

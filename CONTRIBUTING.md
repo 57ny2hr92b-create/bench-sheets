@@ -122,5 +122,4 @@ nothing below 12 px, no color, fills, shadows, rounded corners, photos or drawin
 Sections hang in a 152 px left rail; content keeps one left edge. Percentages one decimal
 (half-up) in grey 400; grams whole in black 500 — weight and percent must never be mistaken for
 each other. The templates implement all of this; the spec they follow is the Bench Sheet design
-system (README, tokens and component previews), kept as a Design System artifact on claude.ai and
-mirrored in `out/project/ds/` when the canvas is published.
+system (README, tokens and component previews), kept as a Design System artifact on claude.ai.

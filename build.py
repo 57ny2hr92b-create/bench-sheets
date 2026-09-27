@@ -1,4 +1,4 @@
-"""Bench Sheet build: recipes/*.yaml -> out/project/*.dc.html + canvas.json + index.
+"""Bench Sheet build: recipes/*.yaml -> out/project/*.dc.html + index, PDFs and the site.
 
     python build.py build            render everything into out/
     python build.py check            render, then measure fit in Chromium (needs playwright + fonts)
@@ -19,8 +19,6 @@ TEMPLATES = ROOT / 'templates'
 LETTER = (816, 1056)
 CARD = (768, 480)
 TENT = (528, 816)
-ROW_GAP = 120
-COL_GAP = 80
 
 
 # ----------------------------------------------------------------------------- helpers
@@ -137,7 +135,7 @@ STATUSES = ('draft', 'trial', 'standard', 'retired')
 
 
 def live(recs):
-    """Recipes that go on the canvas and in the index: trial + standard. Drafts render to out/drafts/
+    """Recipes that go on the site and in the index: trial + standard. Drafts render to out/drafts/
     for review; retired sheets stay in the repo as the record but are not rendered."""
     return {c: r for c, r in recs.items() if r.get('status', 'standard') in ('trial', 'standard')}
 
@@ -380,13 +378,12 @@ def build(check_only=False):
     proj = OUT / 'project'
     proj.mkdir(parents=True, exist_ok=True)
     for old in proj.glob('*.dc.html'): old.unlink()
-    boards, order, pages = {}, [], []
+    order = []
     # index
     idx_pages = paginate_index(index_entries(recs, lib), lib['index'].get('blank_rows', 6))
     for pg in idx_pages:
         fn = 'Index.dc.html' if pg['n'] == 1 else f'Index-{pg["n"]}.dc.html'
         (proj / fn).write_text(e.get_template('index.html.j2').render(lib=lib, page=pg))
-        boards[fn] = dict(x=(pg['n'] - 1) * (LETTER[0] + COL_GAP), y=0, w=LETTER[0], h=LETTER[1], title=f'IX-00 library index · page {pg["n"]}', paper='letter')
         order.append(fn)
     # drafts: rendered for review only
     drafts = OUT / 'drafts'
@@ -395,61 +392,15 @@ def build(check_only=False):
         if r.get('status') == 'draft':
             drafts.mkdir(exist_ok=True)
             for fn, html in render_recipe(e, r): (drafts / fn).write_text(html)
-    # one canvas page per family
-    fam_names = {f['code']: f['name'] for f in lib['families']}
-    by_fam = {}
-    for r in live(recs).values():
-        by_fam.setdefault(r['code'].split('-')[0], []).append(r)
-    for fam in [f['code'] for f in lib['families']]:
-        if fam not in by_fam: continue
-        pages.append(dict(id=fam.lower(), name=f'{fam} · {fam_names[fam]}'))
-        y = 0
-        for r in sorted(by_fam[fam], key=lambda r: r['code']):
-            x = 0; row_h = 0
-            rendered = dict(render_recipe(e, r))
-            for fn, title, w, h in artboard_files(r):
-                (proj / fn).write_text(rendered[fn])
-                boards[fn] = dict(x=x, y=y, w=w, h=h, title=title, page=fam.lower())
-                if h == LETTER[1]: boards[fn]['paper'] = 'letter'
-                order.append(fn)
-                x += w + COL_GAP; row_h = max(row_h, h)
-            y += row_h + ROW_GAP
-    canvas = dict(v=3, createdOnFiles=lib['canvas'].get('createdOnFiles', {'v': 1, 'at': datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')}),
-                  title=lib['canvas']['title'], launch={'view': 'canvas'}, pages=pages, boards=boards, order=order, notes={},
-                  designSystems=lib['canvas'].get('designSystems', []))
-    (proj / 'canvas.json').write_text(json.dumps(canvas, ensure_ascii=False, separators=(',', ':')))
+    # live sheets, in code order
+    for r in sorted(live(recs).values(), key=lambda r: r['code']):
+        rendered = dict(render_recipe(e, r))
+        for fn, title, w, h in artboard_files(r):
+            (proj / fn).write_text(rendered[fn])
+            order.append(fn)
     (OUT / 'manifest.json').write_text(json.dumps(dict(artboards=order, recipes=sorted(recs)), indent=1))
-    write_publish_plan(order)
     print(f'rendered {len(order)} artboards from {len(recs)} recipes into {proj}')
     return order
-
-
-def write_publish_plan(order):
-    """out/publish.json: the `files` map for the Artifact publish, including `null` removals for any
-    artboard that published.yaml says is on the canvas but this build no longer produces."""
-    pub_file = ROOT / 'published.yaml'
-    published = yaml.safe_load(pub_file.read_text()) if pub_file.exists() else {}
-    on_canvas = set(published.get('artboards') or [])
-    files = {f'project/{fn}': f'project/{fn}' for fn in order if fn != 'Index.dc.html'}  # the index is file_path
-    files['project/canvas.json'] = 'project/canvas.json'
-    for fn in sorted(on_canvas - set(order)):
-        files[f'project/{fn}'] = None
-    plan = dict(url=published.get('url'), root='out', file_path='out/project/Index.dc.html', files=files,
-                note='After a successful publish, run: python build.py published  (records this build as what is on the canvas)')
-    (OUT / 'publish.json').write_text(json.dumps(plan, indent=1, ensure_ascii=False))
-
-
-def record_published():
-    manifest = json.loads((OUT / 'manifest.json').read_text())
-    lib = load_library()
-    pub_file = ROOT / 'published.yaml'
-    prev = yaml.safe_load(pub_file.read_text()) if pub_file.exists() else {}
-    doc = dict(url=lib['canvas']['url'], at=datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
-               index_rev=lib['index']['rev'], artboards=manifest['artboards'])
-    pub_file.write_text('# What the Test Kitchen canvas currently holds. Written by `python build.py published`; do not edit by hand.\n'
-                        + yaml.safe_dump(doc, sort_keys=False, allow_unicode=True))
-    gone = sorted(set(prev.get('artboards') or []) - set(manifest['artboards']))
-    print(f'recorded {len(manifest["artboards"])} artboards as published' + (f'; {len(gone)} removed: {", ".join(gone)}' if gone else ''))
 
 
 def pdf(codes):
@@ -556,7 +507,7 @@ def scaffold(family, name, recs):
     today = datetime.date.today().isoformat()
     doc = f'''code: {code}
 kind: sheet
-status: draft            # draft -> trial -> standard (-> retired); only trial and standard reach the canvas
+status: draft            # draft -> trial -> standard (-> retired); only trial and standard reach the site
 name: {name}
 cls: {dict(BR='Bread', PA='Pastry', CA='Cake', CK='Cookie', CF='Confection', CR='Cream & custard', FR='Frosting', GA='Ganache', SV='Savory').get(family, family)} ·
 lede:
@@ -602,7 +553,7 @@ pages:
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('cmd', choices=['build', 'check', 'lint', 'next-code', 'new', 'published', 'pdf', 'site'])
+    ap.add_argument('cmd', choices=['build', 'check', 'lint', 'next-code', 'new', 'pdf', 'site'])
     ap.add_argument('args', nargs='*')
     a = ap.parse_args()
     if a.cmd == 'lint':
@@ -615,8 +566,6 @@ def main():
         shots = OUT / 'shots'; shots.mkdir(exist_ok=True)
         if fit.check(sorted((OUT / 'project').glob('*.dc.html')), screenshots=shots):
             raise SystemExit(1)
-    elif a.cmd == 'published':
-        record_published()
     elif a.cmd == 'pdf':
         build(); pdf(a.args)
     elif a.cmd == 'site':

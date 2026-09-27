@@ -39,10 +39,9 @@ def test_stage_grid_totals():
 
 def test_every_recipe_renders(built):
     proj = ROOT / 'out' / 'project'
-    assert (proj / 'Index.dc.html').exists() and (proj / 'canvas.json').exists()
-    canvas = json.loads((proj / 'canvas.json').read_text())
-    assert set(canvas['order']) == set(built)
-    assert all(b in canvas['boards'] for b in built)
+    assert (proj / 'Index.dc.html').exists()
+    manifest = json.loads((ROOT / 'out' / 'manifest.json').read_text())
+    assert manifest['artboards'] == built
     for fn in built:
         assert (proj / fn).exists(), fn
 
@@ -67,7 +66,7 @@ def test_everything_fits(built):
     assert fit.check(sorted((ROOT / 'out' / 'project').glob('*.dc.html'))) == 0
 
 
-def test_status_gates_canvas(tmp_path, monkeypatch):
+def test_status_gates_site(tmp_path, monkeypatch):
     """A draft renders to out/drafts only; a retired recipe is not rendered; neither is indexed."""
     import shutil, yaml
     src = ROOT / 'recipes' / 'FR-003.yaml'
