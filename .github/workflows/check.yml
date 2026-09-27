@@ -17,7 +17,7 @@ jobs:
         with: {python-version: '3.12'}
       - run: pip install -r requirements.txt && python -m playwright install --with-deps chromium
       - name: Unpack IBM Plex Sans for the fit check and PDFs
-        run: cd tools/fonts && npm pack @fontsource/ibm-plex-sans@5 && tar xzf fontsource-ibm-plex-sans-*.tgz
+        run: mkdir -p tools/fonts && cd tools/fonts && npm pack @fontsource/ibm-plex-sans@5 && tar xzf ./*.tgz && ls package/files | head -3
       - run: python -m pytest -q
       - run: python build.py check
       - run: python build.py site

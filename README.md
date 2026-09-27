@@ -23,7 +23,7 @@ out/                build output (ignored by git)
 ```
 pip install -r requirements.txt
 python -m playwright install chromium           # for `check`
-cd tools/fonts && npm pack @fontsource/ibm-plex-sans@5 && tar xzf *.tgz && cd ../..
+mkdir -p tools/fonts && cd tools/fonts && npm pack @fontsource/ibm-plex-sans@5 && tar xzf ./*.tgz && cd ../..
 ```
 
 ## Everyday commands
