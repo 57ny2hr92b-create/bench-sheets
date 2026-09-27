@@ -92,10 +92,8 @@ variants:
     rows:
     - {name: "'Nduja", g: 100}
     - {name: Honey, note: 'after, warm', g: 30}
-    - {name: Flaky salt, g: 2, dagger: true}
     steps:
-    - Spoonfuls into the dimples; nothing else on top.
-    - Renders and spreads; over 120 g pools.
+    - Spoonfuls in the dimples; no salt.
     - Honey over the hot bread. Tent says spicy.
   - name: Grape and rosemary
     note: schiacciata all'uva
@@ -186,11 +184,12 @@ trials:
 revisions_blank: false   # page 3 is full; add the blank row back when a section moves
 revisions:
 - {rev: Rev 01, date: '2026-09-27', change: 'First issue; adds the variants section', source: —}
+- {rev: Rev 02, date: '2026-09-27', change: Sections in bake order, source: Review}
 pages:
 - [formula]
-- [method:1-7, done_when, fixes, trials]
-- [method:8-12, variants, revisions]
-foot: method, done when, fixes, trials, variants, revisions
+- [method:1-7, variants]
+- [method:8-12, done_when, fixes, trials, revisions]
+foot: method, variants, done when, fixes, trials, revisions
 tent:
   name: Focaccia
   note: Contains wheat. Topping as labeled on the pan.
