@@ -526,6 +526,7 @@ def site():
             boards = [dict(w=TENT[0], h=TENT[1], html=inner_html(html)) for fn, html in tents]
             (out / f'{code}-tent.html').write_text(tpl.render(title=f'{code} tent card', code=code, name=r['name'] + ' · tent card', boards=boards,
                                                               page_size=f'{TENT[0] / 96}in {TENT[1] / 96}in', pdf=f'pdf/{code}-tent.pdf'))
+    import shutil as _sh; _sh.copytree(ROOT / 'fonts', out / 'fonts')
     (out / '.nojekyll').write_text('')
     print(f'site: {len(recs)} recipes, {len(pdfs)} pdfs in {out}')
 

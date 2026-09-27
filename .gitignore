@@ -1,5 +1,4 @@
 out/
 __pycache__/
 .pytest_cache/
-tools/fonts/package/
-tools/fonts/*.tgz
+tools/fonts/

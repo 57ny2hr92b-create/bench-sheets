@@ -4,19 +4,18 @@ Rules (from the Bench Sheet README): every section bottom <= 968 px on Letter (4
 no method step wider than two lines, no ingredient name wrapping, meta row 1 on one line.
 Tent cards are full-bleed (528 x 816) and have no content limit beyond the board itself.
 
-Fonts: `npm pack @fontsource/ibm-plex-sans` once into tools/fonts/ (Google Fonts is not
-reachable from most shells). Run: python build.py check
+Fonts: IBM Plex Sans 400/500/600 are vendored in fonts/ (OFL). Run: python build.py check
 """
 import re, pathlib, sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-FONT_DIR = ROOT / 'tools' / 'fonts' / 'package' / 'files'
+FONT_DIR = ROOT / 'fonts'  # vendored IBM Plex Sans (OFL); see fonts/LICENSE
 LIMITS = {1056: 968, 480: 448}
 
 
 def font_css():
     if not FONT_DIR.exists():
-        print('  (no local Plex fonts: run  cd tools/fonts && npm pack @fontsource/ibm-plex-sans && tar xzf *.tgz)')
+        print('  (fonts/ missing: the repo vendors IBM Plex Sans there)')
         return ''
     return ''.join(f"@font-face{{font-family:'IBM Plex Sans';font-weight:{w};src:url('file://{FONT_DIR}/ibm-plex-sans-latin-{w}-normal.woff2') format('woff2')}}" for w in (400, 500, 600))
 

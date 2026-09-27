@@ -14,10 +14,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
-        with: {python-version: '3.12'}
+        with: {python-version: '3.12'}   # Playwright 1.56 ships Chromium 141; the pin in requirements.txt fixes the renderer
       - run: pip install -r requirements.txt && python -m playwright install --with-deps chromium
-      - name: Unpack IBM Plex Sans for the fit check and PDFs
-        run: mkdir -p tools/fonts && cd tools/fonts && npm pack @fontsource/ibm-plex-sans@5 && tar xzf ./*.tgz && ls package/files | head -3
       - run: python -m pytest -q
       - run: python build.py check
       - run: python build.py site

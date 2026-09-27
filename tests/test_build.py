@@ -60,7 +60,7 @@ def test_next_code():
     assert build.next_code(recs, 'GA') == 'GA-001'
 
 
-@pytest.mark.skipif(not (ROOT / 'tools/fonts/package/files').exists(), reason='local Plex fonts not unpacked')
+@pytest.mark.skipif(not (ROOT / 'fonts').exists(), reason='fonts/ missing')
 def test_everything_fits(built):
     pytest.importorskip('playwright')
     from tools import fit
@@ -88,7 +88,7 @@ def test_status_gates_canvas(tmp_path, monkeypatch):
 
 def test_site_builds(built):
     pytest.importorskip('playwright')
-    if not (ROOT / 'tools/fonts/package/files').exists(): pytest.skip('fonts')
+    if not (ROOT / 'fonts').exists(): pytest.skip('fonts')
     build.site()
     site = ROOT / 'out' / 'site'
     idx = (site / 'index.html').read_text()

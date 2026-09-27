@@ -13,6 +13,7 @@ published.yaml      what is currently on the canvas (written by `build.py publis
 templates/          Jinja2 templates that own the Bench Sheet markup
 tools/schema.py     lint (runs before every build)
 tools/fit.py        Chromium fit check with the real IBM Plex Sans
+fonts/              IBM Plex Sans 400/500/600 woff2, vendored (OFL) so builds never fetch
 tools/import_dc.py  one-off importer for hand-built artboards (how the first six got in)
 tests/              pytest regression suite
 out/                build output (ignored by git)
@@ -25,8 +26,7 @@ what to cut when a page is full). Read it before writing a YAML file.
 
 ```
 pip install -r requirements.txt
-python -m playwright install chromium           # for `check`
-mkdir -p tools/fonts && cd tools/fonts && npm pack @fontsource/ibm-plex-sans@5 && tar xzf ./*.tgz && cd ../..
+python -m playwright install chromium           # for `check`, `pdf`, `site`
 ```
 
 ## Everyday commands
@@ -70,7 +70,7 @@ index rev in `library.yaml`.
 
 ## The site (GitHub Pages)
 
-One-time setup: repo Settings → Pages → Source: **GitHub Actions**. After that every push to `main` that passes the checks deploys `out/site/`. Each recipe page shows its sheet pages at true size (scaled to fit on a phone), with PDF and Print links; the index page is IX-00 with every code linked. Fonts load from Google Fonts on the site; the PDFs embed the local Plex files.
+One-time setup: repo Settings → Pages → Source: **GitHub Actions**. After that every push to `main` that passes the checks deploys `out/site/`. Each recipe page shows its sheet pages at true size (scaled to fit on a phone), with PDF and Print links; the index page is IX-00 with every code linked. IBM Plex Sans is vendored in `fonts/` (OFL) and served by the site itself; the PDFs embed the same files.
 
 ## Publishing to the canvas (optional)
 
