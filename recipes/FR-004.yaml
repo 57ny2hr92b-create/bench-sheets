@@ -1,0 +1,50 @@
+code: FR-004
+kind: card
+status: trial
+name: Pink grapefruit doughnut glaze
+yield: ≈ 305 g
+keeps: 3 days, room temp
+basis: sugar = 100
+contains:
+- None
+source: House formula · Original
+formula:
+  rows:
+  - name: Confectioners’ sugar
+    note: sifted
+    basis: true
+    g: 240
+  - name: Pink grapefruit juice
+    note: fresh
+    g: 45
+  - name: Pink grapefruit zest
+    note: 1 fruit
+    dagger: true
+    g: 4
+  - name: Light corn syrup
+    note: for shine
+    g: 15
+  - name: Fine salt
+    g: 1
+  total: Total
+formula_note: 'Scale by weight: target ÷ 1.271 = sugar; then × each %. Juice is a range, 40–55 g. Sets ivory, not pink; the zest carries the flavour. † Zest doesn’t scale in a straight line past 2×.'
+method:
+- head: Zest.
+  text: Rub into the sugar until damp.
+  time: 1 min
+  target: Fingers
+- head: Whisk.
+  text: Juice, syrup, salt; until smooth.
+  time: 1 min
+  target: Glossy
+- head: Adjust.
+  text: +5 g juice thins; +15 g sugar thickens.
+  time: —
+  target: Ribbon, 3 s
+- head: Glaze.
+  text: Dip warm tops; set until matte.
+  time: 20 min
+  target: Warm bake
+note: '24 cake doughnuts at ≈ 12 g, or one Bundt. Milder and more bitter than lemon; the bitterness is the point. Rewhisk to reuse; loosen with juice.'
+revisions:
+- {rev: Rev 01, date: '2026-09-27', change: First issue, source: —}
