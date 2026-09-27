@@ -1,0 +1,152 @@
+code: CA-012
+kind: sheet
+status: draft            # draft -> trial -> standard (-> retired); only trial and standard reach the site
+name: Apple cider donut cake
+cls: Cake · Bundt, one bowl
+dense: true
+lede: A Bundt that eats like a cider donut — boiled cider, brown butter, nutmeg, two sugar coats.
+source: House formula · Original
+contains:
+- Wheat
+- Milk
+- Egg
+equipment:
+- 10-cup Bundt pan
+- Light-colored saucepan
+- Pastry brush
+- Microplane for nutmeg
+- Probe thermometer
+key_figures:
+- label: Yield · slices
+  value: '16'
+- label: Batter
+  value: 1,419 g
+- label: Boiled cider · % flour
+  value: 36%
+- label: Plan
+  value: 2.5 h
+- label: Oven · 350 °F
+  value: 175 °C
+method_rail:
+- sub: Tick each step as done
+  notes:
+  - Brown butter and the sugar coat are what set this apart. Don't skip the second coat.
+  - Ordered ingredient · King Arthur boiled cider, 16 oz. Keeps a year in the fridge.
+formula:
+  basis: '% · flour = 100'
+  notes:
+  - 'Boiled cider: King Arthur (≈ 7 : 1). Or reduce 1 L fresh cider to 150 g, about 25 min at a hard simmer; weigh, don''t eyeball.'
+  - 'Butter for A: weigh 200 g before browning. Scrape every brown speck into the batter.'
+  - 'Pan: 15 g soft butter brushed on, 20 g sugar dusted, extra tapped out. Outside the formula.'
+  - 'Altitude, 4,700 ft: powder and soda are already set −15% from sea level (8 / 3.5 g). Run C before changing them.'
+  - † Doesn't scale in a straight line past 2×.
+  scale_by_pan:
+  - {pan: 10-cup Bundt, factor: '1', count: '16', bold: true}
+  - {pan: 12-cup, factor: '1.2', count: '20'}
+  - {pan: 9 × 13 in, factor: '1', count: 40 min}
+  - {pan: Two 9 × 5, factor: '1', count: 45 min}
+  parts:
+  - id: A
+    name: Batter
+    rows:
+    - {name: All-purpose flour, g: 330, basis: true}
+    - {name: Baking powder, g: 7, dagger: true}
+    - {name: Baking soda, g: 3, dagger: true}
+    - {name: Fine salt, g: 5}
+    - {name: Ground cinnamon, g: 4, dagger: true}
+    - {name: Nutmeg, note: fresh grated, g: 2, dagger: true}
+    - {name: Unsalted butter, note: browned, g: 200}
+    - {name: Granulated sugar, g: 150}
+    - {name: Light brown sugar, g: 140}
+    - {name: Eggs, note: 3 large, g: 150}
+    - {name: Vanilla extract, g: 8, dagger: true}
+    - {name: Boiled cider, g: 120}
+    - {name: Unsweetened applesauce, g: 180}
+    - {name: Buttermilk, g: 120}
+    subtotal: {label: Batter}
+  - id: B
+    name: Cider-sugar crust
+    outside: true
+    rows:
+    - {name: Unsalted butter, note: melted, g: 45}
+    - {name: Boiled cider, g: 30}
+    - {name: Granulated sugar, g: 100}
+    - {name: Ground cinnamon, note: and nutmeg, g: 4}
+method:
+- head: Prep.
+  text: Rack in the lower third; heat the oven. Butter the Bundt, dust with sugar, tap out the extra.
+  time: —
+  target: 175 °C
+  target_f: 350 °F
+- head: Brown.
+  text: Cook the butter until it foams, quiets and the solids go deep brown. Scrape into a bowl; cool.
+  time: 6–8 min
+  target: Solids brown
+- head: Dry.
+  text: Whisk flour, powder, soda, salt, cinnamon and nutmeg until no streaks of spice remain.
+  time: —
+- head: Wet.
+  text: Whisk sugars and eggs until thick. Whisk in brown butter, cider, applesauce, buttermilk, vanilla.
+  time: 1 min
+  target: Butter ≤ 50 °C
+- head: Fold.
+  text: Add the dry in two adds; fold with a spatula just until no flour shows. Do not beat.
+  time: —
+  target: Don’t overmix
+- head: Bake.
+  text: Pour into the pan; smooth. Bake until a skewer is clean and the top springs back.
+  time: 45–55 min
+  target: 96 °C inside
+- head: Rest.
+  text: Cool in the pan 15 min, no longer, or the sugar coat welds it in. Invert onto a rack.
+  time: 15 min
+- head: Brush.
+  text: Warm butter and boiled cider together; brush the whole warm cake, ridges and all.
+  time: —
+  target: Warm, not hot
+- head: Coat.
+  text: Spoon cinnamon-nutmeg sugar over every surface; re-brush the bare spots and coat again.
+  time: —
+  target: Two coats
+- head: Cool.
+  text: Fully, on the rack. The crust sets as the cake cools; cut only when cold.
+  time: Until cold
+  target: 1–2 h
+done_when:
+- [Inside, 96 °C; skewer clean]
+- [Top, Springs back; edges pull from the pan]
+- [Crust, Dry and sandy after cooling]
+keeps:
+- [Room temp, '2 days, covered; crust softens by day 2']
+- [Frozen, '1 month, sliced; do not re-coat']
+fixes:
+  sub: Most likely cause first
+  rows:
+  - [Stuck in the pan, 'Cooled past 15 min, or sugar dusted too thick. Hot towel on the pan base']
+  - [Sugar slid off, 'Cake too hot when brushed, or butter mix too thin. Wait 5 min, brush again']
+  - [Gummy band at base, 'Underbaked, or brown butter still hot at step 04. Probe; cool the butter']
+  - ['Dense, tight crumb', 'Overmixed at step 05, or leavening old. Fold only until no flour shows']
+trials:
+  sub: Change one variable per trial
+  notes:
+  - A is the sheet as written.
+  - B swaps 30 g of buttermilk for 30 g more boiled cider. Sharper apple, slightly tighter crumb.
+  - C tests the altitude rule for 4,700 ft.
+  columns: [Trial A, Trial B, Trial C]
+  rows:
+  - {var: Date, values: ['', '', '']}
+  - {var: Change, values: [As written, Cider +30 · buttermilk −30, 'Powder 8 · soda 3.5']}
+  - {var: Bake time, values: ['', '', '']}
+  - {var: Rise · crust, values: ['', '', '']}
+  - {var: Staff rating 1–5, values: ['', '', '']}
+revisions:
+- {rev: Rev 01, date: '2026-09-26', change: First issue, source: —}
+batch_log: [Date, Batch ×, Boiled cider used, Oven, Bake time, Inside °C, Rise, Notes]
+pages:
+- [formula]
+- [method, done_when, fixes]
+- [trials, revisions, batch_log]
+foot: method, done when, fixes, trials, batch log
+tent:
+  name: Apple cider donut cake
+  note: Contains wheat, milk, egg. One slice each, please.

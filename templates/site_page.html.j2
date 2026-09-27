@@ -18,12 +18,13 @@
   .board { margin: 16px auto; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.18); overflow: hidden; }
   .board > div { transform-origin: top left; }
   @media print {
+    /* Always Letter: a sheet fills the page; a card or tent is centred on it. */
     html { background: #fff; }
     nav { display: none; }
     main { padding: 0; }
-    .board { margin: 0; box-shadow: none; page-break-after: always; }
+    .board { margin: 0; box-shadow: none; page-break-after: always; width: 816px !important; height: 1056px !important; display: flex; align-items: center; justify-content: center; }
     .board > div { transform: none !important; }
-    @page { size: {{ page_size }}; margin: 0; }
+    @page { size: 8.5in 11in; margin: 0; }
   }
 </style>
 </head>

@@ -461,14 +461,26 @@ def pdf(codes):
                     inner = re.search(r'</helmet>\s*(.*?)\s*</x-dc>', src, re.S).group(1)
                     w, h = map(int, re.search(r'"\$preview":\{"width":(\d+),"height":(\d+)', src).groups())
                     pages.append(inner)
-                size = f'{w / 96}in {h / 96}in'
-                html = (f"<!doctype html><html><head><meta charset='utf-8'><style>{faces}@page{{size:{size};margin:0}}"
-                        f"body{{margin:0}}.pg{{width:{w}px;height:{h}px;page-break-after:always;overflow:hidden}}</style></head><body>"
-                        + ''.join(f'<div class="pg">{p}</div>' for p in pages) + '</body></html>')
+                # Always print on Letter. A Letter sheet fills the page; a card or tent card sits centred
+                # with hairline crop marks, so it lands the same place on every printer.
+                W, H = LETTER
+                if (w, h) == LETTER:
+                    css = f"@page{{size:8.5in 11in;margin:0}}body{{margin:0}}.pg{{width:{w}px;height:{h}px;page-break-after:always;overflow:hidden}}"
+                    body = ''.join(f'<div class="pg">{p}</div>' for p in pages)
+                else:
+                    x, y = (W - w) // 2, (H - h) // 2
+                    marks = ''.join(f'<i style="position:absolute;left:{mx}px;top:{my}px;width:{mw}px;height:{mh}px;background:#000"></i>'
+                                    for (mx, my, mw, mh) in [
+                                        (x - 20, y, 14, 1), (x, y - 20, 1, 14), (x + w + 6, y, 14, 1), (x + w, y - 20, 1, 14),
+                                        (x - 20, y + h, 14, 1), (x, y + h + 6, 1, 14), (x + w + 6, y + h, 14, 1), (x + w, y + h + 6, 1, 14)])
+                    css = (f"@page{{size:8.5in 11in;margin:0}}body{{margin:0}}.pg{{position:relative;width:{W}px;height:{H}px;page-break-after:always;overflow:hidden}}"
+                           f".art{{position:absolute;left:{x}px;top:{y}px;width:{w}px;height:{h}px;overflow:hidden}}")
+                    body = ''.join(f'<div class="pg"><div class="art">{p}</div>{marks}</div>' for p in pages)
+                html = f"<!doctype html><html><head><meta charset='utf-8'><style>{faces}{css}</style></head><body>{body}</body></html>"
                 tmp = OUT / '_pdf.html'; tmp.write_text(html)
                 pg.goto('file://' + str(tmp)); pg.wait_for_timeout(300)
                 out = OUT / 'pdf' / f'{name}.pdf'
-                pg.pdf(path=str(out), width=f'{w / 96}in', height=f'{h / 96}in', print_background=True, prefer_css_page_size=True)
+                pg.pdf(path=str(out), width='8.5in', height='11in', print_background=True, prefer_css_page_size=True)
                 written.append(out)
         b.close()
     (OUT / '_pdf.html').unlink(missing_ok=True)

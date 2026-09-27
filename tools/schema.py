@@ -98,6 +98,14 @@ def lint_recipe(r, lib, recs, L, figs_dir):
         if not (figs_dir / it.get('svg', '')).exists(): L.err(code, f'figure file {it.get("svg")} not found in recipes/figures/')
     if (r.get('schedule') or {}).get('svg') and not (figs_dir / r['schedule']['svg']).exists():
         L.err(code, f'schedule svg {r["schedule"]["svg"]} not found')
+    # two-column lists
+    for key in (('done_when', 'keeps') if kind == 'sheet' else ()):
+        for row in r.get(key) or []:
+            if not (isinstance(row, list) and len(row) == 2):
+                L.err(code, f'{key} row {row!r} must be [label, text] — quote text that contains commas')
+    for row in (r.get('fixes') or {}).get('rows', []):
+        if not (isinstance(row, list) and len(row) == 2):
+            L.err(code, f'fixes row {row!r} must be [symptom, cause and fix] — quote text that contains commas')
     # revisions
     revs = r.get('revisions') or []
     last_n = 0
