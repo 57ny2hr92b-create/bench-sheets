@@ -1,16 +1,35 @@
-name: check
-on: [push, pull_request]
+name: build
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency: {group: pages, cancel-in-progress: true}
 jobs:
-  check:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: {python-version: '3.12'}
       - run: pip install -r requirements.txt && python -m playwright install --with-deps chromium
-      - name: Unpack IBM Plex Sans for the fit check
+      - name: Unpack IBM Plex Sans for the fit check and PDFs
         run: cd tools/fonts && npm pack @fontsource/ibm-plex-sans@5 && tar xzf fontsource-ibm-plex-sans-*.tgz
       - run: python -m pytest -q
       - run: python build.py check
+      - run: python build.py site
       - uses: actions/upload-artifact@v4
-        with: {name: artboards, path: out/}
+        with: {name: artboards, path: out/project}
+      - uses: actions/upload-pages-artifact@v3
+        with: {path: out/site}
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    environment: {name: github-pages, url: "${{ steps.deployment.outputs.page_url }}"}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

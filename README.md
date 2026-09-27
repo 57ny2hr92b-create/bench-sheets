@@ -1,9 +1,9 @@
 # Bench sheets
 
 The test-kitchen recipe library as data. Each recipe is one YAML file; `build.py` renders every
-Bench Sheet, component card and tent card, the library index, and the canvas layout that goes to the
-**Test Kitchen** artifact. Nothing on the canvas is hand-edited any more — if it's wrong, fix the
-YAML and rebuild.
+Bench Sheet, component card and tent card, the library index, the PDFs, and a static site that
+GitHub Pages serves from every push to `main`. The site is the binder: edit YAML, push, done.
+(The Test Kitchen design canvas can still be published from the same build, but it is optional.)
 
 ```
 recipes/            one file per recipe, named by code (BR-023.yaml). This is the record.
@@ -36,6 +36,7 @@ cd tools/fonts && npm pack @fontsource/ibm-plex-sans@5 && tar xzf *.tgz && cd ..
 | `python build.py new CA "Olive oil cake"` | Scaffold `recipes/CA-012.yaml` with the next free code. |
 | `python build.py next-code BR` | Just print the next free code. |
 | `python build.py published` | After a successful publish, record this build as what is on the canvas. |
+| `python build.py site` | Build, print every live recipe to PDF, and write `out/site/` — `index.html` (IX-00 with links), one page per recipe and tent, `pdf/`. This is what Pages serves. |
 | `python build.py pdf [CODE …]` | Print `out/pdf/CODE.pdf` (all pages of a sheet; tent and cards as their own files at their own size). No codes = every live recipe. |
 | `python -m pytest -q` | Regression tests (math, links, rendering, fit). |
 
@@ -43,8 +44,8 @@ cd tools/fonts && npm pack @fontsource/ibm-plex-sans@5 && tar xzf *.tgz && cd ..
 
 Every recipe has a `status`: `draft` → `trial` → `standard` → (`retired`).
 
-- **draft** — renders to `out/drafts/` for review and PDF, but never reaches the canvas or the index. Lint errors on a draft are reported and the draft is skipped; they never block the build. New recipes scaffold as drafts.
-- **trial** — on the canvas and in the index, marked "· trial" in the Format column.
+- **draft** — renders to `out/drafts/` for review and PDF, but never reaches the site, the canvas or the index. Lint errors on a draft are reported and the draft is skipped; they never block the build. New recipes scaffold as drafts.
+- **trial** — on the site (and canvas) and in the index, marked "· trial" in the Format column.
 - **standard** — the default when the field is absent; the binder.
 - **retired** — kept in the repo as the record (history, revisions, cross-links from old sheets still resolve in git), not rendered, not indexed. Retire rather than delete.
 
@@ -52,10 +53,11 @@ Every recipe has a `status`: `draft` → `trial` → `standard` → (`retired`).
 
 1. `python build.py new <FAMILY> "<Name>"` — families are `BR PA CA CK CF CR FR GA` (see `library.yaml`; add a family there before using a new prefix).
 2. Fill in the YAML. Grams only; percentages, subtotals, totals, the scale-by-weight divisor, step numbers, Rev/date in the running head, index rows and cross-links are all computed.
-3. Set `status: trial` (or `standard`) when it's ready for the canvas; leave it `draft` while you work — `python build.py pdf CODE` prints a draft too.
+3. Set `status: trial` (or `standard`) when it's ready for the site; leave it `draft` while you work — `python build.py pdf CODE` prints a draft too.
 4. `python build.py check`. Fix whatever it flags — shorten a step, move a section to the next page in `pages:`, drop the blank revisions row (`revisions_blank: false`). Don't shrink type or padding; those are the design system's.
 5. Bump `index.rev` and `index.date` in `library.yaml` (any new row or Rev change is a new index rev).
-6. Publish `out/publish.json` to the canvas (below), then `python build.py published`, then commit.
+6. Commit and push. The `build` workflow lints, tests, fit-checks, and deploys the site. A red X on GitHub means a page no longer fits or a recipe fails lint; nothing is deployed until it's fixed.
+7. Optional: publish `out/publish.json` to the canvas (below), then `python build.py published`, and commit that too.
 
 ## Revising a recipe
 
@@ -63,7 +65,11 @@ Append a row to `revisions:`. Never edit or delete an older row — the running 
 line and the index Rev all derive from the newest row, and the older rows are the history. Bump the
 index rev in `library.yaml`.
 
-## Publishing to the canvas
+## The site (GitHub Pages)
+
+One-time setup: repo Settings → Pages → Source: **GitHub Actions**. After that every push to `main` that passes the checks deploys `out/site/`. Each recipe page shows its sheet pages at true size (scaled to fit on a phone), with PDF and Print links; the index page is IX-00 with every code linked. Fonts load from Google Fonts on the site; the PDFs embed the local Plex files.
+
+## Publishing to the canvas (optional)
 
 `out/publish.json` is the exact `files` map for the Artifact publish: every rendered artboard plus
 `canvas.json`, and a `null` for any artboard `published.yaml` says is on the canvas but this build

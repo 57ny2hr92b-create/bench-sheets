@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ title }}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  html { background: #E6E6E6; }
+  body { margin: 0; color: #000; font-family: 'IBM Plex Sans', sans-serif; -webkit-font-smoothing: antialiased; }
+  a { color: #000; }
+  a:hover { color: #5C5C5C; }
+  nav { max-width: 816px; margin: 0 auto; padding: 16px 16px 0; font-size: 12px; line-height: 16px; display: flex; gap: 16px; align-items: baseline; }
+  nav .sp { flex: 1; }
+  nav .grey { color: #5C5C5C; }
+  main { padding: 16px 0 48px; }
+  .board { margin: 16px auto; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.18); overflow: hidden; }
+  .board > div { transform-origin: top left; }
+  @media print {
+    html { background: #fff; }
+    nav { display: none; }
+    main { padding: 0; }
+    .board { margin: 0; box-shadow: none; page-break-after: always; }
+    .board > div { transform: none !important; }
+    @page { size: {{ page_size }}; margin: 0; }
+  }
+</style>
+</head>
+<body>
+<nav><a href="./">Test kitchen library</a>{% if code %}<span class="grey">{{ code }}</span><span>{{ name }}</span>{% endif %}<span class="sp"></span>{% if pdf %}<a href="{{ pdf }}">PDF</a>{% endif %}<a href="#" onclick="window.print();return false">Print</a></nav>
+<main>
+{% for b in boards %}
+<div class="board" data-w="{{ b.w }}" data-h="{{ b.h }}" style="width: {{ b.w }}px; height: {{ b.h }}px">{{ b.html }}</div>
+{% endfor %}
+</main>
+<script>
+// Scale each board to the viewport on narrow screens; boards are fixed-size artboards.
+(function () {
+  function fit() {
+    var vw = document.documentElement.clientWidth - 32;
+    document.querySelectorAll('.board').forEach(function (b) {
+      var w = +b.dataset.w, h = +b.dataset.h, s = Math.min(1, vw / w);
+      b.style.width = (w * s) + 'px'; b.style.height = (h * s) + 'px';
+      b.firstElementChild.style.transform = s < 1 ? 'scale(' + s + ')' : '';
+    });
+  }
+  fit(); addEventListener('resize', fit);
+})();
+</script>
+</body>
+</html>

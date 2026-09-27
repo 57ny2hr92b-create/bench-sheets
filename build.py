@@ -476,6 +476,48 @@ def pdf(codes):
     return written
 
 
+def inner_html(doc):
+    """The artboard's inner <div> from a rendered .dc.html document."""
+    return re.search(r'</helmet>\s*(.*?)\s*</x-dc>', doc, re.S).group(1)
+
+
+def site():
+    """out/site/: a static binder for GitHub Pages. index.html (the IX-00 pages, code and name linked),
+    <CODE>.html per recipe (its sheet pages, or the card), <CODE>-tent.html, and pdf/<CODE>.pdf.
+    Renders from recipes directly, so run after `build` (which lints) — `site` does both."""
+    order = build()
+    lib = load_library(); recs = live(load_recipes())
+    for r in recs.values(): derive(r, recs)
+    e = env()
+    out = OUT / 'site'
+    if out.exists():
+        import shutil; shutil.rmtree(out)
+    out.mkdir(parents=True)
+    tpl = e.get_template('site_page.html.j2')
+    # index
+    idx_pages = paginate_index(index_entries(recs, lib), lib['index'].get('blank_rows', 6))
+    boards = [dict(w=LETTER[0], h=LETTER[1], html=inner_html(e.get_template('index.html.j2').render(lib=lib, page=pg, site=True))) for pg in idx_pages]
+    (out / 'index.html').write_text(tpl.render(title=lib['title'], boards=boards, page_size='8.5in 11in', pdf=None, code=None, name=None))
+    # recipes
+    pdfs = pdf([])
+    (out / 'pdf').mkdir()
+    for pth in pdfs: (out / 'pdf' / pth.name).write_bytes(pth.read_bytes())
+    for code, r in recs.items():
+        rendered = render_recipe(e, r)
+        sheets = [(fn, html) for fn, html in rendered if not fn.endswith('-tent.dc.html')]
+        tents = [(fn, html) for fn, html in rendered if fn.endswith('-tent.dc.html')]
+        w, h = CARD if r.get('kind') == 'card' else LETTER
+        boards = [dict(w=w, h=h, html=inner_html(html)) for fn, html in sheets]
+        (out / f'{code}.html').write_text(tpl.render(title=f'{code} {r["name"]}', code=code, name=r['name'], boards=boards,
+                                                     page_size=f'{w / 96}in {h / 96}in', pdf=f'pdf/{code}.pdf'))
+        if tents:
+            boards = [dict(w=TENT[0], h=TENT[1], html=inner_html(html)) for fn, html in tents]
+            (out / f'{code}-tent.html').write_text(tpl.render(title=f'{code} tent card', code=code, name=r['name'] + ' · tent card', boards=boards,
+                                                              page_size=f'{TENT[0] / 96}in {TENT[1] / 96}in', pdf=f'pdf/{code}-tent.pdf'))
+    (out / '.nojekyll').write_text('')
+    print(f'site: {len(recs)} recipes, {len(pdfs)} pdfs in {out}')
+
+
 def scaffold(family, name, recs):
     code = next_code(recs, family)
     today = datetime.date.today().isoformat()
@@ -527,7 +569,7 @@ pages:
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('cmd', choices=['build', 'check', 'lint', 'next-code', 'new', 'published', 'pdf'])
+    ap.add_argument('cmd', choices=['build', 'check', 'lint', 'next-code', 'new', 'published', 'pdf', 'site'])
     ap.add_argument('args', nargs='*')
     a = ap.parse_args()
     if a.cmd == 'lint':
@@ -544,6 +586,8 @@ def main():
         record_published()
     elif a.cmd == 'pdf':
         build(); pdf(a.args)
+    elif a.cmd == 'site':
+        site()
     elif a.cmd == 'next-code':
         print(next_code(load_recipes(), a.args[0].upper()))
     elif a.cmd == 'new':

@@ -84,3 +84,15 @@ def test_status_gates_canvas(tmp_path, monkeypatch):
     finally:
         (ROOT / 'recipes' / 'FR-999.yaml').unlink(); (ROOT / 'recipes' / 'FR-998.yaml').unlink()
         build.build()
+
+
+def test_site_builds(built):
+    pytest.importorskip('playwright')
+    if not (ROOT / 'tools/fonts/package/files').exists(): pytest.skip('fonts')
+    build.site()
+    site = ROOT / 'out' / 'site'
+    idx = (site / 'index.html').read_text()
+    for code in build.live(build.load_recipes()):
+        assert (site / f'{code}.html').exists() and (site / 'pdf' / f'{code}.pdf').exists(), code
+        assert f'href="{code}.html"' in idx
+    assert (site / 'CK-002-tent.html').exists()
