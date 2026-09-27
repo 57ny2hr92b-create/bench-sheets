@@ -115,6 +115,13 @@ fixes:
   - [Cakey, 'Overbaked past the crack, or flour packed. Spoon and level; pull at 14 min']
   - [Sugar coat melted in, 'Rolled while dough was warm. Chill the balls 10 min, roll again']
   - [Chocolate sank, 'Chopped too fine. Leave some pieces the size of a fingernail']
+figures:
+  title: Figures
+  sub: To scale
+  items:
+  - svg: CK-003-fig1.svg
+    label: Fig. 1
+    caption: Half sheet, 2 × 3 on 14 × 15 cm centres; dashed = baked, ≈ 10 cm.
 trials:
   sub: Change one variable per trial
   notes:
@@ -133,9 +140,9 @@ revisions:
 pages:
 - [formula]
 - [method, done_when, fixes]
-- [trials, revisions, batch_log]
+- [figures, trials, revisions, batch_log]
 batch_log: [Date, Batch ×, Chocolate, Oven, Bake time, Spread, Rested, Notes]
-foot: method, done when, fixes, trials, batch log
+foot: method, done when, fixes, figure, trials, batch log
 tent:
   name: Chocolate chunk gingersnaps
   note: Contains wheat, egg, milk, soy. One each, please.
