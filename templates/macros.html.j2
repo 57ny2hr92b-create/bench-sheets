@@ -142,6 +142,21 @@ class Component extends DCLogic {
 <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: 24px; row-gap: 10px">{% for f in fields %}<div style="display: flex; flex-direction: column; gap: 4px"><span style="font-size: 12px; line-height: 16px; color: #5C5C5C">{{ f }}</span><span style="height: 20px; border-bottom: 1px solid #000000"></span></div>{% endfor %}</div>
 {%- endmacro %}
 
+{# ---------- variants: sub-formulas laid over the main formula; rows left, notes right ---------- #}
+{% macro variants(items) -%}
+<div style="display: flex; flex-direction: column; gap: 12px; font-variant-numeric: tabular-nums">
+{% for v in items %}<div style="display: flex; flex-direction: column">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding-bottom: 4px; border-bottom: 1px solid #000000; font-size: 13px; line-height: 18px"><span data-fit="clip" style="font-weight: 600; white-space: nowrap; overflow: hidden">{{ v.name }}{% if v.note %} <span style="font-weight: 400; color: #5C5C5C">· {{ v.note }}</span>{% endif %}</span><span style="white-space: nowrap"><span style="color: #5C5C5C">{{ v.pct_of_formula }}% of dough ·</span> <span style="font-weight: 500">{{ v.g_fmt }} g</span></span></div>
+<div style="display: grid; grid-template-columns: minmax(0, 1fr) 176px; column-gap: 24px">
+<div style="display: flex; flex-direction: column">{% for row in v.rows %}<div style="display: grid; grid-template-columns: minmax(0, 1fr) 48px 56px; column-gap: 8px; padding: 3px 0; border-bottom: 1px solid #BDBDBD; font-size: 13px; line-height: 18px"><span data-fit="clip" style="white-space: nowrap; overflow: hidden">{{ box() }} {{ row.name }}{% if row.dagger %} †{% endif %}{% if row.note %} <span style="color: #5C5C5C">· {{ row.note }}</span>{% endif %}</span><span style="text-align: right; color: #5C5C5C">{{ row.pct }}</span><span style="text-align: right;{% if row.g_fmt != '—' %} font-weight: 500{% else %} color: #5C5C5C{% endif %}">{{ row.g_fmt }}</span></div>
+{% endfor %}</div>
+<div style="display: flex; flex-direction: column; padding-top: 3px">{% for s in v.steps or [] %}<div style="display: grid; grid-template-columns: 12px minmax(0, 1fr); column-gap: 4px; padding-bottom: 2px; font-size: 12px; line-height: 16px; color: #5C5C5C"><span>→</span><span>{{ s }}</span></div>
+{% endfor %}</div>
+</div>
+</div>
+{% endfor %}</div>
+{%- endmacro %}
+
 {% macro figures(items) -%}
 {% if items|length > 1 %}<div style="display: flex; gap: 24px">{% endif %}{% for f in items %}<figure style="margin: 0; display: flex; flex-direction: column; gap: 6px">
 {{ f.svg }}

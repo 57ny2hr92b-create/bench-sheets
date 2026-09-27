@@ -111,7 +111,24 @@ def compute_formula(F):
         else:
             T['g_fmt'] = fmt_g(grand)
     F['_basis'] = formula_basis
+    F['_grand'] = sum(r['_total'] for p in parts if not p.get('outside') for r in p['rows'] if r['_total'] is not None)
     return F
+
+
+def compute_variants(V, F):
+    """Variants are named sub-formulas laid over the main formula (toppings, inclusions, finishes).
+    Each variant's total prints as a % of the main formula's total (the dough weight); its rows
+    print their own internal % so one multiplier scales the whole sheet."""
+    grand = F.get('_grand') or 0
+    for v in V.get('items', []):
+        tot = sum(r['g'] for r in v['rows'] if isinstance(r['g'], (int, float)))
+        v['g_fmt'] = fmt_g(whole(tot)) if tot else '—'
+        v['pct_of_formula'] = fmt_pct(100 * tot / grand) if grand and tot else '—'
+        for r in v['rows']:
+            g = r['g']
+            r['g_fmt'] = fmt_g(g, r.get('approx'))
+            r['pct'] = fmt_pct(100 * g / tot) if isinstance(g, (int, float)) and tot else '—'
+    return V
 
 
 # ----------------------------------------------------------------------------- loading
@@ -170,6 +187,8 @@ def derive(r, recs):
     r['_uses'] = uses_of(r)
     if 'formula' in r and kind != 'card':
         compute_formula(r['formula'])
+        if r.get('variants'):
+            compute_variants(r['variants'], r['formula'])
     if kind == 'card':
         # card formula: single flat part
         F = dict(parts=[dict(id='', name='', rows=r['formula']['rows'])],
@@ -195,7 +214,7 @@ def derive(r, recs):
 
 SECTION_LABELS = dict(schedule='schedule', method='method', trials='trials', figures='figures',
                       done_when='done when', fixes='fixes', revisions='revisions', batch_log='batch log',
-                      components='components')
+                      components='components', variants='variants')
 
 
 def plan_pages(r):

@@ -41,6 +41,11 @@ row whenever the basis names flour.
   per stage, `carry: true` rows show the previous stage carried forward. Keep ingredient notes to two
   or three words in a stage grid or the names wrap.
 - Parts outside the formula (pan butter, glaze, a coating) → `outside: true`; their % prints —.
+- One base, several toppings or inclusions (focaccia, a snacking cake with swappable fruit) →
+  keep the dough as the formula and put each option under `variants:`. A variant's header prints
+  its total as a % of the formula total, its rows print their own internal %, and its `steps` say
+  what changes in the method ("in on the third fold", "over the hot bread"). A variant that changes
+  the dough itself (sugar in a sweet version) is a different recipe; give it its own sheet.
 - Enriched doughs: the hydration key figure reads "Hydration · water / all" with both values
   ("49 / 62%"), counting yolks ≈ 50 % water, whole egg ≈ 75 %, milk ≈ 87 %; flag the all-liquid
   figure as an estimate.

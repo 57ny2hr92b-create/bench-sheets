@@ -49,6 +49,10 @@
 {% call m.section_open('Batch log', 'Fill in by hand') %}{% endcall %}
 {{ m.batch_log(r.batch_log) }}
 </section>
+{% elif sec.type == 'variants' %}
+{% call m.section_open(r.variants.title|default('Variants'), r.variants.sub|default('Each as % of dough weight'), r.variants.notes) %}{% endcall %}
+{{ m.variants(r.variants['items']) }}
+</section>
 {% endif %}
 {% endfor %}
 {% if page.n == 1 and page.total > 1 %}

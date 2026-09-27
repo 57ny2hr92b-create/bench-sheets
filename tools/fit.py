@@ -1,7 +1,7 @@
 """Fit check: render each artboard in Chromium with the real IBM Plex Sans and report overflows.
 
 Rules (from the Bench Sheet README): every section bottom <= 968 px on Letter (448 on a card),
-no method step wider than two lines, no ingredient name wrapping, meta row 1 on one line.
+no method step wider than two lines, no ingredient name wrapping (or clipping, in variants), meta row 1 on one line.
 Tent cards are full-bleed (528 x 816) and have no content limit beyond the board itself.
 
 Fonts: IBM Plex Sans 400/500/600 are vendored in fonts/ (OFL). Run: python build.py check
@@ -40,8 +40,10 @@ MEASURE = """() => {
     const r = document.createRange(); r.selectNodeContents(td);
     return r.getBoundingClientRect().height > lh * 1.5;
   }).map(td => td.textContent.trim().slice(0, 50));
+  // a nowrap cell marked data-fit="clip" (variant names and rows) must not be cut off
+  const clipped = [...root.querySelectorAll('[data-fit="clip"]')].filter(e => e.scrollWidth > e.clientWidth).map(e => e.textContent.trim().slice(0, 50));
   const meta = [...root.querySelectorAll('div')].filter(d => d.textContent.trim().startsWith('Source')).map(d => d.scrollWidth - d.clientWidth);
-  return {bottom, tall, wraps, meta};}"""
+  return {bottom, tall, wraps, meta, clipped};}"""
 
 
 def check(files, screenshots=None):
@@ -64,6 +66,7 @@ def check(files, screenshots=None):
             if r['bottom'] > limit: issues.append(f"content ends at {r['bottom']} px (limit {limit})")
             for t in r['tall']: issues.append(f'3-line step: {t}')
             for t in r['wraps']: issues.append(f'wrapped cell: {t}')
+            for t in r.get('clipped', []): issues.append(f'clipped cell: {t}')
             for m in r['meta']:
                 if m > 0: issues.append(f'meta row 1 overflows by {m} px')
             name = pathlib.Path(f).name

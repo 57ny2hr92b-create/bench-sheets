@@ -125,6 +125,16 @@ done_when: [[Top, Springs back], [Inside, 96 °C]]
 keeps: [[Room temp, 2 days], [Frozen, 1 month]]
 fixes: {sub: Most likely cause first, label_width: 128, rows: [[Sunk middle, Underbaked; …]]}   # optional
 trials: {sub: ..., columns: [Trial A, Trial B], rows: [{var: Date, values: ['', '']}]}   # optional
+variants:                       # optional; named sub-formulas laid over the main formula (toppings, inclusions, finishes)
+  title: Variants               # rail title (default Variants); sub defaults to "Each as % of dough weight"
+  sub: Toppings · each as % of dough
+  notes: [Two variants on one pan → halve each.]
+  items:
+  - name: Kalamata and rosemary
+    note: optional grey note after the name
+    rows:                       # same row keys as the formula; g only — each row's internal % and the
+    - {name: Kalamata olives, note: 'pitted, halved', g: 120}   # variant's % of the formula total are computed
+    steps: [One-line notes, ≤ ~60 characters, shown beside the rows]   # what changes in the method
 revisions:                      # newest last; Rev, date and "Last change" derive from the last row
 - {rev: Rev 01, date: '2026-09-26', change: First issue, source: —}
 revisions_blank: true           # the blank hand-written row under the table; false when the page is full
@@ -140,7 +150,7 @@ Card steps are one line of text plus `time` and `target`; keep the text under ~7
 What the lint enforces: codes and file names agree, the family exists, five key figures, every
 row has grams (or `—`), stage lists match the stage count, a flour basis has a `basis: true` row,
 step heads end in a period, `pages` cover every method step exactly once, figure files exist,
-revisions run 01, 02, … with ISO dates, cited codes exist.
+revisions run 01, 02, … with ISO dates, cited codes exist, every variant has a name and rows with grams.
 
 ## Conventions the renderer owns
 

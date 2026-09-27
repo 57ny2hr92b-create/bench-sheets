@@ -10,7 +10,8 @@ ALLERGENS = {'Wheat', 'Milk', 'Egg', 'Nuts', 'Tree nuts', 'Peanut', 'Soy', 'Sesa
 KINDS = {'sheet', 'card'}
 ROW_KEYS = {'name', 'note', 'g', 'basis', 'dagger', 'approx', 'pct', 'carry', 'total', 'outside'}
 STATUSES = ('draft', 'trial', 'standard', 'retired')
-SECTIONS = {'formula', 'components', 'schedule', 'method', 'figures', 'done_when', 'fixes', 'trials', 'revisions', 'batch_log'}
+SECTIONS = {'formula', 'components', 'schedule', 'method', 'figures', 'done_when', 'fixes', 'trials', 'revisions', 'batch_log', 'variants'}
+VARIANT_KEYS = {'name', 'note', 'rows', 'steps'}
 SHEET_REQUIRED = ['code', 'name', 'cls', 'lede', 'source', 'contains', 'key_figures', 'formula', 'method', 'done_when', 'keeps', 'revisions']
 CARD_REQUIRED = ['code', 'name', 'yield', 'keeps', 'basis', 'contains', 'source', 'formula', 'method', 'revisions']
 
@@ -92,10 +93,30 @@ def lint_recipe(r, lib, recs, L, figs_dir):
                         a, _, b = rng.partition('-'); covered += list(range(int(a), int(b or a) + 1))
                     else:
                         covered += list(range(1, len(steps) + 1))
-                if name in ('figures', 'schedule', 'fixes', 'trials', 'components', 'batch_log') and not r.get(name):
+                if name in ('figures', 'schedule', 'fixes', 'trials', 'components', 'batch_log', 'variants') and not r.get(name):
                     L.err(code, f'pages lists {name} but the recipe has no {name}')
         if sorted(covered) != list(range(1, len(steps) + 1)):
             L.err(code, f'pages cover method steps {sorted(covered)} but there are {len(steps)} steps')
+    # variants: named sub-formulas on top of the main formula, each a % of it
+    V = r.get('variants')
+    if V is not None:
+        items = V.get('items') if isinstance(V, dict) else None
+        if not items: L.err(code, 'variants needs items: a list of named variants')
+        for i, v in enumerate(items or [], 1):
+            stray = set(v) - VARIANT_KEYS
+            if stray: L.err(code, f'variant {i}: unknown keys {sorted(stray)} (allowed: {sorted(VARIANT_KEYS)})')
+            if not v.get('name'): L.err(code, f'variant {i}: no name')
+            if not v.get('rows'): L.err(code, f'variant {v.get("name", i)}: no rows')
+            for row in v.get('rows') or []:
+                if not row.get('name'): L.err(code, f'variant {v.get("name")}: row without a name')
+                if row.get('g') is None: L.err(code, f'variant {v.get("name")} · {row.get("name")}: no grams (use "—" for none)')
+                stray = set(row) - ROW_KEYS
+                if stray: L.err(code, f'variant {v.get("name")} · {row.get("name")}: unknown row keys {sorted(stray)}')
+            for s in v.get('steps') or []:
+                if not isinstance(s, str): L.err(code, f'variant {v.get("name")}: steps are one-line strings')
+                elif len(s) > 60: L.warn(code, f'variant {v.get("name")}: step "{s[:30]}…" over ~60 characters will wrap in a two-column layout')
+        if kind == 'sheet' and r.get('pages') and not any(sec == 'variants' for p in r['pages'] for sec in p):
+            L.warn(code, 'recipe has variants but pages never places the variants section')
     # figures / schedule svgs exist
     for it in (r.get('figures') or {}).get('items', []):
         if not (figs_dir / it.get('svg', '')).exists(): L.err(code, f'figure file {it.get("svg")} not found in recipes/figures/')

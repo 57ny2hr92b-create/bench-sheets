@@ -56,7 +56,7 @@ def test_index_links_are_symmetric(built):
 
 def test_next_code():
     recs = build.load_recipes()
-    assert build.next_code(recs, 'BR') == 'BR-024'
+    assert build.next_code(recs, 'BR') == 'BR-025'
     assert build.next_code(recs, 'GA') == 'GA-001'
 
 
@@ -96,3 +96,20 @@ def test_site_builds(built):
         assert (site / f'{code}.html').exists() and (site / 'pdf' / f'{code}.pdf').exists(), code
         assert f'href="{code}.html"' in idx
     assert (site / 'CK-002-tent.html').exists()
+
+
+def test_variants_math_and_lint():
+    """Variants: each item's total prints as % of the dough; rows print their internal %."""
+    recs = build.load_recipes()
+    r = build.derive(recs['BR-024'], recs)
+    kal = next(v for v in r['variants']['items'] if v['name'].startswith('Kalamata'))
+    assert kal['g_fmt'] == '168' and kal['pct_of_formula'] == '11.9'          # 168 / 1411
+    assert [row['pct'] for row in kal['rows']] == ['71.4', '23.8', '3.6', '1.2']
+    assert any(s['type'] == 'variants' for pg in r['_pages'] for s in pg['sections'])
+    from tools import schema
+    import copy
+    bad = copy.deepcopy(build.load_recipes()['BR-024'])
+    bad['variants']['items'][0]['topping'] = 'stray'
+    del bad['variants']['items'][1]['rows']
+    L = schema.Lint(); schema.lint_recipe(bad, build.load_library(), recs, L, build.FIGS)
+    assert any('unknown keys' in e for e in L.errors) and any('no rows' in e for e in L.errors)
