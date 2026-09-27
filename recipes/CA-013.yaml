@@ -1,0 +1,150 @@
+code: CA-013
+kind: sheet
+status: draft            # draft -> trial -> standard (-> retired); only trial and standard reach the site
+name: Cocoa-swirled pumpkin Bundt
+cls: Cake · Bundt, oil
+dense: true
+lede: A soft, gently spiced pumpkin Bundt with a cocoa-and-chocolate ribbon through the middle.
+source: Dorie Greenspan · Adapted, metric
+contains:
+- Wheat
+- Egg
+equipment:
+- 12-cup Bundt pan
+- Stand mixer, paddle
+- Flexible spatula
+- Cake tester
+key_figures:
+- label: Yield · slices
+  value: 12–16
+- label: Batter
+  value: 1,637 g
+- label: Pumpkin · % flour
+  value: 104%
+- label: Plan · plus cooling
+  value: 1.5 h
+- label: Oven · 350 °F
+  value: 175 °C
+method_rail:
+- sub: Tick each step as done
+  notes:
+  - The batter looks broken until the last egg goes in, then turns satiny. Keep going.
+  - Pure pumpkin puree, not pie filling. Libby's is the least watery.
+formula:
+  basis: '% · flour = 100'
+  notes:
+  - 'Finish, choose one: confectioners'' sugar; card FR-003 cream cheese frosting; or a chocolate glaze. The cake is a year-rounder without any of them.'
+  - 'Altitude, 4,700 ft: 2 tsp soda is generous. Run B (soda −15%) before changing the sheet.'
+  - 'Pan: butter and flour a 12-cup Bundt, or baker''s spray. Outside the formula.'
+  - † Doesn't scale in a straight line past 2×.
+  scale_by_pan:
+  - {pan: 12-cup Bundt, factor: '1', count: 12–16, bold: true}
+  - {pan: 10-cup, factor: '0.85', count: 50 min}
+  - {pan: 9 × 13 in, factor: '1', count: 40–45 min}
+  parts:
+  - id: A
+    name: Swirl
+    outside: true
+    rows:
+    - {name: Granulated sugar, note: 3 tbsp, g: 38}
+    - {name: Cocoa powder, note: 1 tbsp, g: 6}
+    - {name: Dark chocolate, note: finely chopped, g: 43}
+    - {name: Salt and cinnamon, note: a pinch each, g: —}
+  - id: B
+    name: Cake
+    rows:
+    - {name: All-purpose flour, g: 408, basis: true}
+    - {name: Baking soda, note: 2 tsp, g: 9, dagger: true}
+    - {name: Ground cinnamon, note: 1½ tsp, g: 4, dagger: true}
+    - {name: Ground ginger, note: 1½ tsp, g: 3, dagger: true}
+    - {name: Fine sea salt, note: ¾ tsp, g: 4}
+    - {name: Cardamom, note: ¼ tsp, g: 0.5, dagger: true}
+    - {name: Nutmeg, note: '¼ tsp, fresh', g: 0.5, dagger: true}
+    - {name: Neutral oil, note: 240 ml, g: 220}
+    - {name: Granulated sugar, g: 300}
+    - {name: Brown sugar, g: 100}
+    - {name: Eggs, note: '3 large, room temp', g: 150}
+    - {name: Vanilla extract, note: 1 tbsp, g: 13, dagger: true}
+    - {name: Pumpkin puree, note: 1 can, g: 425}
+    subtotal: {label: Batter}
+method:
+- head: Prep.
+  text: Rack in the middle; heat the oven. Butter and flour the Bundt; tap out the extra.
+  time: —
+  target: 175 °C
+  target_f: 350 °F
+- head: Swirl.
+  text: Stir sugar, cocoa, salt, cinnamon and the chopped chocolate together; set aside.
+  time: —
+- head: Dry.
+  text: Whisk flour, soda, cinnamon, ginger, salt, cardamom and nutmeg.
+  time: —
+- head: Cream.
+  text: Paddle the oil and both sugars on medium until it looks like wet sand.
+  time: 2 min
+  target: Wet sand
+- head: Eggs.
+  text: One at a time, a minute each, scraping often. It looks broken until the last one.
+  time: 3 min
+  target: Satiny
+- head: Pumpkin.
+  text: Speed down; blend in the vanilla and the puree.
+  time: —
+- head: Dry in.
+  text: Mixer off. A third of the dry; pulse, then low. Scrape; half the rest; then the last.
+  time: —
+  target: Just blended
+- head: Finish.
+  text: A few turns by hand with the spatula to catch the bottom of the bowl.
+  time: —
+- head: Layer.
+  text: A third to half the batter in; smooth. Spoon the swirl over, off the sides. Rest on top.
+  time: —
+  target: Pan half full
+- head: Bake.
+  text: Until puffed, cracked on top and pulling from the sides. Tester clean; miss the swirl.
+  time: 55–60 min
+  target: ≈ 96 °C inside
+- head: Rest.
+  text: In the pan 10 min; turn out onto a rack. Cool fully before dusting, frosting or glazing.
+  time: 10 min
+  target: Until cold
+done_when:
+- [Top, 'Puffed, cracked, pulling from the sides']
+- [Tester, 'Clean — poke beside the swirl, not through it']
+- [Inside, '≈ 96 °C, if you probe']
+keeps:
+- [Room temp, '4 days, wrapped']
+- [Frozen, '1 month, unglazed; thaw in the wrapper']
+fixes:
+  sub: Most likely cause first
+  rows:
+  - [Swirl on the bottom, 'Too little batter under it. Put a full half in first; keep the swirl off the sides']
+  - ['Batter looks curdled', 'Normal until the last egg. Keep beating a minute; it turns satiny']
+  - [Sunk in the middle, 'Underbaked, or soda past its date. Bake to cracked and pulling away']
+  - [Stuck in the pan, 'Cooled past 10 min, or corners not floured. Time it; tap out the extra flour']
+  - [Glaze smushed after freezing, 'Warm it with a hair dryer for a few seconds; it smooths out']
+trials:
+  sub: Change one variable per trial
+  notes:
+  - A is the sheet as written.
+  - B tests the altitude rule for 4,700 ft.
+  - C is the finish for the staff room — FR-003 swipes against a chocolate glaze.
+  columns: [Trial A, Trial B, Trial C]
+  rows:
+  - {var: Date, values: ['', '', '']}
+  - {var: Change, values: [As written, 'Soda 8 g', 'FR-003 vs glaze']}
+  - {var: Bake time, values: ['', '', '']}
+  - {var: Swirl position, values: ['', '', '']}
+  - {var: Staff rating 1–5, values: ['', '', '']}
+revisions:
+- {rev: Rev 01, date: '2026-09-27', change: First issue, adapted from Baking with Dorie, source: —}
+pages:
+- [formula]
+- [method, done_when]
+- [fixes, trials, revisions, batch_log]
+batch_log: [Date, Batch ×, Puree brand, Oven, Bake time, Inside °C, Finish, Notes]
+foot: method, done when, fixes, trials, batch log
+tent:
+  name: Cocoa-swirled pumpkin Bundt
+  note: Contains wheat, egg — and milk if frosted.
