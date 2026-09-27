@@ -1,6 +1,6 @@
 code: CA-014
 kind: sheet
-status: trial            # draft -> trial -> standard (-> retired); only trial and standard reach the site
+status: retired          # duplicate of CA-012, written without checking the drafts; kept as the record
 name: Apple cider doughnut cake
 cls: Cake · Bundt, sour cream
 lede: A doughnut in Bundt form. Cider boiled down to a third, a sour cream crumb, and a cinnamon-sugar
@@ -164,7 +164,8 @@ trials:
   - {var: Staff rating 1–5, values: ['', '', '']}
 revisions_blank: false
 revisions:
-- {rev: Rev 01, date: '2026-09-27', change: First issue, source: —}
+- {rev: Rev 01, date: '2026-09-27', change: 'First issue (unsourced house draft)', source: —}
+- {rev: Rev 02, date: '2026-09-27', change: 'Retired: duplicates CA-012', source: Review}
 pages:
 - [formula]
 - [method:1-9, variants]

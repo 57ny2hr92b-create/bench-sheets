@@ -1,6 +1,6 @@
 code: CA-012
 kind: sheet
-status: draft            # draft -> trial -> standard (-> retired); only trial and standard reach the site
+status: trial            # draft -> trial -> standard (-> retired); only trial and standard reach the site
 name: Apple cider donut cake
 cls: Cake · Bundt, one bowl
 dense: true
@@ -141,6 +141,7 @@ trials:
   - {var: Staff rating 1–5, values: ['', '', '']}
 revisions:
 - {rev: Rev 01, date: '2026-09-26', change: First issue, source: —}
+- {rev: Rev 02, date: '2026-09-27', change: Issued to the binder as trial, source: Review}
 batch_log: [Date, Batch ×, Boiled cider used, Oven, Bake time, Inside °C, Rise, Notes]
 pages:
 - [formula]

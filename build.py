@@ -553,7 +553,7 @@ pages:
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('cmd', choices=['build', 'check', 'lint', 'next-code', 'new', 'pdf', 'site'])
+    ap.add_argument('cmd', choices=['build', 'check', 'lint', 'list', 'next-code', 'new', 'pdf', 'site'])
     ap.add_argument('args', nargs='*')
     a = ap.parse_args()
     if a.cmd == 'lint':
@@ -570,6 +570,9 @@ def main():
         build(); pdf(a.args)
     elif a.cmd == 'site':
         site()
+    elif a.cmd == 'list':
+        for c, r in sorted(load_recipes().items()):
+            print(f"{c}  {r.get('status', 'standard'):9s} {r.get('kind', 'sheet'):6s} {r['name']}")
     elif a.cmd == 'next-code':
         print(next_code(load_recipes(), a.args[0].upper()))
     elif a.cmd == 'new':

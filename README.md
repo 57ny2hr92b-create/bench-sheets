@@ -31,6 +31,7 @@ python -m playwright install chromium           # for `check`, `pdf`, `site`
 
 | Command | What it does |
 |---|---|
+| `python build.py list` | Every recipe in the repo — code, status, kind, name — drafts and retired included. Run it before scaffolding a new one. |
 | `python build.py lint` | Validate every recipe. Errors name the file and the field. |
 | `python build.py build` | Lint, then render `out/project/*.dc.html` and `Index.dc.html`. |
 | `python build.py check` | Build, then render every artboard in Chromium and fail if anything overflows, a step runs to three lines, an ingredient wraps, or the meta row breaks. Screenshots land in `out/shots/`. |
@@ -51,7 +52,7 @@ Every recipe has a `status`: `draft` → `trial` → `standard` → (`retired`).
 
 ## Adding a recipe
 
-1. `python build.py new <FAMILY> "<Name>"` — families are `BR PA CA CK CF CR FR GA` (see `library.yaml`; add a family there before using a new prefix).
+1. `python build.py list` first: a draft is not on the site or the index, but it is in the repo. Then `python build.py new <FAMILY> "<Name>"` — families are `BR PA CA CK CF CR FR GA` (see `library.yaml`; add a family there before using a new prefix).
 2. Fill in the YAML. Grams only; percentages, subtotals, totals, the scale-by-weight divisor, step numbers, Rev/date in the running head, index rows and cross-links are all computed.
 3. Set `status: trial` (or `standard`) when it's ready for the site; leave it `draft` while you work — `python build.py pdf CODE` prints a draft too.
 4. `python build.py check`. Fix whatever it flags — shorten a step, move a section to the next page in `pages:`, drop the blank revisions row (`revisions_blank: false`). Don't shrink type or padding; those are the design system's.
