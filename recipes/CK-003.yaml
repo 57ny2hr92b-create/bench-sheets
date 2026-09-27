@@ -1,0 +1,141 @@
+code: CK-003
+kind: sheet
+status: draft            # draft -> trial -> standard (-> retired); only trial and standard reach the site
+name: Chocolate chunk gingersnaps
+cls: Cookie · Drop, large
+dense: true
+lede: A molasses-and-spice dough studded with chopped bittersweet chocolate, rolled in sugar, baked to crackle.
+source: Jesse Szewczyk, Cookies · Adapted, metric
+contains:
+- Wheat
+- Egg
+- Milk
+- Soy
+equipment:
+- 3 half-sheet pans, parchment
+- Stand mixer, paddle
+- '#16 scoop · ¼ cup'
+- Shallow bowl for sugar
+key_figures:
+- label: Yield · cookies
+  value: 18 × ≈ 70 g
+- label: Dough
+  value: 1,255 g
+- label: Molasses · % flour
+  value: 26%
+- label: Plan
+  value: 1 h
+- label: Oven · 350 °F
+  value: 175 °C
+method_rail:
+- sub: Tick each step as done
+  notes:
+  - Chop a bar; chips hold their shape and you lose the molten pools.
+  - Dough keeps in the fridge several days. Too firm to scoop → 15 min on the counter.
+formula:
+  basis: '% · flour = 100'
+  notes:
+  - 'Salt: ½ tsp kosher, weighed as Diamond Crystal. Morton is double by weight; use 1.5 g.'
+  - 'Altitude, 4,700 ft: 2 tsp soda spreads flatter up here. Run B before changing the sheet.'
+  - † Doesn't scale in a straight line past 2×.
+  scale_by_pan:
+  - {pan: 3 sheets · 6 each, factor: '1', count: '18', bold: true}
+  - {pan: 2 sheets, factor: '0.67', count: '12'}
+  - {pan: 6 sheets, factor: '2', count: '36'}
+  parts:
+  - id: A
+    name: Dough
+    rows:
+    - {name: All-purpose flour, note: spooned and leveled, g: 416, basis: true}
+    - {name: Ground cinnamon, note: 1 tbsp, g: 8, dagger: true}
+    - {name: Ground ginger, note: 1 tbsp, g: 6, dagger: true}
+    - {name: Ground cloves, note: ¼ tsp, g: 0.5, dagger: true}
+    - {name: Ground allspice, note: ¼ tsp, g: 0.5, dagger: true}
+    - {name: Baking soda, note: 2 tsp, g: 9, dagger: true}
+    - {name: Kosher salt, note: ½ tsp, g: 2}
+    - {name: Unsalted butter, note: soft, g: 170}
+    - {name: Light brown sugar, note: packed, g: 300}
+    - {name: Egg, note: 1 large, g: 50}
+    - {name: Molasses, note: 'unsulphured, ⅓ cup', g: 110}
+    - {name: Vanilla extract, note: 1 tbsp, g: 13, dagger: true}
+    - {name: Bittersweet chocolate, note: finely chopped, g: 170}
+    subtotal: {label: Dough}
+  - id: B
+    name: Rolling
+    outside: true
+    rows:
+    - {name: Granulated sugar, g: 100}
+method:
+- head: Prep.
+  text: Racks upper-middle and lower-middle; heat the oven. Line three sheets.
+  time: —
+  target: 175 °C
+  target_f: 350 °F
+- head: Dry.
+  text: Whisk flour, cinnamon, ginger, cloves, allspice, soda and salt.
+  time: —
+- head: Cream.
+  text: Paddle butter and brown sugar on medium, scraping halfway, until smooth and fluffy.
+  time: 2–3 min
+  target: Fluffy
+- head: Wet.
+  text: Mixer off; add egg, molasses, vanilla. Medium until very fluffy and a shade lighter.
+  time: 2–3 min
+  target: Lightened
+- head: Flour.
+  text: On low, add the dry gradually; stop as soon as a soft dough forms.
+  time: —
+  target: Soft dough
+- head: Chocolate.
+  text: Add the chopped chocolate on low, just until distributed. Some crushing is fine.
+  time: —
+- head: Portion.
+  text: Scoop ¼-cup balls; roll each in the sugar. Six per sheet, 8 cm apart, in a 2 × 3 grid.
+  time: —
+  target: ≈ 70 g each
+- head: Bake.
+  text: Two sheets at once, swapping racks halfway, until the tops crack and puff slightly.
+  time: 14–17 min
+  target: Cracked, puffed
+- head: Bang.
+  text: Rap each sheet on the counter as it comes out to settle the cookies. Cool on the sheet.
+  time: Until cold
+  target: 3rd sheet, either rack
+done_when:
+- [Top, 'Cracked, just puffed; edges set']
+- [Middle, 'Still soft; it sets as it cools']
+- [Sheet, 'Cool 15 min before reusing it']
+keeps:
+- [Baked, '1 week, airtight']
+- [Dough, 'Several days, wrapped, in the fridge']
+fixes:
+  sub: Most likely cause first
+  rows:
+  - [Spread flat, 'Butter too soft, or altitude. Chill scooped balls 20 min; try B']
+  - [Cakey, 'Overbaked past the crack, or flour packed. Spoon and level; pull at 14 min']
+  - [Sugar coat melted in, 'Rolled while dough was warm. Chill the balls 10 min, roll again']
+  - [Chocolate sank, 'Chopped too fine. Leave some pieces the size of a fingernail']
+trials:
+  sub: Change one variable per trial
+  notes:
+  - A is the sheet as written.
+  - B tests the altitude rule for 4,700 ft.
+  - C rests the dough 24 h before scooping — deeper spice, less spread.
+  columns: [Trial A, Trial B, Trial C]
+  rows:
+  - {var: Date, values: ['', '', '']}
+  - {var: Change, values: [As written, 'Soda 8 g', 'Dough rested 24 h']}
+  - {var: Bake time, values: ['', '', '']}
+  - {var: Spread · crackle, values: ['', '', '']}
+  - {var: Staff rating 1–5, values: ['', '', '']}
+revisions:
+- {rev: Rev 01, date: '2026-09-27', change: First issue, adapted from Cookies (Szewczyk), source: —}
+pages:
+- [formula]
+- [method, done_when, fixes]
+- [trials, revisions, batch_log]
+batch_log: [Date, Batch ×, Chocolate, Oven, Bake time, Spread, Rested, Notes]
+foot: method, done when, fixes, trials, batch log
+tent:
+  name: Chocolate chunk gingersnaps
+  note: Contains wheat, egg, milk, soy. One each, please.
