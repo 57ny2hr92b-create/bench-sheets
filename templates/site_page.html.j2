@@ -18,10 +18,17 @@
   main { padding: 16px 0 48px; }
   .board { margin: 16px auto; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.18); overflow: hidden; }
   .board > div { transform-origin: top left; }
+  .drafts { max-width: 816px; margin: 32px auto 0; padding: 0 16px; }
+  .drafts h2 { margin: 0 0 4px; font-size: 14px; line-height: 18px; font-weight: 600; }
+  .drafts p { margin: 0 0 12px; font-size: 12px; line-height: 16px; }
+  .drafts table { width: 100%; border-collapse: collapse; font-size: 13px; line-height: 18px; }
+  .drafts th { text-align: left; padding: 0 12px 6px 0; border-bottom: 1px solid #000; font-size: 12px; font-weight: 500; color: #5C5C5C; }
+  .drafts td { padding: 4px 12px 4px 0; border-bottom: 1px solid #BDBDBD; }
+  .drafts .grey { color: #5C5C5C; }
   @media print {
     /* Always Letter: a sheet fills the page; a card or tent is centred on it. */
     html { background: #fff; }
-    nav { display: none; }
+    nav, .drafts { display: none; }
     main { padding: 0; }
     .board { margin: 0; box-shadow: none; page-break-after: always; width: 816px !important; height: 1056px !important; display: flex; align-items: center; justify-content: center; }
     .board > div { transform: none !important; }
@@ -30,11 +37,21 @@
 </style>
 </head>
 <body>
-<nav><a href="./">Test kitchen library</a>{% if code %}<span class="grey">{{ code }}</span><span>{{ name }}</span>{% endif %}<span class="sp"></span>{% if tent %}<a href="{{ tent }}">Tent card</a>{% endif %}{% if pdf %}<a href="{{ pdf }}">PDF</a>{% endif %}<a href="#" onclick="window.print();return false">Print</a></nav>
+<nav><a href="./">Test kitchen library</a>{% if code %}<span class="grey">{{ code }}</span><span>{{ name }}</span>{% if status == 'draft' %}<span class="grey">· draft — not in the index</span>{% endif %}{% endif %}<span class="sp"></span>{% if tent %}<a href="{{ tent }}">Tent card</a>{% endif %}{% if pdf %}<a href="{{ pdf }}">PDF</a>{% endif %}<a href="#" onclick="window.print();return false">Print</a></nav>
 <main>
 {% for b in boards %}
 <div class="board" data-w="{{ b.w }}" data-h="{{ b.h }}" style="width: {{ b.w }}px; height: {{ b.h }}px">{{ b.html }}</div>
 {% endfor %}
+{% if drafts is defined and drafts %}
+<section class="drafts">
+<h2>Drafts</h2>
+<p class="grey">In the repo, not yet in the binder. Each has a page and a PDF; promote to trial to index it.</p>
+<table>
+<thead><tr><th>Code</th><th>Recipe</th><th>Format</th><th>Rev</th><th>Date</th></tr></thead>
+<tbody>{% for d in drafts %}<tr><td><a href="{{ d.code }}.html">{{ d.code }}</a></td><td><a href="{{ d.code }}.html">{{ d.name }}</a></td><td class="grey">{{ d.kind }} · draft</td><td class="grey">{{ d.rev }}</td><td class="grey">{{ d.date }}</td></tr>{% endfor %}</tbody>
+</table>
+</section>
+{% endif %}
 </main>
 <script>
 // Scale each board to the viewport on narrow screens; boards are fixed-size artboards.

@@ -464,12 +464,17 @@ def inner_html(doc):
 
 
 def site():
-    """out/site/: a static binder for GitHub Pages. index.html (the IX-00 pages, code and name linked),
-    <CODE>.html per recipe (its sheet pages, or the card), <CODE>-tent.html, and pdf/<CODE>.pdf.
-    Renders from recipes directly, so run after `build` (which lints) — `site` does both."""
+    """out/site/: a static binder for GitHub Pages. index.html (the IX-00 pages, code and name linked, plus a
+    Drafts list under them), <CODE>.html per recipe (its sheet pages, or the card), <CODE>-tent.html, and
+    pdf/<CODE>.pdf. Drafts get pages and PDFs too, marked "draft", so nothing in the repo is invisible;
+    they stay off the printed IX-00. Renders from recipes directly, so run after `build` (which lints) —
+    `site` does both."""
     order = build()
-    lib = load_library(); recs = live(load_recipes())
+    lib = load_library(); allrecs = load_recipes()
+    recs = live(allrecs)
+    drafts = {c: r for c, r in allrecs.items() if r.get('status') == 'draft' and c not in _broken_drafts(lib, allrecs)}
     for r in recs.values(): derive(r, recs)
+    for r in drafts.values(): derive(r, {**recs, **drafts})
     e = env()
     out = OUT / 'site'
     if out.exists():
@@ -479,27 +484,39 @@ def site():
     # index
     idx_pages = paginate_index(index_entries(recs, lib), lib['index'].get('blank_rows', 6))
     boards = [dict(w=LETTER[0], h=LETTER[1], html=inner_html(e.get_template('index.html.j2').render(lib=lib, page=pg, site=True))) for pg in idx_pages]
-    (out / 'index.html').write_text(tpl.render(title=lib['title'], boards=boards, page_size='8.5in 11in', pdf=None, code=None, name=None))
+    draft_rows = [dict(code=c, name=r['name'], kind='Card' if r.get('kind') == 'card' else 'Sheet', rev=r['rev'], date=r['date'])
+                  for c, r in sorted(drafts.items())]
+    (out / 'index.html').write_text(tpl.render(title=lib['title'], boards=boards, page_size='8.5in 11in', pdf=None, code=None, name=None, drafts=draft_rows))
     # recipes
-    pdfs = pdf([])
+    pdfs = pdf(list(recs) + list(drafts))
     (out / 'pdf').mkdir()
     for pth in pdfs: (out / 'pdf' / pth.name).write_bytes(pth.read_bytes())
-    for code, r in recs.items():
+    for code, r in {**recs, **drafts}.items():
         rendered = render_recipe(e, r)
         sheets = [(fn, html) for fn, html in rendered if not fn.endswith('-tent.dc.html')]
         tents = [(fn, html) for fn, html in rendered if fn.endswith('-tent.dc.html')]
         w, h = CARD if r.get('kind') == 'card' else LETTER
+        status = r.get('status', 'standard')
         boards = [dict(w=w, h=h, html=inner_html(html)) for fn, html in sheets]
         (out / f'{code}.html').write_text(tpl.render(title=f'{code} {r["name"]}', code=code, name=r['name'], boards=boards,
                                                      page_size=f'{w / 96}in {h / 96}in', pdf=f'pdf/{code}.pdf',
-                                                     tent=f'{code}-tent.html' if tents else None))
+                                                     tent=f'{code}-tent.html' if tents else None, status=status))
         if tents:
             boards = [dict(w=TENT[0], h=TENT[1], html=inner_html(html)) for fn, html in tents]
             (out / f'{code}-tent.html').write_text(tpl.render(title=f'{code} tent card', code=code, name=r['name'] + ' · tent card', boards=boards,
-                                                              page_size=f'{TENT[0] / 96}in {TENT[1] / 96}in', pdf=f'pdf/{code}-tent.pdf'))
+                                                              page_size=f'{TENT[0] / 96}in {TENT[1] / 96}in', pdf=f'pdf/{code}-tent.pdf', status=status))
     import shutil as _sh; _sh.copytree(ROOT / 'fonts', out / 'fonts')
     (out / '.nojekyll').write_text('')
-    print(f'site: {len(recs)} recipes, {len(pdfs)} pdfs in {out}')
+    print(f'site: {len(recs)} recipes, {len(drafts)} drafts, {len(pdfs)} pdfs in {out}')
+
+
+def _broken_drafts(lib, recs):
+    """Draft codes with lint errors; build() skips them, so the site must too."""
+    from tools import schema
+    import io, contextlib
+    with contextlib.redirect_stdout(io.StringIO()):
+        L = schema.run(lib, recs, FIGS)
+    return {e.split(':')[0] for e in L.errors if recs.get(e.split(':')[0], {}).get('status') == 'draft'}
 
 
 def scaffold(family, name, recs):

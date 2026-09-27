@@ -37,7 +37,7 @@ python -m playwright install chromium           # for `check`, `pdf`, `site`
 | `python build.py check` | Build, then render every artboard in Chromium and fail if anything overflows, a step runs to three lines, an ingredient wraps, or the meta row breaks. Screenshots land in `out/shots/`. |
 | `python build.py new CA "Olive oil cake"` | Scaffold `recipes/CA-012.yaml` with the next free code. |
 | `python build.py next-code BR` | Just print the next free code. |
-| `python build.py site` | Build, print every live recipe to PDF, and write `out/site/` — `index.html` (IX-00 with links), one page per recipe and tent, `pdf/`. This is what Pages serves. |
+| `python build.py site` | Build, print every live recipe and draft to PDF, and write `out/site/` — `index.html` (IX-00 with links, then a Drafts list), one page per recipe and tent, `pdf/`. This is what Pages serves. |
 | `python build.py pdf [CODE …]` | Print `out/pdf/CODE.pdf` (all pages of a sheet; tent and cards as their own files at their own size). No codes = every live recipe. |
 | `python -m pytest -q` | Regression tests (math, links, rendering, fit). |
 
@@ -45,14 +45,14 @@ python -m playwright install chromium           # for `check`, `pdf`, `site`
 
 Every recipe has a `status`: `draft` → `trial` → `standard` → (`retired`).
 
-- **draft** — renders to `out/drafts/` for review and PDF, but never reaches the site or the index. Lint errors on a draft are reported and the draft is skipped; they never block the build. New recipes scaffold as drafts.
+- **draft** — rendered and on the site with its own page and PDF, listed under **Drafts** below the index page and marked "draft", but never on the printed IX-00. Lint errors on a draft are reported and the draft is skipped; they never block the build. New recipes scaffold as drafts.
 - **trial** — on the site and in the index, marked "· trial" in the Format column.
 - **standard** — the default when the field is absent; the binder.
 - **retired** — kept in the repo as the record (history, revisions, cross-links from old sheets still resolve in git), not rendered, not indexed. Retire rather than delete.
 
 ## Adding a recipe
 
-1. `python build.py list` first: a draft is not on the site or the index, but it is in the repo. Then `python build.py new <FAMILY> "<Name>"` — families are `BR PA CA CK CF CR FR GA` (see `library.yaml`; add a family there before using a new prefix).
+1. `python build.py list` first: a draft is listed on the site under Drafts but not on the printed index. Then `python build.py new <FAMILY> "<Name>"` — families are `BR PA CA CK CF CR FR GA` (see `library.yaml`; add a family there before using a new prefix).
 2. Fill in the YAML. Grams only; percentages, subtotals, totals, the scale-by-weight divisor, step numbers, Rev/date in the running head, index rows and cross-links are all computed.
 3. Set `status: trial` (or `standard`) when it's ready for the site; leave it `draft` while you work — `python build.py pdf CODE` prints a draft too.
 4. `python build.py check`. Fix whatever it flags — shorten a step, move a section to the next page in `pages:`, drop the blank revisions row (`revisions_blank: false`). Don't shrink type or padding; those are the design system's.

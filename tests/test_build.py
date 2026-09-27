@@ -95,6 +95,13 @@ def test_site_builds(built):
         assert (site / f'{code}.html').exists() and (site / 'pdf' / f'{code}.pdf').exists(), code
         assert f'href="{code}.html"' in idx
     assert (site / 'CK-002-tent.html').exists()
+    # drafts are on the site, marked, and listed under the index; not on the printed IX-00
+    drafts = [c for c, r in build.load_recipes().items() if r.get('status') == 'draft']
+    for code in drafts:
+        assert (site / f'{code}.html').exists() and (site / 'pdf' / f'{code}.pdf').exists(), code
+        assert 'draft' in (site / f'{code}.html').read_text()
+        assert f'href="{code}.html"' in idx
+    assert 'Drafts' in idx and not any(c in (ROOT / 'out' / 'project' / 'Index.dc.html').read_text() for c in drafts)
 
 
 def test_variants_math_and_lint():
