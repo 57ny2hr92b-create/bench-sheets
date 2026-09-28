@@ -61,7 +61,7 @@ variants:
   sub: Each as % of the batch
   of: batch
   notes:
-  - One variant per batch. A row's note says whether it replaces or adds.
+  - One variant per batch. Each note names the step it changes; a row's note says replace or add.
   - Honey pulls the set softer. The honey pops cook 5 °F higher and wrap the same day.
   items:
   - name: Honey and flake salt
@@ -69,35 +69,35 @@ variants:
     - {name: Honey, note: 'for 75 g corn syrup', g: 75}
     - {name: Flake salt, note: on top, g: 2, dagger: true}
     steps:
-    - In with the syrup, step 02. Pull at 305 °F.
-    - Salt over the slab after the pour.
+    - Step 02 · honey in with the syrup. Pull at 305 °F.
+    - Step 07 · salt over the slab.
   - name: Burnt honey
     rows:
     - {name: Honey, note: 'for 75 g corn syrup', g: 75}
     steps:
-    - Honey alone first, to deep amber (160 °C).
-    - Cream in to stop it; then the rest. Pull at 305 °F.
+    - Before 02 · honey alone to deep amber, 160 °C.
+    - Step 03 · cream stops it; then the rest. 305 °F.
   - name: Brown butter
     rows:
     - {name: Unsalted butter, note: extra, g: 15}
     steps:
-    - All 75 g butter to nut-brown before the sugars go in.
+    - Before 02 · brown all 75 g butter.
   - name: Chocolate
     rows:
     - {name: Dark chocolate, note: 70% chopped, g: 60}
     - {name: Cocoa powder, note: Dutch, g: 8}
     steps:
-    - Both in off the heat with the vanilla; stir until smooth.
+    - Step 06 · both in with the vanilla; stir until smooth.
   - name: Café latte
     rows:
     - {name: Instant espresso, g: 6}
     steps:
-    - Dissolved in the warm cream at step 03.
+    - Step 03 · dissolved in the warm cream.
   - name: Malted milk
     rows:
     - {name: Malted milk powder, g: 30}
     steps:
-    - Into the warm cream, step 03. Stir harder; it catches.
+    - Step 03 · into the warm cream. It catches; stir.
 method:
 - head: Prep.
   text: Line the pan with foil, butter it. Lay out 36 sticks. Clip the thermometer to the pot.
@@ -145,13 +145,13 @@ method:
   time: —
   target: Same day
 done_when:
-- [Thermometer, '300 °F · 150 °C (291 °F here)']
+- [Thermometer, '300 °F · 291 °F here']
 - [Cold water, 'Hard, brittle threads']
-- [Colour, 'Deep amber, not mahogany']
+- [Colour, 'Deep amber']
 - ['Bite, cured', 'Shatters, then softens']
 keeps:
 - [Wrapped, 'Airtight, 3–4 weeks']
-- [Honey pops, 'Wrap same day; 2 weeks']
+- [Honey pops, 'Same day; 2 wk']
 - [Fridge, 'No · weeps']
 fixes:
   sub: Most likely cause first
@@ -160,7 +160,6 @@ fixes:
   - [Grainy, 'Crystals from the sides. Wash them; no stirring above the line']
   - [Scorched taste, 'Stopped stirring, or heat high. Medium; stir the floor']
   - [Sticks loose, 'Pushed too late. Sticks at leather-firm, 8–12 min']
-  - [Slab cracked, 'Scored late. Score at the skin, 3–5 min']
 trials:
   sub: Change one variable per trial
   notes:
@@ -171,12 +170,14 @@ trials:
   - {var: Change, values: [As written, 'Pull 5 °F lower', 'Silicone mold']}
   - {var: Bite · stick, values: ['', '', '']}
   - {var: Staff rating 1–5, values: ['', '', '']}
+revisions_blank: false   # page 3 is full
 revisions:
 - {rev: Rev 01, date: '2026-09-28', change: First issue, source: —}
+- {rev: Rev 02, date: '2026-09-28', change: Variants moved after the method, source: Review}
 pages:
 - [formula]
-- [method:1-6, variants]
-- [method:7-11, done_when, fixes, trials, revisions]
+- [method, trials]
+- [variants, done_when, fixes, revisions]
 tent:
   name: Butterscotch lollypops
   note: Contains milk. Variant as labeled on the tin.

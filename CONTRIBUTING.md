@@ -60,8 +60,10 @@ row whenever the basis names flour.
   [method:10-15, figures, done_when, fixes, revisions]]`. Balance the pages; a near-empty page 3
   usually means `fixes` belongs on page 2.
 - **Sections read in bake order.** Nothing that judges the bake — Done when, If it goes wrong —
-  comes before the last method step, and figures and variants sit beside the steps that point to
-  them. Trials and the batch log are the exceptions — a chosen variable and a blank form judge
+  comes before the last method step. Figures sit beside the steps they illustrate. **Variants come
+  after the last method step**, never between steps — a variants block mid-method breaks the read —
+  and every variant step names the method step it changes ("Step 03 · dissolved in the warm cream";
+  "Before 02 · brown the butter"). Trials and the batch log are the exceptions — a chosen variable and a blank form judge
   nothing — so either may sit beside the day-1 steps to balance a long sheet. The lint refuses a `pages` list that breaks this; balance
   pages by moving trials or splitting the method, never by pulling a check above the steps.
 - A card holds about 10 formula rows and 5 one-line steps. Past nine rows the renderer tightens row
