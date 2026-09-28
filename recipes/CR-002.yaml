@@ -1,0 +1,171 @@
+code: CR-002
+kind: sheet
+status: trial
+name: Burnt honey and hazelnut tiramisu
+cls: Cream & custard · Layered, no-bake
+dense: true
+lede: Tiramisu built on burnt honey instead of coffee. One batch of honey, taken to mahogany, runs
+  through the soak, the sabayon and the hazelnuts. Cream cooked to 70 °C; no alcohol.
+source: House formula · Original
+contains:
+- Wheat
+- Milk
+- Egg
+- Nuts
+equipment:
+- 8 × 8 in pan
+- Deep saucepan, 2 qt
+- Bain-marie bowl
+- Stand mixer, whisk
+- Probe
+- Fine sieve
+key_figures:
+- label: Yield · pieces
+  value: '9'
+- label: Cream
+  value: 923 g
+- label: Honey / mascarpone
+  value: 36%
+- label: Plan · plus setting
+  value: 1.5 h + 6 h
+- label: Sabayon
+  value: 70 °C
+method_rail:
+- sub: Tick each step as done
+  notes:
+  - Honey by colour, not thermometer. Stop at deep mahogany with a sharp, tobacco smell; black is acrid.
+  - Mascarpone straight from the fridge, loosened with a spoon, never whipped — warm or overworked it breaks.
+  - The soak is thin. One second a side; the finger should still be dry in the middle.
+formula:
+  basis: '% · mascarpone = 100'
+  notes:
+  - 'A is made once and split: 120 g into the soak, 40 g into the sabayon, 20 g over the nuts.'
+  - 'Honey: a dark wildflower or buckwheat burns with more character than clover. Either works.'
+  - 'Altitude, 4,700 ft: water boils near 95 °C; the bain-marie still takes the sabayon to 70 °C. Nothing changes.'
+  - 'Assembly, outside the formula: 200 g crisp Italian savoiardi (≈ 24; Balocco, Vicenzi), 4 g cocoa to dust.'
+  - † Doesn't scale in a straight line past 2×.
+  scale_by_pan:
+  - {pan: 8 × 8 in, factor: '1', count: 9, bold: true}
+  - {pan: 9 × 13 in, factor: '1.75', count: 15–20}
+  - {pan: 9 × 9 in, factor: '1.25', count: 12}
+  parts:
+  - id: A
+    name: Burnt honey
+    note: made once, split three ways
+    rows:
+    - {name: Honey, note: dark if you have it, g: 180}
+    - {name: Water, note: 'hot, to stop it', g: 40}
+    - {name: Fine sea salt, g: 2}
+  - id: B
+    name: Soak
+    rows:
+    - {name: Whole milk, g: 240}
+    - {name: Burnt honey (A), g: 120}
+    - {name: Vanilla extract, note: 1 tsp, g: 5, dagger: true}
+  - id: C
+    name: Mascarpone cream
+    rows:
+    - {name: Egg yolks, note: 4 large, g: 72}
+    - {name: Granulated sugar, g: 60}
+    - {name: Burnt honey (A), g: 40}
+    - {name: Mascarpone, note: cold, g: 500, basis: true}
+    - {name: Heavy cream, note: cold, g: 250}
+    - {name: Fine sea salt, g: 1}
+    subtotal: {label: Cream}
+  - id: D
+    name: Honeyed hazelnuts
+    rows:
+    - {name: Hazelnuts, note: 'raw, skin on', g: 100}
+    - {name: Burnt honey (A), g: 20}
+    - {name: Flaky salt, g: 2}
+method:
+- head: Burn.
+  text: Honey in the deep pan on medium-high. It foams, then darkens; swirl, don't stir.
+  time: 6–10 min
+  target: Deep mahogany
+- head: Stop.
+  text: Off heat. Hot water in — it spits — then the salt. Swirl smooth; cool to warm.
+  time: —
+  target: Pourable
+- head: Soak.
+  text: Whisk 120 g burnt honey and the vanilla into the milk. Chill until cold.
+  time: 20 min
+  target: ≤ 8 °C
+- head: Toast.
+  text: Hazelnuts on a sheet. Rub off the skins in a towel while hot; return to the sheet.
+  time: 12–14 min
+  target: 175 °C
+  target_f: 350 °F
+- head: Glaze.
+  text: Toss the hot nuts with 20 g burnt honey and the flaky salt. Cool; chop coarse.
+  time: —
+  target: Dry to the touch
+- head: Sabayon.
+  text: Yolks, sugar and 40 g burnt honey over simmering water; whisk without stopping.
+  time: 5–7 min
+  target: 70 °C, ribbon
+- head: Cool.
+  text: Off the water; whisk on medium until pale, thick and cool to the touch.
+  time: 3–4 min
+  target: Room temp
+- head: Mascarpone.
+  text: Loosen with a spoon; add salt. Fold the sabayon in two adds. Stop when smooth.
+  time: —
+  target: No lumps
+- head: Cream.
+  text: Whip the cream to soft peaks; fold in, in two adds. Holds a soft mound.
+  time: —
+  target: Soft peak
+- head: Dip.
+  text: Savoiardi in the soak, one second a side. Twelve in a tight layer; trim to fit.
+  time: —
+  target: 1 s a side
+- head: Layer.
+  text: Half the cream, spread; half the hazelnuts. Twelve more, dipped; the rest of the cream.
+  time: —
+- head: Set.
+  text: Cover; refrigerate. Overnight is better than 6 h.
+  time: 6–12 h
+  target: 4 °C
+- head: Finish.
+  text: Cocoa through a sieve; remaining hazelnuts over. Cut 3 × 3 with a hot knife.
+  time: —
+done_when:
+- [Honey, 'Deep mahogany, sharp smell, thin wisps — not black']
+- [Sabayon, '70 °C; whisk lifts a ribbon that holds 3 s']
+- [Cream, 'Holds a soft mound; spreads without running']
+- [Set, 'Slice holds a clean edge after 6 h; layers stay put']
+keeps:
+- [Refrigerated, '3 days, covered; best on day 2']
+- [Frozen, 'No — the cream weeps on thawing']
+fixes:
+  sub: Most likely cause first
+  rows:
+  - [Honey acrid, 'Went past mahogany. Pull it a shade earlier; the water stops it fast']
+  - [Cream loose, 'Mascarpone warm or overworked. Fold cold, stop early; chill 30 min before layering']
+  - [Cream grainy, 'Sabayon too hot, or mascarpone whipped. Hold 70 °C; loosen with a spoon only']
+  - [Bottom soggy, 'Dipped too long. One second a side; the middle stays dry']
+  - [Nuts gone soft, 'Under-toasted, or glazed while cool. Toast to golden; glaze hot']
+trials:
+  sub: Change one variable per trial
+  notes:
+  - A is the sheet as written.
+  - B pushes the honey darker — a shade past mahogany, for the staff room.
+  - C swaps the hazelnuts for toasted almonds.
+  columns: [Trial A, Trial B, Trial C]
+  rows:
+  - {var: Date, values: ['', '', '']}
+  - {var: Change, values: [As written, Honey darker, Almonds]}
+  - {var: Honey colour, values: ['', '', '']}
+  - {var: 'Cut held?', values: ['', '', '']}
+  - {var: Staff rating 1–5, values: ['', '', '']}
+revisions:
+- {rev: Rev 01, date: '2026-09-28', change: First issue, source: —}
+pages:
+- [formula]
+- [method]
+- [done_when, fixes, trials, revisions, batch_log]
+batch_log: [Date, Batch ×, Honey, Honey colour, Sabayon °C, Set time, Notes]
+tent:
+  name: Burnt honey & hazelnut tiramisu
+  note: Contains wheat, milk, egg, hazelnuts. No coffee, no alcohol.

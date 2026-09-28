@@ -3,8 +3,8 @@ lede: Every sheet, card and tent card, by code. Front of the binder; update it w
 
 # Bump when the index changes materially (a row added, a Rev changed).
 index:
-  rev: 13
-  date: 2026-09-27
+  rev: 14
+  date: 2026-09-28
   blank_rows: 6
 
 # Code order, as the Bench Sheet README lists it. Add a family here before assigning a new prefix.
