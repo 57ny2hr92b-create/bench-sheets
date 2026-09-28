@@ -144,7 +144,9 @@ def test_generated_figures():
                  dict(gen='section', layers=[['sponge', 25], ['filling', 8], ['sponge', 25]], frosting=4),
                  dict(gen='dimensions', width=300, height=200, thickness=5),
                  dict(gen='fold', kind='letter'),
-                 dict(gen='gauge', diameters=[30, 40, 50])):
+                 dict(gen='gauge', diameters=[30, 40, 50]),
+                 dict(gen='tray', pan='half', cols=3, rows=4, piece=[100, 25], gap=30),
+                 dict(gen='gauge', oblongs=[[100, 25]])):
         out = figures.render(spec)
         assert out.startswith('<svg') and out.rstrip().endswith('</svg>') and 'aria-label' in out, spec['gen']
     recs = build.load_recipes(); lib = build.load_library()
@@ -156,3 +158,14 @@ def test_generated_figures():
     # a rebuild draws the same section (seeded stipple and wobble)
     a = figures.render(dict(gen='section', layers=[['sponge', 20]], frosting=3)); b = figures.render(dict(gen='section', layers=[['sponge', 20]], frosting=3))
     assert a == b
+
+
+def test_single_step_page_range():
+    """`method:10` on a page means step 10 alone, the same as the lint counts it — not every step."""
+    import build, yaml
+    r = yaml.safe_load((ROOT / 'recipes' / 'PA-005.yaml').read_text())
+    for i, s in enumerate(r['method'], 1): s['n'] = i
+    r['pages'] = [['formula'], ['method:1-9'], ['method:10', 'done_when', 'revisions']]
+    pages = build.plan_pages(r)
+    steps = [sec for sec in pages[2]['sections'] if sec['type'] == 'method'][0]['steps']
+    assert [s['n'] for s in steps] == [10]

@@ -109,7 +109,8 @@ formula:
     subtotal: {label: Batter}   # optional; grams are computed
   total: {label: Total batter}  # optional formula-wide total
 schedule: {sub: ..., notes: [...], svg: BR-023-schedule.svg}   # optional
-figures: {title: Figures, sub: ..., items: [{svg: BR-023-fig1.svg, label: Fig. 1, caption: ...}]}   # optional
+figures: {title: Figures, sub: ..., items: [{svg: BR-023-fig1.svg, label: Fig. 1, caption: ...}]}   # optional; items sit side by side, below: true starts a new row (an actual-size figure beside a tray won't fit)
+                                # or generate one: {gen: tray|cut|section|dimensions|fold|gauge, ...} — see tools/figures.py; tray and gauge take oblong pieces as [length, width] mm
 # a figure item may be generated instead of drawn: give it gen: and its parameters (all mm), no svg:
 #   {gen: tray, pan: half, cols: 4, rows: 3, piece: 45, spread: 90, label: Fig. 1, caption: ...}
 #   {gen: cut, pan: 9x13, cols: 6, rows: 4, sling: long, ...}   pans: half quarter 9x13 8x8 9x9 9x5, or size: [w, h]

@@ -229,10 +229,10 @@ def plan_pages(r):
         secs = []
         for name in names:
             if name.startswith('method'):
-                m = re.match(r'method(?::(\d+)-(\d+))?', name)
+                m = re.match(r'method(?::(\d+)(?:-(\d+))?)?', name)  # method, method:a-b, or method:a (one step) — as the lint reads it
                 steps = r['method']
                 if m.group(1):
-                    a, b = int(m.group(1)), int(m.group(2))
+                    a, b = int(m.group(1)), int(m.group(2) or m.group(1))
                     steps = [s for s in steps if a <= s['n'] <= b]
                 rail = rails[mi] if mi < len(rails) else {}
                 mi += 1

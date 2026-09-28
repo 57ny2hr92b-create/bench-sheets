@@ -110,9 +110,9 @@ keeps:
 fixes:
   sub: Most likely cause first
   rows:
-  - [Spread flat, 'Whites under-whipped or batter over-folded. Stiff peaks; fold to just combined']
+  - [Spread flat, 'Whites under-whipped or over-folded. Stiff peaks; stop folding early']
   - ['Tacky, bends', 'Under-baked or under-dried. A minute more; dry overnight uncovered']
-  - [Cracked tops, 'Oven hot, or dusted too thick. Check the oven; one even pass of sugar']
+  - [Cracked tops, 'Oven hot, or sugar too thick. One even pass of sugar']
 trials:
   sub: Change one variable per trial
   notes:
@@ -129,18 +129,14 @@ figures:
   title: Figures
   sub: Fig. 1 actual size
   items:
-  - svg: PA-005-fig1.svg
-    label: Fig. 1
-    caption: Piping guide, actual size, 10 × 2.5 cm. Hold the sheet against the parchment.
-  - svg: PA-005-fig2.svg
-    label: Fig. 2
-    caption: Half sheet, 12 fingers, 3 cm apart. Reduced.
+  - {gen: gauge, oblongs: [[100, 25]], label: Fig. 1, caption: 'Piping guide, actual size. Hold the sheet against the parchment.'}
+  - {gen: tray, pan: half, cols: 3, rows: 4, piece: [100, 25], gap: 30, scale: 0.35, below: true, label: Fig. 2, caption: 'Half sheet, 12 fingers in 3 rows of 4, 3 cm apart. Reduced.'}
 revisions:
 - {rev: Rev 01, date: '2026-09-28', change: First issue, scaled ×2 from The Petite Cook, source: —}
 - {rev: Rev 02, date: '2026-09-28', change: Figs. 1–2 added, source: —}
 revisions_blank: false
 pages:
 - [formula]
-- [method, figures]
-- [done_when, fixes, trials, revisions, batch_log]
+- [method:1-9, figures]
+- [method:10, done_when, fixes, trials, revisions, batch_log]
 batch_log: [Date, Batch ×, Whites g, Oven, Bake time, Count, Baked g, Notes]

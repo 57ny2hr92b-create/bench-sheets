@@ -8,11 +8,13 @@ frosting), never on anything measured against.
 A figure item with `gen:` is rendered here at build time; `svg:` items are files in recipes/figures/.
 
   {gen: tray,    pan: half, cols: 4, rows: 3, piece: 45, spread: 90}          # portions on a sheet, mm
+  {gen: tray,    pan: half, cols: 3, rows: 4, piece: [100, 25], gap: 30}        # oblong pieces (fingers, éclairs): [length, width] mm; gap packs them at piece + gap, centred
   {gen: cut,     pan: 9x13, cols: 6, rows: 4, sling: long}                      # cut map; first two cuts numbered; optional parchment sling
   {gen: section, layers: [[sponge, 25], [filling, 8], [sponge, 25]], frosting: 4, width: 120}
   {gen: dimensions, width: 300, height: 200, thickness: 5}                     # rolled sheet, top + edge
   {gen: fold, kind: letter}                                                      # letter | book | single
   {gen: gauge, diameters: [30, 40, 50]}                                         # actual size, with 5 cm bar
+  {gen: gauge, oblongs: [[100, 25]]}                                            # actual-size piping guide for oblong pieces, [length, width] mm
 
 All lengths in mm. `scale` (px per mm) defaults per type; the same scale as the hand-drawn figures.
 """
@@ -100,22 +102,50 @@ def _pan(spec):
 def tray(spec):
     (pw, ph), pname = _pan(spec)
     cols, rows = int(spec['cols']), int(spec['rows'])
-    piece, spread = float(spec['piece']), float(spec.get('spread', spec['piece']))
+    oblong = isinstance(spec['piece'], (list, tuple))
+    if oblong:
+        if len(spec['piece']) != 2: raise FigureError('an oblong piece is [length, width] mm')
+        plen, pwid = (float(v) for v in spec['piece'])
+        if plen <= 0 or pwid <= 0 or pwid > plen: raise FigureError('oblong piece needs length ≥ width > 0')
+        piece = spread = plen
+    else:
+        piece, spread = float(spec['piece']), float(spec.get('spread', spec['piece']))
     if cols < 1 or rows < 1: raise FigureError('cols and rows must be ≥ 1')
     if spread < piece: raise FigureError('spread must be ≥ piece')
     s = float(spec.get('scale', 0.5))
     W, H = pw * s, ph * s
     x0, y0 = 20.5, 24.5
     body = [f'<rect x="{x0}" y="{y0}" width="{W:.1f}" height="{H:.1f}"/>']
-    pc, pr = W / cols, H / rows
+    gap = spec.get('gap')
+    if gap is not None:  # pack at piece + gap and centre the block, instead of spreading over the pan
+        gap = float(gap)
+        if gap < 0: raise FigureError('gap must be ≥ 0 mm')
+        pc, pr = ((plen if oblong else piece) + gap) * s, ((pwid if oblong else piece) + gap) * s
+        bx, by = (x0 + (W - pc * cols + gap * s) / 2 - pc / 2, y0 + (H - pr * rows + gap * s) / 2 - pr / 2)
+        if pc * cols - gap * s > W + 0.5 or pr * rows - gap * s > H + 0.5: raise FigureError(f'{cols} × {rows} pieces with a {gap:g} mm gap do not fit the {pname}')
+    else:
+        pc, pr = W / cols, H / rows
+        bx, by = x0, y0
+    if oblong and (plen * s > pc or pwid * s > pr): raise FigureError(f'{cols} × {rows} pieces of {plen:g} × {pwid:g} mm do not fit the {pname}')
     for r in range(rows):
         for c in range(cols):
-            cx, cy = x0 + pc * (c + 0.5), y0 + pr * (r + 0.5)
+            cx, cy = bx + pc * (c + 0.5), by + pr * (r + 0.5)
+            if oblong:
+                w, h = plen * s, pwid * s
+                body.append(f'<rect x="{cx-w/2:.1f}" y="{cy-h/2:.1f}" width="{w:.1f}" height="{h:.1f}" rx="{h/2:.1f}" fill="#000000"/>')
+                continue
             body.append(f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="{piece*s/2:.1f}" fill="#000000"/>')
             if spread > piece:
                 body.append(f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="{spread*s/2:.1f}" {DASH}/>')
-    if cols > 1: body.append(_dim_h(x0 + pc * 0.5, x0 + pc * 1.5, y0 - 8, f'{pw/cols/10:.0f} cm'))
-    if rows > 1: body.append(_dim_v(x0 + W + 10, y0 + pr * 0.5, y0 + pr * 1.5, f'{ph/rows/10:.0f} cm'))
+    if oblong:
+        # gap between pieces, not centre pitch: that is what the hand measures at the tray
+        if cols > 1: body.append(_dim_h(bx + pc * 0.5 + plen * s / 2, bx + pc * 1.5 - plen * s / 2, y0 - 8, f'{(pc/s - plen)/10:g} cm'))
+        if rows > 1: body.append(_dim_v(x0 + W + 10, by + pr * 0.5 + pwid * s / 2, by + pr * 1.5 - pwid * s / 2, f'{(pr/s - pwid)/10:g} cm'))
+        label = (f'{pname} to scale, {pw/10:.0f} by {ph/10:.0f} centimetres, with {cols*rows} pieces of {plen/10:g} by {pwid/10:g} centimetres '
+                 f'in {rows} rows of {cols}, gaps labelled')
+        return _svg(x0 + W + 64, y0 + H + 12, '\n'.join(body), label)
+    if cols > 1: body.append(_dim_h(bx + pc * 0.5, bx + pc * 1.5, y0 - 8, f'{pc/s/10:g} cm'))
+    if rows > 1: body.append(_dim_v(x0 + W + 10, by + pr * 0.5, by + pr * 1.5, f'{pr/s/10:g} cm'))
     label = (f'{pname} to scale, {pw/10:.0f} by {ph/10:.0f} centimetres, with {cols*rows} portions of {piece/10:g} centimetres '
              f'in {rows} rows of {cols}' + (f'; dashed circles show the {spread/10:g} centimetre baked size' if spread > piece else ''))
     return _svg(x0 + W + 64, y0 + H + 12, '\n'.join(body), label)
@@ -268,20 +298,28 @@ def fold(spec):
 # ---------------------------------------------------------------- gauge
 def gauge(spec):
     """Actual size at 96 px per inch (3.7795 px/mm), with a 5 cm check bar. Print at 100%."""
-    ds = [float(d) for d in spec['diameters']]
-    if not ds or any(d <= 0 for d in ds): raise FigureError('diameters must be positive mm')
+    ds = [float(d) for d in spec.get('diameters', [])]
+    obs = [(float(a), float(b)) for a, b in spec.get('oblongs', [])]
+    if not ds and not obs: raise FigureError('give diameters (round) or oblongs ([length, width]) in mm')
+    if any(d <= 0 for d in ds) or any(a <= 0 or b <= 0 or b > a for a, b in obs): raise FigureError('sizes must be positive mm; oblong length ≥ width')
     s = 96 / 25.4
     x, y = 20.5, 20.5
-    rmax = max(ds) * s / 2
+    hmax = max([d for d in ds] + [b for _, b in obs]) * s
     body = []
     for d in ds:
         r = d * s / 2
-        body.append(f'<circle cx="{x+r:.1f}" cy="{y+rmax:.1f}" r="{r:.1f}"/>'
-                    f'<text {FONT} text-anchor="middle" x="{x+r:.1f}" y="{y+2*rmax+16:.1f}">{d:g} mm</text>')
+        body.append(f'<circle cx="{x+r:.1f}" cy="{y+hmax/2:.1f}" r="{r:.1f}"/>'
+                    f'<text {FONT} text-anchor="middle" x="{x+r:.1f}" y="{y+hmax+16:.1f}">{d:g} mm</text>')
         x += 2 * r + 20
-    yb = y + 2 * rmax + 34
+    for a, b in obs:
+        w, h = a * s, b * s
+        body.append(f'<rect x="{x:.1f}" y="{y+(hmax-h)/2:.1f}" width="{w:.1f}" height="{h:.1f}" rx="{h/2:.1f}"/>'
+                    f'<text {FONT} text-anchor="middle" x="{x+w/2:.1f}" y="{y+hmax+16:.1f}">{a:g} × {b:g} mm</text>')
+        x += w + 20
+    yb = y + hmax + 34
     body.append(_dim_h(20.5, 20.5 + 50 * s, yb + 8, 'check 5 cm · print at 100%', above=False))
-    return _svg(max(x, 20.5 + 50 * s + 20), yb + 30, '\n'.join(body), f'Actual-size gauge: circles of {", ".join(f"{d:g}" for d in ds)} millimetres, with a 5 centimetre check bar')
+    what = ', '.join([f'circles of {d:g}' for d in ds] + [f'an oblong of {a:g} by {b:g}' for a, b in obs])
+    return _svg(max(x, 20.5 + 50 * s + 20), yb + 30, '\n'.join(body), f'Actual-size gauge: {what} millimetres, with a 5 centimetre check bar')
 
 
 GENERATORS = dict(tray=tray, cut=cut, section=section, dimensions=dimensions, fold=fold, gauge=gauge)
