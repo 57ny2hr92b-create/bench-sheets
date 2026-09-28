@@ -1,0 +1,137 @@
+code: PA-005
+kind: sheet
+status: trial
+name: Savoiardi
+cls: Pastry · Sponge fingers, piped
+lede: Crisp Italian ladyfingers for CR-002 and any tiramisu. A yolk ribbon folded into a stiff meringue,
+  flour sifted over, piped, dusted and baked dry. Scaled ×2 so one batch lines an 8 × 8 in pan twice.
+source: The Petite Cook · Scaled ×2
+contains:
+- Wheat
+- Egg
+equipment:
+- 2 half sheets, parchment
+- Piping bag, 15 mm plain tip
+- Stand mixer, whisk
+- Fine sieve
+- Rack
+key_figures:
+- label: Yield · fingers
+  value: ≈ 24 · 10 cm
+- label: Batter
+  value: 496 g
+- label: Sugar · % flour
+  value: 100%
+- label: Plan · plus drying
+  value: 1 h + 8 h
+- label: Oven · 350 °F
+  value: 175 °C
+method_rail:
+- sub: Tick each step as done
+  notes:
+  - Everything hangs on the whites. Clean, dry bowl; no yolk in them; stop at stiff and glossy, not dry.
+  - Fold like it costs money. The batter should still hold a piped line with a rounded top.
+  - Pipe to a line — mark 10 cm ticks on the parchment underside, or rule a card and pipe beside it.
+formula:
+  basis: '% · flour = 100'
+  notes:
+  - 'Source batch is 65 g flour for 25 fingers at 7–8 cm; this is ×2, piped longer for the tiramisu pan.'
+  - 'Sugar splits: half whipped with the yolks, half into the whites. Dusting sugar is outside the formula.'
+  - 'Yolks 90 g ≈ 5 large; whites 140 g ≈ 4 large. Weigh them — the ratio matters more than the count.'
+  - 'Altitude, 4,700 ft: no leavening, nothing to change. Foams set a touch faster; pipe promptly.'
+  - † Doesn't scale in a straight line past 2×.
+  scale_by_pan:
+  - {pan: 2 half sheets, factor: '1', count: ≈ 24, bold: true}
+  - {pan: 1 half sheet, factor: '0.5', count: ≈ 12}
+  parts:
+  - id: A
+    name: Batter
+    rows:
+    - {name: Egg yolks, note: ≈ 5 large, g: 90}
+    - {name: Caster sugar, note: for the yolks, g: 65}
+    - {name: Vanilla extract, note: 1 tsp, g: 5, dagger: true}
+    - {name: Egg whites, note: ≈ 4 large, g: 140}
+    - {name: Fine sea salt, note: a pinch, g: 1}
+    - {name: Caster sugar, note: for the whites, g: 65}
+    - {name: All-purpose flour, note: sifted, g: 130, basis: true}
+    subtotal: {label: Batter}
+  - id: B
+    name: Dust
+    outside: true
+    rows:
+    - {name: Powdered sugar, note: through a sieve, g: 30}
+method:
+- head: Prep.
+  text: Rack in the middle; heat the oven. Line two half sheets; fit the bag with the 15 mm tip.
+  time: —
+  target: 175 °C
+  target_f: 350 °F
+- head: Yolks.
+  text: Yolks, 65 g sugar and the vanilla on high until pale, thick and ribboning.
+  time: 3–4 min
+  target: Ribbon holds 3 s
+- head: Whites.
+  text: Clean bowl. Whites and salt to a soft foam; rain in 65 g sugar; whip to stiff and glossy.
+  time: 3–4 min
+  target: Stiff, glossy
+- head: Fold.
+  text: Yolk ribbon over the whites in two adds; fold from the bottom with a spatula.
+  time: —
+  target: Streaks just gone
+- head: Flour.
+  text: Sift the flour over in three adds; fold each in only until it disappears.
+  time: —
+  target: Holds a line
+- head: Pipe.
+  text: Bag the batter. Pipe 10 cm fingers, 2.5 cm wide, 3 cm apart; 12 a sheet.
+  time: —
+  target: 12 a sheet
+- head: Dust.
+  text: Powdered sugar over every finger through the sieve. Straight to the oven.
+  time: —
+- head: Bake.
+  text: One sheet at a time. Pale gold, dry and springy on top; a minute more for colour.
+  time: 8–10 min
+  target: + 1–2 min
+- head: Cool.
+  text: On the parchment 5 min, then lift to a rack. They crisp as they cool.
+  time: 5 min
+- head: Dry.
+  text: Uncovered on the rack overnight for a finger that dips clean and stays whole.
+  time: 8–12 h
+  target: Snaps
+done_when:
+- [Whites, 'Stiff, glossy peak that holds its tip — not dry or crumbly']
+- [Batter, 'Piped line keeps a rounded top; doesn''t spread']
+- [Baked, 'Pale gold, dry and springy, lifts clean off the parchment']
+- [Dried, 'Snaps in half; no bend']
+keeps:
+- [Room temp, '2 weeks, airtight, once dried']
+- [Frozen, '1 month, airtight; re-crisp 3 min at 150 °C']
+fixes:
+  sub: Most likely cause first
+  rows:
+  - [Spread flat, 'Whites under-whipped or batter over-folded. Stiff peaks; fold to just combined']
+  - ['Tacky, bends', 'Under-baked or under-dried. A minute more; dry overnight uncovered']
+  - [Cracked tops, 'Oven hot, or dusted too thick. Check the oven; one even pass of sugar']
+  - [Hollow, 'Whites over-whipped past glossy; batter collapsed in the bag. Pipe promptly']
+trials:
+  sub: Change one variable per trial
+  notes:
+  - A is the sheet as written.
+  - B double-dusts — a second pass of sugar after two minutes — for a pearled, crisper crust.
+  - C swaps 15 g flour for cornstarch, a lighter, drier finger.
+  columns: [Trial A, Trial B, Trial C]
+  rows:
+  - {var: Date, values: ['', '', '']}
+  - {var: Change, values: [As written, Double dust, 'Starch 15 g']}
+  - {var: Fingers · count, values: ['', '', '']}
+  - {var: Baked weight, values: ['', '', '']}
+  - {var: Dip test · CR-002, values: ['', '', '']}
+revisions:
+- {rev: Rev 01, date: '2026-09-28', change: First issue, scaled ×2 from The Petite Cook, source: —}
+pages:
+- [formula]
+- [method, done_when]
+- [fixes, trials, revisions, batch_log]
+batch_log: [Date, Batch ×, Whites g, Oven, Bake time, Count, Baked g, Notes]
