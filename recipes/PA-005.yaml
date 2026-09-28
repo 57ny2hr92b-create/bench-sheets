@@ -83,7 +83,7 @@ method:
   time: —
   target: Holds a line
 - head: Pipe.
-  text: Bag the batter. Pipe 10 cm fingers, 2.5 cm wide, 3 cm apart; 12 a sheet.
+  text: Bag the batter. Pipe 10 cm fingers (Fig. 1); 12 a sheet, 3 cm apart (Fig. 2).
   time: —
   target: 12 a sheet
 - head: Dust.
@@ -102,7 +102,6 @@ method:
   target: Snaps
 done_when:
 - [Whites, 'Stiff, glossy peak that holds its tip — not dry or crumbly']
-- [Batter, 'Piped line keeps a rounded top; doesn''t spread']
 - [Baked, 'Pale gold, dry and springy, lifts clean off the parchment']
 - [Dried, 'Snaps in half; no bend']
 keeps:
@@ -114,7 +113,6 @@ fixes:
   - [Spread flat, 'Whites under-whipped or batter over-folded. Stiff peaks; fold to just combined']
   - ['Tacky, bends', 'Under-baked or under-dried. A minute more; dry overnight uncovered']
   - [Cracked tops, 'Oven hot, or dusted too thick. Check the oven; one even pass of sugar']
-  - [Hollow, 'Whites over-whipped past glossy; batter collapsed in the bag. Pipe promptly']
 trials:
   sub: Change one variable per trial
   notes:
@@ -125,13 +123,24 @@ trials:
   rows:
   - {var: Date, values: ['', '', '']}
   - {var: Change, values: [As written, Double dust, 'Starch 15 g']}
-  - {var: Fingers · count, values: ['', '', '']}
   - {var: Baked weight, values: ['', '', '']}
   - {var: Dip test · CR-002, values: ['', '', '']}
+figures:
+  title: Figures
+  sub: Fig. 1 actual size
+  items:
+  - svg: PA-005-fig1.svg
+    label: Fig. 1
+    caption: Piping guide, actual size, 10 × 2.5 cm. Hold the sheet against the parchment.
+  - svg: PA-005-fig2.svg
+    label: Fig. 2
+    caption: Half sheet, 12 fingers, 3 cm apart. Reduced.
 revisions:
 - {rev: Rev 01, date: '2026-09-28', change: First issue, scaled ×2 from The Petite Cook, source: —}
+- {rev: Rev 02, date: '2026-09-28', change: Figs. 1–2 added, source: —}
+revisions_blank: false
 pages:
 - [formula]
-- [method, done_when]
-- [fixes, trials, revisions, batch_log]
+- [method, figures]
+- [done_when, fixes, trials, revisions, batch_log]
 batch_log: [Date, Batch ×, Whites g, Oven, Bake time, Count, Baked g, Notes]
