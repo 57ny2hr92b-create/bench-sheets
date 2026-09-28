@@ -184,3 +184,12 @@ def test_tray_gap_pieces_stay_inside_the_pan():
         assert x >= px and y >= py and x + w <= px + pw and y + h <= py + ph
     xs = sorted({float(r['x']) for r in pieces}); ws = float(pieces[0]['width'])
     assert abs((xs[0] - px) - ((px + pw) - (xs[-1] + ws))) < 0.6   # centred left to right
+
+
+def test_scale_by_weight_names_its_basis(built):
+    """scale_by_weight as a mapping {basis, of} names both words in the rail box; true keeps dough/flour."""
+    proj = ROOT / 'out' / 'project'
+    cf = (proj / 'CF-002-1.dc.html').read_text()
+    assert 'g batch ÷ 1.91' in cf and 'g sugars</span>' in cf and 'Then sugars × each %' in cf
+    br = (proj / 'BR-024-1.dc.html').read_text()
+    assert 'g dough ÷' in br and 'g flour</span>' in br

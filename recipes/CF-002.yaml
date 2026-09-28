@@ -1,0 +1,182 @@
+code: CF-002
+kind: sheet
+status: trial            # draft -> trial -> standard (-> retired); only trial and standard reach the site
+name: Butterscotch lollypops
+cls: Confection · Cream candy, hard crack
+lede: A cream caramel cooked to hard crack, poured as a slab and cut square with a stick in the side, after
+  See's. Cream, butter and a little vinegar keep it tough rather than glassy; it shatters, then softens.
+source: House formula · Original
+contains:
+- Milk
+equipment:
+- 8 × 8 in pan, foil-lined
+- 3 L heavy pot
+- Candy thermometer
+- 36 paper lollipop sticks
+- Bench knife
+key_figures:
+- label: Yield · pops
+  value: 36 · ≈17 g
+- label: Cook · 300 °F
+  value: 150 °C
+- label: At 4,700 ft · 291 °F
+  value: 145 °C
+- label: Pan · 8 × 8 in
+  value: 6 × 6 cut
+- label: Fat · of candy
+  value: ≈16%
+method_rail:
+- sub: Tick each step as done
+  notes:
+  - Stir the whole cook. Brown sugar and cream scorch on the pot floor if it sits.
+formula:
+  basis: '% · sugars = 100'
+  notes:
+  - See's panel reads sugar, corn syrup, cream, chocolate, brown sugar, butter, vinegar, salt. Same order here.
+  - Corn syrup high, cream and vinegar in, butter modest. That is the tough-not-glassy bite.
+  - 'Idaho Falls, 4,700 ft: pull at 291 °F / 145 °C. Sea-level target is 300 °F.'
+  - Silicone lollipop molds instead of the slab → fill to 15–20 g and set the sticks at once.
+  - † Doesn't scale in a straight line past 2×.
+  scale_by_weight: {basis: sugars, of: batch}
+  parts:
+  - id: A
+    name: Candy
+    rows:
+    - {name: Granulated sugar, g: 300, basis: true}
+    - {name: Light brown sugar, note: packed, g: 100, basis: true}
+    - {name: Light corn syrup, g: 150}
+    - {name: Heavy cream, note: warmed, g: 140}
+    - {name: Unsalted butter, g: 60}
+    - {name: Cider vinegar, g: 5}
+    - {name: Fine salt, g: 3}
+    - {name: Vanilla extract, note: 'off heat', g: 4, dagger: true}
+  - id: B
+    name: Pan
+    outside: true
+    rows:
+    - {name: Butter, note: on the foil, g: 5}
+  total: {label: Total in the pot}
+variants:
+  title: Variants
+  sub: Each as % of the batch
+  of: batch
+  notes:
+  - One variant per batch. A row's note says whether it replaces or adds.
+  - Honey pulls the set softer. The honey pops cook 5 °F higher and wrap the same day.
+  items:
+  - name: Honey and flake salt
+    rows:
+    - {name: Honey, note: 'for 75 g corn syrup', g: 75}
+    - {name: Flake salt, note: on top, g: 2, dagger: true}
+    steps:
+    - In with the syrup, step 02. Pull at 305 °F.
+    - Salt over the slab after the pour.
+  - name: Burnt honey
+    rows:
+    - {name: Honey, note: 'for 75 g corn syrup', g: 75}
+    steps:
+    - Honey alone first, to deep amber (160 °C).
+    - Cream in to stop it; then the rest. Pull at 305 °F.
+  - name: Brown butter
+    rows:
+    - {name: Unsalted butter, note: extra, g: 15}
+    steps:
+    - All 75 g butter to nut-brown before the sugars go in.
+  - name: Chocolate
+    rows:
+    - {name: Dark chocolate, note: 70% chopped, g: 60}
+    - {name: Cocoa powder, note: Dutch, g: 8}
+    steps:
+    - Both in off the heat with the vanilla; stir until smooth.
+  - name: Café latte
+    rows:
+    - {name: Instant espresso, g: 6}
+    steps:
+    - Dissolved in the warm cream at step 03.
+  - name: Malted milk
+    rows:
+    - {name: Malted milk powder, g: 30}
+    steps:
+    - Into the warm cream, step 03. Stir harder; it catches.
+method:
+- head: Prep.
+  text: Line the pan with foil, butter it. Lay out 36 sticks. Clip the thermometer to the pot.
+  time: 5 min
+  target: Foil, not paper
+- head: Melt.
+  text: Butter, both sugars, corn syrup, vinegar and salt in the pot. Medium heat, stirring, to a syrup.
+  time: 3–4 min
+  target: Sugar dissolved
+- head: Cream.
+  text: Warm the cream. Add it in a stream, stirring; it foams, then settles into a boil.
+  time: 1 min
+  target: Full boil
+- head: Cook.
+  text: Medium heat, stirring the floor of the pot the whole time. Wash the sides once with a wet brush.
+  time: 15–20 min
+  target: 150 °C
+  target_f: 300 °F
+- head: Watch.
+  text: From 280 °F the last 20 degrees go fast and the colour deepens. Pull at the mark, not the colour.
+  time: —
+  target: Deep amber
+- head: Finish.
+  text: Off heat. Vanilla and any off-heat variant in; stir until the foam drops.
+  time: 30 s
+  target: Foam settled
+- head: Pour.
+  text: Into the pan in one pass. Don't scrape the pot; tilt to level. Flake salt now if the variant has it.
+  time: 1 min
+  target: ≈1 cm slab
+- head: Score.
+  text: When the surface has skinned, score 6 × 6 with a buttered bench knife, pressing to the foil.
+  time: 3–5 min
+  target: Skinned, still soft
+- head: Sticks.
+  text: Firm but yielding. Push a stick 2 cm into one side of each square along its score line.
+  time: 8–12 min
+  target: Leather-firm
+- head: Cure.
+  text: Cool fully. Lift on the foil, snap along the scores, twist the squares apart.
+  time: 1 h
+  target: Room temp
+- head: Wrap.
+  text: Cellophane, twisted. Airtight tin; nothing in the fridge, it weeps.
+  time: —
+  target: Same day
+done_when:
+- [Thermometer, '300 °F · 150 °C (291 °F here)']
+- [Cold water, 'Hard, brittle threads']
+- [Colour, 'Deep amber, not mahogany']
+- ['Bite, cured', 'Shatters, then softens']
+keeps:
+- [Wrapped, 'Airtight, 3–4 weeks']
+- [Honey pops, 'Wrap same day; 2 weeks']
+- [Fridge, 'No · weeps']
+fixes:
+  sub: Most likely cause first
+  rows:
+  - ['Soft, sticky', 'Under the mark, or a wet day. Recook not possible; wrap fast']
+  - [Grainy, 'Crystals from the sides. Wash them; no stirring above the line']
+  - [Scorched taste, 'Stopped stirring, or heat high. Medium; stir the floor']
+  - [Sticks loose, 'Pushed too late. Sticks at leather-firm, 8–12 min']
+  - [Slab cracked, 'Scored late. Score at the skin, 3–5 min']
+trials:
+  sub: Change one variable per trial
+  notes:
+  - A is the sheet as written. B is a lower pull for a softer bite. C sets sticks in a mold.
+  columns: [Trial A, Trial B, Trial C]
+  rows:
+  - {var: Date, values: ['', '', '']}
+  - {var: Change, values: [As written, 'Pull 5 °F lower', 'Silicone mold']}
+  - {var: Bite · stick, values: ['', '', '']}
+  - {var: Staff rating 1–5, values: ['', '', '']}
+revisions:
+- {rev: Rev 01, date: '2026-09-28', change: First issue, source: —}
+pages:
+- [formula]
+- [method:1-6, variants]
+- [method:7-11, done_when, fixes, trials, revisions]
+tent:
+  name: Butterscotch lollypops
+  note: Contains milk. Variant as labeled on the tin.

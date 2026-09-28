@@ -10,7 +10,7 @@
 {% for sec in page.sections %}
 {% if sec.type == 'formula' %}
 {% set F = r.formula %}
-{% call m.section_open('Formula', F.basis, F.notes, first_note_margin=F.note_gap|default(10)) %}{% if F.scale_by_pan %}{{ m.scale_by_pan(F.scale_by_pan) }}{% endif %}{% if F.scale_by_weight %}{{ m.scale_by_weight(F.total.divisor, F.scale_by_weight if F.scale_by_weight is string else 'flour') }}{% endif %}{% endcall %}
+{% call m.section_open('Formula', F.basis, F.notes, first_note_margin=F.note_gap|default(10)) %}{% if F.scale_by_pan %}{{ m.scale_by_pan(F.scale_by_pan) }}{% endif %}{% if F.scale_by_weight %}{{ m.scale_by_weight(F.total.divisor, (F.scale_by_weight.basis if F.scale_by_weight is mapping else (F.scale_by_weight if F.scale_by_weight is string else 'flour')), (F.scale_by_weight.of if F.scale_by_weight is mapping else 'dough')) }}{% endif %}{% endcall %}
 {{ m.formula_table(F) }}
 </section>
 {% elif sec.type == 'components' %}

@@ -95,7 +95,8 @@ formula:
   basis: '% · flour = 100'
   notes: [† Doesn't scale in a straight line past 2×.]
   scale_by_pan: [[9 × 13 in, × 0.5], [Half sheet, × 1]]     # optional rail box
-  scale_by_weight: true         # optional rail box; divisor computed from the total
+  scale_by_weight: true         # optional rail box; divisor computed from the total. Reads "g dough ÷ n = g flour";
+                                # a string names the basis (sugars); {basis: sugars, of: batch} names both words
   stages: [Biga, Primo, Secondo] # optional; rows then give g as a list per stage
   parts:
   - id: A

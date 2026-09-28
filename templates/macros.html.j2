@@ -71,10 +71,10 @@ class Component extends DCLogic {
 {% endfor %}</div>
 {%- endmacro %}
 
-{% macro scale_by_weight(divisor, basis_name='flour') -%}
+{% macro scale_by_weight(divisor, basis_name='flour', total_name='dough') -%}
 <div style="display: flex; flex-direction: column; margin-top: 14px; font-size: 12px; line-height: 16px; font-variant-numeric: tabular-nums">
 <div style="padding-bottom: 4px; border-bottom: 1px solid #000000; font-weight: 600">Scale by weight</div>
-<div style="display: flex; align-items: baseline; gap: 4px; padding-top: 8px"><span style="flex-grow: 1; height: 14px; border-bottom: 1px solid #000000"></span><span>g dough ÷ {{ divisor }}</span></div>
+<div style="display: flex; align-items: baseline; gap: 4px; padding-top: 8px"><span style="flex-grow: 1; height: 14px; border-bottom: 1px solid #000000"></span><span>g {{ total_name }} ÷ {{ divisor }}</span></div>
 <div style="display: flex; align-items: baseline; gap: 4px; padding-top: 8px">= <span style="flex-grow: 1; height: 14px; border-bottom: 1px solid #000000"></span><span>g {{ basis_name }}</span></div>
 <span style="color: #5C5C5C; padding-top: 6px">Then {{ basis_name }} × each %.</span><span style="color: #5C5C5C; padding-top: 4px">† Trial past 2×.</span>
 </div>
