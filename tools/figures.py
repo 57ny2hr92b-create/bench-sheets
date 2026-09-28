@@ -133,20 +133,14 @@ def cut(spec):
     body = []  # 'long' | 'short': a parchment strip over the pan, hatched where it overhangs
     if sling:
         ov = 14
-        # the strip's edges inside the pan are hairline grey so the black outline stays the pan;
-        # the overhanging tabs are outlined and hatched
+        # the strip is cut to the pan's width, so inside the pan it has no edges of its own; only the
+        # overhanging tabs show, outlined and hatched, the full height (or width) of the pan
         if sling == 'long':
-            sy, sh = y0 + H * 0.2, H * 0.6
-            body += [f'<line x1="{x0}" x2="{x0+W:.1f}" y1="{sy:.1f}" y2="{sy:.1f}" stroke="{RULE}"/>',
-                     f'<line x1="{x0}" x2="{x0+W:.1f}" y1="{sy+sh:.1f}" y2="{sy+sh:.1f}" stroke="{RULE}"/>',
-                     f'<rect x="{x0-ov:.1f}" y="{sy:.1f}" width="{ov}" height="{sh:.1f}"/>', _hatch(x0 - ov, sy, ov, sh, uid='sl'),
-                     f'<rect x="{x0+W:.1f}" y="{sy:.1f}" width="{ov}" height="{sh:.1f}"/>', _hatch(x0 + W, sy, ov, sh, uid='sr')]
+            body += [f'<rect x="{x0-ov:.1f}" y="{y0}" width="{ov}" height="{H:.1f}"/>', _hatch(x0 - ov, y0, ov, H, uid='sl'),
+                     f'<rect x="{x0+W:.1f}" y="{y0}" width="{ov}" height="{H:.1f}"/>', _hatch(x0 + W, y0, ov, H, uid='sr')]
         elif sling == 'short':
-            sx, sw = x0 + W * 0.2, W * 0.6
-            body += [f'<line x1="{sx:.1f}" x2="{sx:.1f}" y1="{y0}" y2="{y0+H:.1f}" stroke="{RULE}"/>',
-                     f'<line x1="{sx+sw:.1f}" x2="{sx+sw:.1f}" y1="{y0}" y2="{y0+H:.1f}" stroke="{RULE}"/>',
-                     f'<rect x="{sx:.1f}" y="{y0-ov:.1f}" width="{sw:.1f}" height="{ov}"/>', _hatch(sx, y0 - ov, sw, ov, uid='st'),
-                     f'<rect x="{sx:.1f}" y="{y0+H:.1f}" width="{sw:.1f}" height="{ov}"/>', _hatch(sx, y0 + H, sw, ov, uid='sb')]
+            body += [f'<rect x="{x0}" y="{y0-ov:.1f}" width="{W:.1f}" height="{ov}"/>', _hatch(x0, y0 - ov, W, ov, uid='st'),
+                     f'<rect x="{x0}" y="{y0+H:.1f}" width="{W:.1f}" height="{ov}"/>', _hatch(x0, y0 + H, W, ov, uid='sb')]
         else:
             raise FigureError("sling must be 'long' or 'short'")
     body.append(f'<rect x="{x0}" y="{y0}" width="{W:.1f}" height="{H:.1f}" stroke-width="1.5"/>')
@@ -163,8 +157,8 @@ def cut(spec):
                     f'<text {FONT} text-anchor="middle" x="{mx:.1f}" y="{ty-18}">1</text>')
         body.append(f'<line x1="{lx-14}" x2="{lx-4}" y1="{my:.1f}" y2="{my:.1f}"/><path d="M{lx-8} {my-3:.1f} L{lx-4} {my:.1f} L{lx-8} {my+3:.1f}"/>'
                     f'<text {FONT} text-anchor="end" x="{lx-18}" y="{my+4:.1f}">2</text>')
-    body.append(_dim_h(x0, x0 + W / cols, y0 + H + 10, f'{pw/cols:.0f} mm', above=False))
-    body.append(_dim_v(x0 + W + 10, y0 + H - H / rows, y0 + H, f'{ph/rows:.0f} mm'))
+    body.append(_dim_h(x0, x0 + W / cols, y0 + H + 10 + (14 if sling == 'short' else 0), f'{pw/cols:.0f} mm', above=False))
+    body.append(_dim_v(x0 + W + 10 + (14 if sling == 'long' else 0), y0 + H - H / rows, y0 + H, f'{ph/rows:.0f} mm'))
     label = (f'{pname}, {pw/10:.0f} by {ph/10:.0f} centimetres, ' + (f'parchment sling over the {sling} sides, ' if sling else '')
              + f'cut {cols} by {rows} into {cols*rows} pieces of {pw/cols:.0f} by {ph/rows:.0f} millimetres')
     return _svg(x0 + W + 70 + (14 if sling == 'long' else 0), y0 + H + 30 + (14 if sling == 'short' else 0), '\n'.join(body), label)
