@@ -136,9 +136,7 @@ figures:
   title: Cut map
   sub: Drawn to scale
   items:
-  - svg: CK-002-fig1.svg
-    label: Fig. 1
-    caption: Sling and cut. Cut only after the full hour.
+  - {gen: cut, pan: 9x13, cols: 6, rows: 4, sling: long, label: Fig. 1, caption: 'Lift out by the sling; cut 6 × 4 only after the full hour.'}
 done_when:
 - - Top
   - Puffed, lightly browned
@@ -198,4 +196,8 @@ revisions:
 - rev: Rev 02
   date: '2026-09-27'
   change: Revisions and batch log on page 3
+  source: Review
+- rev: Rev 03
+  date: '2026-09-28'
+  change: Generated cut map
   source: Review

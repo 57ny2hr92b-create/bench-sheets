@@ -8,7 +8,7 @@ frosting), never on anything measured against.
 A figure item with `gen:` is rendered here at build time; `svg:` items are files in recipes/figures/.
 
   {gen: tray,    pan: half, cols: 4, rows: 3, piece: 45, spread: 90}          # portions on a sheet, mm
-  {gen: cut,     pan: 9x13, cols: 6, rows: 4}                                   # cut map; first two cuts numbered
+  {gen: cut,     pan: 9x13, cols: 6, rows: 4, sling: long}                      # cut map; first two cuts numbered; optional parchment sling
   {gen: section, layers: [[sponge, 25], [filling, 8], [sponge, 25]], frosting: 4, width: 120}
   {gen: dimensions, width: 300, height: 200, thickness: 5}                     # rolled sheet, top + edge
   {gen: fold, kind: letter}                                                      # letter | book | single
@@ -127,8 +127,22 @@ def cut(spec):
     if cols < 1 or rows < 1: raise FigureError('cols and rows must be ≥ 1')
     s = float(spec.get('scale', 0.5))
     W, H = pw * s, ph * s
-    x0, y0 = 36.5, 28.5
-    body = [f'<rect x="{x0}" y="{y0}" width="{W:.1f}" height="{H:.1f}" stroke-width="1.5"/>']
+    sling = spec.get('sling')
+    x0 = 36.5 + (14 if sling == 'long' else 0); y0 = 28.5 + (14 if sling == 'short' else 0)
+    body = []  # 'long' | 'short': a parchment strip over the pan, hatched where it overhangs
+    if sling:
+        ov = 14
+        if sling == 'long':
+            sx, sy, sw, sh = x0 - ov, y0 + H * 0.2, W + 2 * ov, H * 0.6
+            body += [f'<rect x="{sx:.1f}" y="{sy:.1f}" width="{sw:.1f}" height="{sh:.1f}"/>',
+                     _hatch(sx, sy, ov, sh, uid='sl'), _hatch(x0 + W, sy, ov, sh, uid='sr')]
+        elif sling == 'short':
+            sx, sy, sw, sh = x0 + W * 0.2, y0 - ov, W * 0.6, H + 2 * ov
+            body += [f'<rect x="{sx:.1f}" y="{sy:.1f}" width="{sw:.1f}" height="{sh:.1f}"/>',
+                     _hatch(sx, sy, sw, ov, uid='st'), _hatch(sx, y0 + H, sw, ov, uid='sb')]
+        else:
+            raise FigureError("sling must be 'long' or 'short'")
+    body.append(f'<rect x="{x0}" y="{y0}" width="{W:.1f}" height="{H:.1f}" stroke-width="1.5"/>')
     for c in range(1, cols):
         x = x0 + W * c / cols
         body.append(f'<line x1="{x:.1f}" x2="{x:.1f}" y1="{y0}" y2="{y0+H:.1f}" {DASH}/>')
@@ -137,14 +151,16 @@ def cut(spec):
         body.append(f'<line x1="{x0}" x2="{x0+W:.1f}" y1="{y:.1f}" y2="{y:.1f}" {DASH}/>')
     if spec.get('first_cuts', True) and cols % 2 == 0 and rows % 2 == 0:
         mx, my = x0 + W / 2, y0 + H / 2
-        body.append(f'<line x1="{mx:.1f}" x2="{mx:.1f}" y1="{y0-14}" y2="{y0-4}"/><path d="M{mx-3:.1f} {y0-8} L{mx:.1f} {y0-4} L{mx+3:.1f} {y0-8}"/>'
-                    f'<text {FONT} text-anchor="middle" x="{mx:.1f}" y="{y0-18}">1</text>')
-        body.append(f'<line x1="{x0-14}" x2="{x0-4}" y1="{my:.1f}" y2="{my:.1f}"/><path d="M{x0-8} {my-3:.1f} L{x0-4} {my:.1f} L{x0-8} {my+3:.1f}"/>'
-                    f'<text {FONT} text-anchor="end" x="{x0-18}" y="{my+4:.1f}">2</text>')
+        ty = y0 - (14 if sling == 'short' else 0); lx = x0 - (14 if sling == 'long' else 0)
+        body.append(f'<line x1="{mx:.1f}" x2="{mx:.1f}" y1="{ty-14}" y2="{ty-4}"/><path d="M{mx-3:.1f} {ty-8} L{mx:.1f} {ty-4} L{mx+3:.1f} {ty-8}"/>'
+                    f'<text {FONT} text-anchor="middle" x="{mx:.1f}" y="{ty-18}">1</text>')
+        body.append(f'<line x1="{lx-14}" x2="{lx-4}" y1="{my:.1f}" y2="{my:.1f}"/><path d="M{lx-8} {my-3:.1f} L{lx-4} {my:.1f} L{lx-8} {my+3:.1f}"/>'
+                    f'<text {FONT} text-anchor="end" x="{lx-18}" y="{my+4:.1f}">2</text>')
     body.append(_dim_h(x0, x0 + W / cols, y0 + H + 10, f'{pw/cols:.0f} mm', above=False))
     body.append(_dim_v(x0 + W + 10, y0 + H - H / rows, y0 + H, f'{ph/rows:.0f} mm'))
-    label = f'{pname}, {pw/10:.0f} by {ph/10:.0f} centimetres, cut {cols} by {rows} into {cols*rows} pieces of {pw/cols:.0f} by {ph/rows:.0f} millimetres'
-    return _svg(x0 + W + 70, y0 + H + 30, '\n'.join(body), label)
+    label = (f'{pname}, {pw/10:.0f} by {ph/10:.0f} centimetres, ' + (f'parchment sling over the {sling} sides, ' if sling else '')
+             + f'cut {cols} by {rows} into {cols*rows} pieces of {pw/cols:.0f} by {ph/rows:.0f} millimetres')
+    return _svg(x0 + W + 70 + (14 if sling == 'long' else 0), y0 + H + 30 + (14 if sling == 'short' else 0), '\n'.join(body), label)
 
 
 # ---------------------------------------------------------------- section

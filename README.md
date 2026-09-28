@@ -112,7 +112,7 @@ schedule: {sub: ..., notes: [...], svg: BR-023-schedule.svg}   # optional
 figures: {title: Figures, sub: ..., items: [{svg: BR-023-fig1.svg, label: Fig. 1, caption: ...}]}   # optional
 # a figure item may be generated instead of drawn: give it gen: and its parameters (all mm), no svg:
 #   {gen: tray, pan: half, cols: 4, rows: 3, piece: 45, spread: 90, label: Fig. 1, caption: ...}
-#   {gen: cut, pan: 9x13, cols: 6, rows: 4, ...}            pans: half quarter 9x13 8x8 9x9 9x5, or size: [w, h]
+#   {gen: cut, pan: 9x13, cols: 6, rows: 4, sling: long, ...}   pans: half quarter 9x13 8x8 9x9 9x5, or size: [w, h]
 #   {gen: section, layers: [[sponge, 25], [filling, 8], [sponge, 25]], frosting: 4, width: 120, ...}
 #   {gen: dimensions, width: 300, height: 200, thickness: 5, ...}
 #   {gen: fold, kind: letter, ...}                          letter | book | single

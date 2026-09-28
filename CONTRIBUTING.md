@@ -71,7 +71,9 @@ row whenever the basis names flour.
   sheet cake) → `gen: cut`; layers with stated heights (layer cakes, tiramisu, tarts) → `gen: section`;
   dough rolled to a size or folded → `gen: dimensions` or `gen: fold`; anything portioned by eye →
   `gen: gauge` at actual size. Nothing else gets one — a Bundt, a loaf, a plain cookie sheet do
-  without. Put the figure beside the steps it illustrates (a section beside the assembly steps), never
+  without, and an even grid the yield already states ("half sheet, 4 × 4") can stay words when the
+  sheet is full; a cut map earns its space when the cut isn't obvious (mixed sizes, an order that
+  matters, a sling to lift by). Put the figure beside the steps it illustrates (a section beside the assembly steps), never
   after the checks. One figure usually; two at most, side by side, sharing a height and fitting 520 px
   together — if they don't, keep the one that adds more. Vocabulary: solid = edges, dashed 3/2 = fold
   or cut, arrow = movement, ticked = dimension, 45° hatch = filling, sparse stipple = crumb.
