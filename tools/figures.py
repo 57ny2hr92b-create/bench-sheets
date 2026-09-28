@@ -121,8 +121,10 @@ def tray(spec):
         gap = float(gap)
         if gap < 0: raise FigureError('gap must be ≥ 0 mm')
         pc, pr = ((plen if oblong else piece) + gap) * s, ((pwid if oblong else piece) + gap) * s
-        bx, by = (x0 + (W - pc * cols + gap * s) / 2 - pc / 2, y0 + (H - pr * rows + gap * s) / 2 - pr / 2)
-        if pc * cols - gap * s > W + 0.5 or pr * rows - gap * s > H + 0.5: raise FigureError(f'{cols} × {rows} pieces with a {gap:g} mm gap do not fit the {pname}')
+        bw, bh = pc * cols - gap * s, pr * rows - gap * s          # the block of pieces, edge to edge
+        if bw > W + 0.5 or bh > H + 0.5: raise FigureError(f'{cols} × {rows} pieces with a {gap:g} mm gap do not fit the {pname}')
+        # centre the block in the pan; cells are pitch-wide with the piece centred, so the grid origin sits half a gap left of the block
+        bx, by = x0 + (W - bw) / 2 - gap * s / 2, y0 + (H - bh) / 2 - gap * s / 2
     else:
         pc, pr = W / cols, H / rows
         bx, by = x0, y0

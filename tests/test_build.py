@@ -169,3 +169,18 @@ def test_single_step_page_range():
     pages = build.plan_pages(r)
     steps = [sec for sec in pages[2]['sections'] if sec['type'] == 'method'][0]['steps']
     assert [s['n'] for s in steps] == [10]
+
+
+def test_tray_gap_pieces_stay_inside_the_pan():
+    """Packed pieces are centred in the pan and never cross its edge (they did once)."""
+    import re
+    from tools import figures
+    svg = figures.render(dict(gen='tray', pan='half', cols=3, rows=4, piece=[100, 25], gap=30, scale=0.35))
+    rects = [dict(re.findall(r'(\w+)="([-\d.]+)"', r)) for r in re.findall(r'<rect[^>]*>', svg)]
+    pan, pieces = rects[0], rects[1:]
+    px, py, pw, ph = (float(pan[k]) for k in ('x', 'y', 'width', 'height'))
+    for r in pieces:
+        x, y, w, h = (float(r[k]) for k in ('x', 'y', 'width', 'height'))
+        assert x >= px and y >= py and x + w <= px + pw and y + h <= py + ph
+    xs = sorted({float(r['x']) for r in pieces}); ws = float(pieces[0]['width'])
+    assert abs((xs[0] - px) - ((px + pw) - (xs[-1] + ws))) < 0.6   # centred left to right
