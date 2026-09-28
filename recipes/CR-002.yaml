@@ -4,8 +4,7 @@ status: trial
 name: Burnt honey and hazelnut tiramisu
 cls: Cream & custard · Layered, no-bake
 dense: true
-lede: Tiramisu built on burnt honey instead of coffee. One batch of honey, taken to mahogany, runs
-  through the soak, the sabayon and the hazelnuts. Cream cooked to 70 °C; no alcohol.
+lede: Tiramisu on burnt honey, not coffee. One batch, taken to mahogany, runs through soak, sabayon and nuts.
 source: House formula · Original
 contains:
 - Wheat
@@ -23,7 +22,7 @@ key_figures:
 - label: Yield · pieces
   value: '9'
 - label: Cream
-  value: 923 g
+  value: 922 g
 - label: Honey / mascarpone
   value: 36%
 - label: Plan · plus setting
@@ -42,7 +41,7 @@ formula:
   - 'A is made once and split: 120 g into the soak, 40 g into the sabayon, 20 g over the nuts.'
   - 'Honey: a dark wildflower or buckwheat burns with more character than clover. Either works.'
   - 'Altitude, 4,700 ft: water boils near 95 °C; the bain-marie still takes the sabayon to 70 °C. Nothing changes.'
-  - 'Assembly, outside the formula: 200 g crisp Italian savoiardi (≈ 24; Balocco, Vicenzi), 4 g cocoa to dust.'
+  - 'Savoiardi: crisp Italian (Balocco, Vicenzi), not soft sponge fingers. Dust with 4 g cocoa to finish.'
   - † Doesn't scale in a straight line past 2×.
   scale_by_pan:
   - {pan: 8 × 8 in, factor: '1', count: 9, bold: true}
@@ -55,7 +54,7 @@ formula:
     rows:
     - {name: Honey, note: dark if you have it, g: 180}
     - {name: Water, note: 'hot, to stop it', g: 40}
-    - {name: Fine sea salt, g: 2}
+    - {name: Fine sea salt, g: 3}
   - id: B
     name: Soak
     rows:
@@ -70,14 +69,17 @@ formula:
     - {name: Burnt honey (A), g: 40}
     - {name: Mascarpone, note: cold, g: 500, basis: true}
     - {name: Heavy cream, note: cold, g: 250}
-    - {name: Fine sea salt, g: 1}
-    subtotal: {label: Cream}
   - id: D
     name: Honeyed hazelnuts
     rows:
     - {name: Hazelnuts, note: 'raw, skin on', g: 100}
     - {name: Burnt honey (A), g: 20}
     - {name: Flaky salt, g: 2}
+  - id: E
+    name: Assembly
+    outside: true
+    rows:
+    - {name: Savoiardi, note: ≈ 24, g: 200}
 method:
 - head: Burn.
   text: Honey in the deep pan on medium-high. It foams, then darkens; swirl, don't stir.
@@ -109,7 +111,7 @@ method:
   time: 3–4 min
   target: Room temp
 - head: Mascarpone.
-  text: Loosen with a spoon; add salt. Fold the sabayon in two adds. Stop when smooth.
+  text: Loosen with a spoon. Fold the sabayon in, in two adds. Stop when smooth.
   time: —
   target: No lumps
 - head: Cream.
