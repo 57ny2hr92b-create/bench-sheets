@@ -203,8 +203,9 @@ def derive(r, recs):
             if s.get('svg'):
                 s['svg'] = (FIGS / s['svg']).read_text()
         if r.get('figures'):
+            from tools import figures as figgen
             for it in r['figures']['items']:
-                it['svg'] = (FIGS / it['svg']).read_text()
+                it['svg'] = figgen.render(it) if it.get('gen') else (FIGS / it['svg']).read_text()
         r['_pages'] = plan_pages(r)
         r.setdefault('foot', default_foot(r))
     return r

@@ -10,6 +10,7 @@ recipes/figures/    SVG figures and schedules, referenced by file name
 library.yaml        families, index rev/date
 templates/          Jinja2 templates that own the Bench Sheet markup
 tools/schema.py     lint (runs before every build)
+tools/figures.py    figure generators (tray, cut, section, dimensions, fold, gauge) for `gen:` figure items
 tools/fit.py        Chromium fit check with the real IBM Plex Sans
 fonts/              IBM Plex Sans 400/500/600 woff2, vendored (OFL) so builds never fetch
 tools/import_dc.py  one-off importer for hand-built artboards (how the first six got in)
@@ -109,6 +110,14 @@ formula:
   total: {label: Total batter}  # optional formula-wide total
 schedule: {sub: ..., notes: [...], svg: BR-023-schedule.svg}   # optional
 figures: {title: Figures, sub: ..., items: [{svg: BR-023-fig1.svg, label: Fig. 1, caption: ...}]}   # optional
+# a figure item may be generated instead of drawn: give it gen: and its parameters (all mm), no svg:
+#   {gen: tray, pan: half, cols: 4, rows: 3, piece: 45, spread: 90, label: Fig. 1, caption: ...}
+#   {gen: cut, pan: 9x13, cols: 6, rows: 4, ...}            pans: half quarter 9x13 8x8 9x9 9x5, or size: [w, h]
+#   {gen: section, layers: [[sponge, 25], [filling, 8], [sponge, 25]], frosting: 4, width: 120, ...}
+#   {gen: dimensions, width: 300, height: 200, thickness: 5, ...}
+#   {gen: fold, kind: letter, ...}                          letter | book | single
+#   {gen: gauge, diameters: [30, 40, 50], ...}              actual size, 5 cm check bar
+# tools/figures.py holds the generators; scale: overrides the default px per mm.
 done_when: [[Top, Springs back], [Inside, 96 °C]]
 keeps: [[Room temp, 2 days], [Frozen, 1 month]]
 fixes: {sub: Most likely cause first, label_width: 128, rows: [[Sunk middle, Underbaked; …]]}   # optional
@@ -139,7 +148,7 @@ Card steps are one line of text plus `time` and `target`; keep the text under ~7
 What the lint enforces: codes and file names agree, the family exists, five key figures, every
 row has grams (or `—`), stage lists match the stage count, a flour basis has a `basis: true` row,
 step heads end in a period, `pages` cover every method step exactly once, figure files exist,
-revisions run 01, 02, … with ISO dates, cited codes exist, every variant has a name and rows with grams,
+revisions run 01, 02, … with ISO dates, cited codes exist, every variant has a name and rows with grams, every `gen:` figure renders,
 `pages` reads in bake order and places done_when and revisions.
 
 ## Conventions the renderer owns

@@ -61,16 +61,23 @@ row whenever the basis names flour.
   usually means `fixes` belongs on page 2.
 - **Sections read in bake order.** Nothing that judges the bake — Done when, If it goes wrong —
   comes before the last method step, and figures and variants sit beside the steps that point to
-  them. Trials is the exception: the variable is chosen before mixing, so it may sit beside the
-  day-1 steps to balance a long sheet. The lint refuses a `pages` list that breaks this; balance
+  them. Trials and the batch log are the exceptions — a chosen variable and a blank form judge
+  nothing — so either may sit beside the day-1 steps to balance a long sheet. The lint refuses a `pages` list that breaks this; balance
   pages by moving trials or splitting the method, never by pulling a check above the steps.
 - A card holds about 10 formula rows and 5 one-line steps. Past nine rows the renderer tightens row
   padding on its own; past that, move a row into a step or the card note.
-- Figures only when words need geometry — fold, dimension, portion map, score, cross-section, tray
-  layout to scale, shaping frames, temperature curve, actual-size guide with a 5 cm check bar, hang.
-  Solid = edges, dashed 3/2 = fold or cut, arrow = movement, ticked = dimension, 45° hatch = filling.
-  Start from an existing SVG in `recipes/figures/`; side-by-side figures share one height; two per
-  page at most.
+- **A sheet gets a figure when its data implies one**, and the generators make that cheap:
+  portions on a pan (cookies, rolls, meringues) → `gen: tray`; a slab cut into pieces (bars, focaccia,
+  sheet cake) → `gen: cut`; layers with stated heights (layer cakes, tiramisu, tarts) → `gen: section`;
+  dough rolled to a size or folded → `gen: dimensions` or `gen: fold`; anything portioned by eye →
+  `gen: gauge` at actual size. Nothing else gets one — a Bundt, a loaf, a plain cookie sheet do
+  without. Put the figure beside the steps it illustrates (a section beside the assembly steps), never
+  after the checks. One figure usually; two at most, side by side, sharing a height and fitting 520 px
+  together — if they don't, keep the one that adds more. Vocabulary: solid = edges, dashed 3/2 = fold
+  or cut, arrow = movement, ticked = dimension, 45° hatch = filling, sparse stipple = crumb.
+  Imprecision only on edges that are imprecise in life (a spread frosting), never on anything measured
+  against. Hand-draw in `recipes/figures/` only what the generators can't (a schedule, a hang, a
+  temperature curve, shaping frames), starting from an existing SVG.
 
 ## Numbers
 

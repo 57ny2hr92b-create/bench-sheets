@@ -13,11 +13,11 @@ STATUSES = ('draft', 'trial', 'standard', 'retired')
 SECTIONS = {'formula', 'components', 'schedule', 'method', 'figures', 'done_when', 'fixes', 'trials', 'revisions', 'batch_log', 'variants'}
 # Reading order across the sheet (the design system's page anatomy): make it, then judge it, then record it.
 # method chunks run in step order; figures and variants may sit between chunks (the steps point to them);
-# nothing that judges the bake (done when, fixes) may come before the last method step. Trials is the
-# one movable section: its variable is chosen before mixing, so it may sit beside the steps (a long
-# two-day sheet balances its pages that way) or after the checks, but always before revisions.
+# nothing that judges the bake (done when, fixes) may come before the last method step. Two sections
+# float: trials (its variable is chosen before mixing) and the batch log (a blank form); either may sit
+# beside the steps to balance a long sheet. Trials always precedes revisions.
 ORDER = {'formula': 0, 'components': 1, 'schedule': 2, 'method': 3, 'figures': 3, 'variants': 3,
-         'done_when': 4, 'fixes': 5, 'trials': None, 'revisions': 7, 'batch_log': 8}
+         'done_when': 4, 'fixes': 5, 'trials': None, 'revisions': 7, 'batch_log': None}
 VARIANT_KEYS = {'name', 'note', 'rows', 'steps'}
 SHEET_REQUIRED = ['code', 'name', 'cls', 'lede', 'source', 'contains', 'key_figures', 'formula', 'method', 'done_when', 'keeps', 'revisions']
 CARD_REQUIRED = ['code', 'name', 'yield', 'keeps', 'basis', 'contains', 'source', 'formula', 'method', 'revisions']
@@ -110,7 +110,7 @@ def lint_recipe(r, lib, recs, L, figs_dir):
         ranks = [ORDER[n] for n in fixed]
         if ranks != sorted(ranks):
             bad = next(fixed[i] for i in range(1, len(fixed)) if ranks[i] < ranks[i - 1])
-            L.err(code, f'pages: "{bad}" comes before a section that belongs earlier — order is formula, schedule, method (figures/variants beside their steps), done_when, fixes, revisions, batch_log; trials goes anywhere after the formula and before revisions')
+            L.err(code, f'pages: "{bad}" comes before a section that belongs earlier — order is formula, schedule, method (figures/variants beside their steps), done_when, fixes, revisions; trials and batch_log float after the formula (trials before revisions)')
         if 'trials' in flat and flat.index('trials') < flat.index('formula') + 1 if 'formula' in flat else False:
             L.err(code, 'pages: trials before the formula')
         if 'trials' in flat and 'revisions' in flat and flat.index('trials') > flat.index('revisions'):
@@ -143,7 +143,12 @@ def lint_recipe(r, lib, recs, L, figs_dir):
             L.warn(code, 'recipe has variants but pages never places the variants section')
     # figures / schedule svgs exist
     for it in (r.get('figures') or {}).get('items', []):
-        if not (figs_dir / it.get('svg', '')).exists(): L.err(code, f'figure file {it.get("svg")} not found in recipes/figures/')
+        if it.get('gen'):
+            from tools import figures as figgen
+            try: figgen.render(it)
+            except figgen.FigureError as e: L.err(code, f'figure {it.get("label", "?")}: {e}')
+            except Exception as e: L.err(code, f'figure {it.get("label", "?")}: {type(e).__name__}: {e}')
+        elif not (figs_dir / it.get('svg', '')).exists(): L.err(code, f'figure file {it.get("svg")} not found in recipes/figures/ (or give it a gen:)')
     if (r.get('schedule') or {}).get('svg') and not (figs_dir / r['schedule']['svg']).exists():
         L.err(code, f'schedule svg {r["schedule"]["svg"]} not found')
     # two-column lists

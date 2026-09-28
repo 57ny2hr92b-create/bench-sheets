@@ -134,3 +134,25 @@ def test_pages_read_in_bake_order():
     ok['pages'] = [['formula'], ['method:1-7', 'trials', 'variants'], ['method:8-12', 'done_when', 'fixes', 'revisions']]
     L = schema.Lint(); schema.lint_recipe(ok, lib, recs, L, build.FIGS)
     assert not [e for e in L.errors if 'pages' in e]
+
+
+def test_generated_figures():
+    """Every generator renders a well-formed SVG from a minimal spec; bad specs are lint errors, not crashes."""
+    from tools import figures, schema
+    for spec in (dict(gen='tray', pan='half', cols=3, rows=2, piece=45, spread=100),
+                 dict(gen='cut', pan='9x13', cols=6, rows=4),
+                 dict(gen='section', layers=[['sponge', 25], ['filling', 8], ['sponge', 25]], frosting=4),
+                 dict(gen='dimensions', width=300, height=200, thickness=5),
+                 dict(gen='fold', kind='letter'),
+                 dict(gen='gauge', diameters=[30, 40, 50])):
+        out = figures.render(spec)
+        assert out.startswith('<svg') and out.rstrip().endswith('</svg>') and 'aria-label' in out, spec['gen']
+    recs = build.load_recipes(); lib = build.load_library()
+    import copy
+    bad = copy.deepcopy(recs['CR-002'])
+    bad['figures']['items'][0]['layers'] = [['sponge', -1]]
+    L = schema.Lint(); schema.lint_recipe(bad, lib, recs, L, build.FIGS)
+    assert any('figure' in e for e in L.errors)
+    # a rebuild draws the same section (seeded stipple and wobble)
+    a = figures.render(dict(gen='section', layers=[['sponge', 20]], frosting=3)); b = figures.render(dict(gen='section', layers=[['sponge', 20]], frosting=3))
+    assert a == b

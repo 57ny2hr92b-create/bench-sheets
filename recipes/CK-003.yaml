@@ -119,9 +119,7 @@ figures:
   title: Figures
   sub: To scale
   items:
-  - svg: CK-003-fig1.svg
-    label: Fig. 1
-    caption: Half sheet, 2 × 3 on 14 × 15 cm centres; dashed = baked, ≈ 10 cm.
+  - {gen: tray, pan: half, cols: 3, rows: 2, piece: 45, spread: 100, label: Fig. 1, caption: 'Half sheet, 2 × 3 on 14 × 15 cm centres; dashed = baked, ≈ 10 cm.'}
 trials:
   sub: Change one variable per trial
   notes:

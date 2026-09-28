@@ -191,9 +191,7 @@ figures:
   title: Figures
   sub: Fig. 1 to scale
   items:
-  - svg: PA-004-fig1.svg
-    label: Fig. 1
-    caption: Half sheet, 15 mounds of 4 cm; dashed = baked size.
+  - {gen: tray, pan: half, cols: 5, rows: 3, piece: 40, spread: 60, label: Fig. 1, caption: 'Half sheet, 15 mounds of 4 cm; dashed = baked size.'}
   - svg: PA-004-fig2.svg
     label: Fig. 2
     caption: Fill from the base until the puff feels heavy.

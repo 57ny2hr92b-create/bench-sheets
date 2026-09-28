@@ -134,21 +134,21 @@ method:
   text: Cocoa through a sieve; remaining hazelnuts over. Cut 3 × 3 with a hot knife.
   time: —
 done_when:
-- [Honey, 'Deep mahogany, sharp smell, thin wisps — not black']
-- [Sabayon, '70 °C; whisk lifts a ribbon that holds 3 s']
-- [Cream, 'Holds a soft mound; spreads without running']
-- [Set, 'Slice holds a clean edge after 6 h; layers stay put']
+- [Honey, 'Deep mahogany, not black']
+- [Sabayon, '70 °C; ribbon holds 3 s']
+- [Cream, 'Soft mound; spreads, no run']
+- [Set, 'Clean edge after 6 h']
 keeps:
-- [Refrigerated, '3 days, covered; best on day 2']
-- [Frozen, 'No — the cream weeps on thawing']
+- [Fridge, '3 days, covered; best day 2']
+- [Frozen, 'No; the cream weeps']
 fixes:
   sub: Most likely cause first
   rows:
-  - [Honey acrid, 'Went past mahogany. Pull it a shade earlier; the water stops it fast']
-  - [Cream loose, 'Mascarpone warm or overworked. Fold cold, stop early; chill 30 min before layering']
-  - [Cream grainy, 'Sabayon too hot, or mascarpone whipped. Hold 70 °C; loosen with a spoon only']
-  - [Bottom soggy, 'Dipped too long. One second a side; the middle stays dry']
-  - [Nuts gone soft, 'Under-toasted, or glazed while cool. Toast to golden; glaze hot']
+  - [Honey acrid, 'Past mahogany. Pull a shade earlier; the water stops it']
+  - [Cream loose, 'Mascarpone warm or overworked. Fold cold; chill 30 min first']
+  - [Cream grainy, 'Sabayon too hot, or mascarpone whipped. 70 °C; spoon only']
+  - [Bottom soggy, 'Dipped too long. One second a side; middle stays dry']
+  - [Nuts soft, 'Under-toasted, or glazed cool. Toast to golden; glaze hot']
 trials:
   sub: Change one variable per trial
   notes:
@@ -165,11 +165,17 @@ trials:
 revisions:
 - {rev: Rev 01, date: '2026-09-28', change: First issue, source: —}
 - {rev: Rev 02, date: '2026-09-28', change: Cites PA-005, source: —}
+- {rev: Rev 03, date: '2026-09-28', change: Assembly section figure, source: Review}
 revisions_blank: false
+figures:
+  title: Assembly
+  sub: Section, to scale
+  items:
+  - {gen: section, layers: [[savoiardi, 15], [cream, 20], [savoiardi, 15], [cream, 20]], width: 203, scale: 1.0, label: Fig. 1, caption: 'Bottom to top in the 8 × 8: dipped savoiardi, half the cream and hazelnuts, savoiardi, the rest of the cream. Cocoa on top; cut 3 × 3.'}
 pages:
 - [formula]
-- [method]
-- [done_when, fixes, trials, revisions, batch_log]
+- [method:1-9, trials, batch_log]
+- [method:10-13, figures, done_when, fixes, revisions]
 batch_log: [Date, Batch ×, Honey, Honey colour, Sabayon °C, Set time, Notes]
 tent:
   name: Burnt honey & hazelnut tiramisu
