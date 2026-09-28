@@ -136,7 +136,7 @@ figures:
   title: Cut map
   sub: Drawn to scale
   items:
-  - {gen: cut, pan: 9x13, cols: 6, rows: 4, sling: long, label: Fig. 1, caption: 'Lift out by the sling; cut 6 × 4 only after the full hour.'}
+  - {gen: cut, pan: 9x13, cols: 6, rows: 4, sling: long, label: Fig. 1, caption: 'Black = pan; hatched = parchment tabs to lift by; dashed = cuts, 6 × 4, only after the full hour.'}
 done_when:
 - - Top
   - Puffed, lightly browned

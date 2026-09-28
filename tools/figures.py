@@ -27,6 +27,7 @@ KINDS = {'sponge': 'stipple', 'cake': 'stipple', 'savoiardi': 'stipple', 'crust'
          'curd': 'hatch', 'jam': 'hatch', 'glaze': 'solid', 'ganache': 'solid', 'plain': 'none'}
 FONT = 'font-family="IBM Plex Sans, sans-serif" font-size="12" fill="#000000" stroke="none"'
 GREY = '#5C5C5C'
+RULE = '#BDBDBD'
 DASH = 'stroke-dasharray="3 2"'
 
 
@@ -132,14 +133,20 @@ def cut(spec):
     body = []  # 'long' | 'short': a parchment strip over the pan, hatched where it overhangs
     if sling:
         ov = 14
+        # the strip's edges inside the pan are hairline grey so the black outline stays the pan;
+        # the overhanging tabs are outlined and hatched
         if sling == 'long':
-            sx, sy, sw, sh = x0 - ov, y0 + H * 0.2, W + 2 * ov, H * 0.6
-            body += [f'<rect x="{sx:.1f}" y="{sy:.1f}" width="{sw:.1f}" height="{sh:.1f}"/>',
-                     _hatch(sx, sy, ov, sh, uid='sl'), _hatch(x0 + W, sy, ov, sh, uid='sr')]
+            sy, sh = y0 + H * 0.2, H * 0.6
+            body += [f'<line x1="{x0}" x2="{x0+W:.1f}" y1="{sy:.1f}" y2="{sy:.1f}" stroke="{RULE}"/>',
+                     f'<line x1="{x0}" x2="{x0+W:.1f}" y1="{sy+sh:.1f}" y2="{sy+sh:.1f}" stroke="{RULE}"/>',
+                     f'<rect x="{x0-ov:.1f}" y="{sy:.1f}" width="{ov}" height="{sh:.1f}"/>', _hatch(x0 - ov, sy, ov, sh, uid='sl'),
+                     f'<rect x="{x0+W:.1f}" y="{sy:.1f}" width="{ov}" height="{sh:.1f}"/>', _hatch(x0 + W, sy, ov, sh, uid='sr')]
         elif sling == 'short':
-            sx, sy, sw, sh = x0 + W * 0.2, y0 - ov, W * 0.6, H + 2 * ov
-            body += [f'<rect x="{sx:.1f}" y="{sy:.1f}" width="{sw:.1f}" height="{sh:.1f}"/>',
-                     _hatch(sx, sy, sw, ov, uid='st'), _hatch(sx, y0 + H, sw, ov, uid='sb')]
+            sx, sw = x0 + W * 0.2, W * 0.6
+            body += [f'<line x1="{sx:.1f}" x2="{sx:.1f}" y1="{y0}" y2="{y0+H:.1f}" stroke="{RULE}"/>',
+                     f'<line x1="{sx+sw:.1f}" x2="{sx+sw:.1f}" y1="{y0}" y2="{y0+H:.1f}" stroke="{RULE}"/>',
+                     f'<rect x="{sx:.1f}" y="{y0-ov:.1f}" width="{sw:.1f}" height="{ov}"/>', _hatch(sx, y0 - ov, sw, ov, uid='st'),
+                     f'<rect x="{sx:.1f}" y="{y0+H:.1f}" width="{sw:.1f}" height="{ov}"/>', _hatch(sx, y0 + H, sw, ov, uid='sb')]
         else:
             raise FigureError("sling must be 'long' or 'short'")
     body.append(f'<rect x="{x0}" y="{y0}" width="{W:.1f}" height="{H:.1f}" stroke-width="1.5"/>')
