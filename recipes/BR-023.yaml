@@ -28,7 +28,7 @@ key_figures:
   value: 2 days
 - label: Oven · 350 °F
   value: 175 °C
-last_change: Rev 03 · Grams labels
+last_change: Rev 04 · Notes fit
 method_rail:
 - sub: Day 1 · tick each step
   notes: null
@@ -171,7 +171,7 @@ formula:
       - —
       - 3
     - name: Vanilla seeds
-      note: 1 pod, aromatic
+      note: 1 pod
       dagger: true
       g:
       - —
@@ -263,14 +263,14 @@ figures:
     caption: Skewer hot, invert at once; the rim carries the skewers.
 done_when:
 - - Inside
-  - 85 °C per Saveur; many guides 90–93 °C
+  - 85 °C; guides 90–93 °C
 - - Top
   - Deep golden, split dome
 - - Before bake
   - Dome ~1 cm over rim
 keeps:
 - - Whole
-  - 2 weeks, bagged, room temp
+  - 2 wk, bagged, ambient
 - - Sliced
   - 2–3 days
 - - Best after
@@ -299,6 +299,10 @@ revisions:
 - rev: Rev 03
   date: '2026-09-26'
   change: Grams labels, hang time, BR-023
+  source: Review
+- rev: Rev 04
+  date: '2026-09-30'
+  change: Shorten notes to fit
   source: Review
 pages:
 - - formula
