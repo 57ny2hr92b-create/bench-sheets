@@ -1,0 +1,12 @@
+<svg aria-label="Slap-fold in three frames: lift the far edge and let the dough stretch, drop it so it folds over itself, then turn a quarter and repeat four times in all" fill="none" height="132" stroke="#000000" stroke-width="1" viewbox="0 0 340 108" width="300">
+<rect height="40" width="96" x="0.5" y="40.5"></rect>
+<path d="M48 36 L48 12"></path><path d="M44 17 L48 12 L52 17"></path>
+<line x1="102" x2="116" y1="58.5" y2="58.5"></line><path d="M111 55.5 L116 58.5 L111 61.5"></path>
+<rect height="40" width="96" x="122.5" y="40.5"></rect>
+<line stroke-dasharray="3 2" x1="122.5" x2="218.5" y1="60.5" y2="60.5"></line>
+<path d="M170 20 Q200 24 190 44"></path><path d="M194.4 39.6 L190 44 L188.6 37.8"></path>
+<line x1="224" x2="238" y1="58.5" y2="58.5"></line><path d="M233 55.5 L238 58.5 L233 61.5"></path>
+<rect height="40" width="92" x="244.5" y="40.5"></rect>
+<path d="M270 30 A22 22 0 0 1 312 30"></path><path d="M306 27 L312 30 L308 35"></path>
+<text fill="#000000" font-family="IBM Plex Sans, sans-serif" font-size="12" stroke="none" x="0" y="100">1 Lift far edge</text><text fill="#000000" font-family="IBM Plex Sans, sans-serif" font-size="12" stroke="none" x="122" y="100">2 Drop, fold over</text><text fill="#000000" font-family="IBM Plex Sans, sans-serif" font-size="12" stroke="none" x="244" y="100">3 Turn 90°, × 4</text>
+</svg>

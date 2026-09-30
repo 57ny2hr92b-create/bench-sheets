@@ -1,0 +1,194 @@
+code: BR-024
+kind: sheet
+status: trial            # draft -> trial -> standard (-> retired); only trial and standard reach the site
+name: Classic focaccia
+cls: Bread · Lean, no-knead, cold ferment
+lede: Flour, water, salt, yeast, oil. Mixed and folded in the evening, panned and refrigerated overnight,
+  dimpled and baked in the morning. The plain dough is the base; the variants carry the flavor.
+source: House formula · Original
+contains:
+- Wheat
+equipment:
+- Half sheet 13 × 18 in
+- Large bowl, lidded
+- Bowl scraper
+- Wire rack
+key_figures:
+- label: Yield · half sheet
+  value: 16 pieces
+- label: Hydration
+  value: 80%
+- label: Dough
+  value: 1.41 kg
+- label: Plan · cold ferment
+  value: 12–24 h
+- label: Oven · 450 °F
+  value: 230 °C
+method_rail:
+- sub: Evening · tick each step
+  notes:
+  - Active dry yeast blooms first (step 01). Instant goes in dry with the flour at the same weight.
+  - Pick a variant before step 05 if it has an inclusion.
+- sub: Morning · out at 4:15 for a 5:30 drop
+  notes:
+  - 'Sleep-in option: bake straight from the fridge and add 10–15 min. Less height, same crumb.'
+formula:
+  basis: '% · flour = 100'
+  notes:
+  - Bread flour, 12.7% protein. All-purpose works; the dough is slacker and rises a little less.
+  - Water at 40 °C. Above 45 °C it starts to kill the yeast.
+  - 'Idaho Falls, 4,700 ft: the cold ferment blunts the fast proof up here. Trial B cuts yeast 15%.'
+  - † Doesn't scale in a straight line past 2×.
+  scale_by_pan:
+  - {pan: Half sheet, factor: '1', count: '16', bold: true}
+  - {pan: 9 × 13 in, factor: '0.6', count: '9'}
+  - {pan: Quarter sheet, factor: '0.6', count: '9'}
+  - {pan: Two half sheets, factor: '2', count: '32'}
+  scale_by_weight: true
+  parts:
+  - id: A
+    name: Dough
+    rows:
+    - {name: Bread flour, note: 12.7% protein, g: 750, basis: true}
+    - {name: Water, note: 40 °C, g: 600}
+    - {name: Fine salt, g: 15}
+    - {name: Active dry yeast, note: bloomed, g: 6, dagger: true}
+    - {name: Olive oil, note: in the dough, g: 30}
+    - {name: Honey, note: feeds the bloom, g: 10}
+  - id: B
+    name: Pan and top
+    outside: true
+    rows:
+    - {name: Olive oil, note: pan, g: 40}
+    - {name: Olive oil, note: 'top, before dimpling', g: 30}
+  total: {label: Total dough}
+variants:
+  title: Variants
+  sub: Toppings · each as % of dough
+  notes:
+  - Full half sheet. Two variants on one pan → halve each; mark the split on the tent card.
+  - Salt on bare dough only. Herbs into the dimples, not on top, or they scorch.
+  items:
+  - name: Rosemary and salt
+    note: the baseline
+    rows:
+    - {name: Rosemary, note: 'fresh, chopped', g: 8}
+    - {name: Flaky salt, g: 4, dagger: true}
+    steps:
+    - Rosemary pressed into the dimples at step 10.
+    - Coarse black pepper over the hot bread, if wanted.
+  - name: Kalamata and rosemary
+    rows:
+    - {name: Kalamata olives, note: 'pitted, halved', g: 120}
+    - {name: Kalamata olives, note: 'chopped, in', g: 40}
+    - {name: Rosemary, note: 'fresh, chopped', g: 6}
+    - {name: Flaky salt, g: 2, dagger: true}
+    steps:
+    - Pat dry. Chopped ones in on the third fold, step 05.
+    - Halves cut side up; salt the bare patches.
+    - Zest of 1 lemon over the hot bread; before, it turns bitter.
+  - name: "'Nduja and honey"
+    note: spicy
+    rows:
+    - {name: "'Nduja", g: 100}
+    - {name: Honey, note: 'after, warm', g: 30}
+    steps:
+    - Spoonfuls in the dimples; no salt.
+    - Honey over the hot bread. Tent says spicy.
+  - name: Grape and rosemary
+    note: schiacciata all'uva
+    rows:
+    - {name: Black grapes, note: 'seedless, halved', g: 250}
+    - {name: Granulated sugar, g: 20}
+    - {name: Rosemary, note: 'fresh, chopped', g: 6}
+    - {name: Flaky salt, g: 2, dagger: true}
+    steps:
+    - Grapes cut side up; sugar over; rosemary in the dimples.
+    - Check at 20 min; the juice can scorch at the edges.
+method:
+- head: Bloom.
+  text: Whisk the yeast and honey into the water. Wait until the surface foams.
+  time: 5–10 min
+  target: 40 °C water
+- head: Mix.
+  text: Add flour and salt. Stir with a spatula until no dry flour remains. Shaggy is right.
+  time: 2 min
+  target: No kneading
+- head: Oil, rest.
+  text: Drizzle the 30 g dough oil over the top. Cover. Leave on the counter.
+  time: 30 min
+  target: Room temp
+- head: Fold.
+  text: Wet hands. Pull one side up and over the middle; turn the bowl, four pulls. Cover.
+  time: 3 × 30 min
+  target: Smoother each set
+- head: Inclusions.
+  text: Anything going inside (chopped olives) goes in on the third fold. Cover.
+  time: —
+  target: See variants
+- head: Pan.
+  text: Oil the pan with the 40 g. Pour the dough in; do not stretch it. Cover tight.
+  time: 2 min
+  target: Film or lid
+- head: Retard.
+  text: Refrigerate. The dough relaxes toward the corners on its own.
+  time: 12–24 h
+  target: 4 °C
+- head: Warm.
+  text: Morning. Uncover; rest on the counter while the oven heats, rack lower-middle.
+  time: 45–60 min
+  target: 230 °C
+  target_f: 450 °F
+- head: Dimple.
+  text: Ease the dough to the corners. Top oil over; dimple firmly with all ten fingers to the pan.
+  time: 1 min
+  target: To the pan floor
+- head: Top.
+  text: Press the variant into the dimples. Flaky salt on the bare patches only.
+  time: 2 min
+  target: See variants
+- head: Bake.
+  text: Until deep golden with crisp edges. Lift a corner to check the bottom.
+  time: 22–28 min
+  target: 230 °C
+  target_f: 450 °F
+- head: Cool.
+  text: Onto a rack within 5 min or the bottom steams soft. Cut after 15. Paper or towel to carry.
+  time: 15 min
+  target: Not film
+done_when:
+- [Top, 'Deep golden, edges crisp']
+- [Bottom, 'Browned, lifts clean']
+- [Inside, '96–99 °C; open, glossy crumb']
+keeps:
+- [Same day, 'Best in 6 h; good to 12']
+- [Next day, 'Paper or towel, not film']
+- [Frozen, '2 weeks, wrapped']
+fixes:
+  sub: Most likely cause first
+  rows:
+  - ['Dense, flat', 'Baked cold. The full 45–60 min out of the fridge, or add 10–15 min']
+  - [Soggy bottom, 'Cooled in the pan. Rack within 5 min; next time bake 3 min longer']
+  - [Pale top, 'Short on top oil or heat. Full 30 g; full preheat']
+  - [Burnt herbs, 'Sat on the surface. Into the dimples; garlic under the oil']
+trials:
+  sub: Change one variable per trial
+  notes:
+  - A is the sheet as written. B is the altitude check. C tests the flour on hand.
+  columns: [Trial A, Trial B, Trial C]
+  rows:
+  - {var: Date, values: ['', '', '']}
+  - {var: Change, values: [As written, 'Yeast −15% (altitude)', All-purpose flour]}
+  - {var: Rise · crumb, values: ['', '', '']}
+  - {var: Staff rating 1–5, values: ['', '', '']}
+revisions_blank: false   # page 3 is full; add the blank row back when a section moves
+revisions:
+- {rev: Rev 01, date: '2026-09-27', change: 'First issue; adds the variants section', source: —}
+- {rev: Rev 02, date: '2026-09-27', change: Sections in bake order, source: Review}
+pages:
+- [formula]
+- [method:1-7, variants]
+- [method:8-12, done_when, fixes, trials, revisions]
+tent:
+  name: Focaccia
+  note: Contains wheat. Topping as labeled on the pan.

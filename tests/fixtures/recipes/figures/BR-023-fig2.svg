@@ -1,0 +1,15 @@
+<svg aria-label="Two frames. One: the baked panettone upright in its mold, two skewers pushed through crosswise 2.5 cm from the base and 2.5 cm apart. Two: the mold turned upside down inside a deep pot, the skewers resting on the rim so the loaf hangs clear of the bottom" fill="none" height="132" stroke="#000000" stroke-width="1" viewbox="0 0 200 132" width="200">
+<rect height="60" width="50" x="12.5" y="20.5"></rect>
+<path d="M12.5 20.5 Q37.5 4 62.5 20.5"></path>
+<circle cx="29.5" cy="64.5" fill="#000000" r="2.5"></circle><circle cx="45.5" cy="64.5" fill="#000000" r="2.5"></circle>
+<line x1="70.5" x2="70.5" y1="64.5" y2="80.5"></line><line x1="67" x2="74" y1="64.5" y2="64.5"></line><line x1="67" x2="74" y1="80.5" y2="80.5"></line>
+<text fill="#000000" font-family="IBM Plex Sans, sans-serif" font-size="12" stroke="none" x="77" y="76">2.5 cm</text>
+<line x1="29.5" x2="45.5" y1="90.5" y2="90.5"></line><line x1="29.5" x2="29.5" y1="87" y2="94"></line><line x1="45.5" x2="45.5" y1="87" y2="94"></line>
+<text fill="#000000" font-family="IBM Plex Sans, sans-serif" font-size="12" stroke="none" text-anchor="middle" x="37.5" y="106">2.5 cm</text>
+<line x1="116" x2="200" y1="50.5" y2="50.5"></line>
+<path d="M122.5 50.5 L122.5 110.5 L193.5 110.5 L193.5 50.5"></path>
+<rect height="60" width="49" x="133.5" y="34.5"></rect>
+<path d="M133.5 94.5 Q158 110 182.5 94.5"></path>
+<line stroke-width="2" x1="110" x2="200" y1="50.5" y2="50.5"></line>
+<text fill="#000000" font-family="IBM Plex Sans, sans-serif" font-size="12" stroke="none" x="0" y="130">1 Skewer</text><text fill="#000000" font-family="IBM Plex Sans, sans-serif" font-size="12" stroke="none" x="116" y="130">2 Hang</text>
+</svg>

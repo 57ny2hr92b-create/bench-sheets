@@ -6,7 +6,7 @@ Tent cards are full-bleed (528 x 816) and have no content limit beyond the board
 
 Fonts: IBM Plex Sans 400/500/600 are vendored in fonts/ (OFL). Run: python build.py check
 """
-import re, pathlib, sys
+import re, pathlib, sys, tempfile
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 FONT_DIR = ROOT / 'fonts'  # vendored IBM Plex Sans (OFL); see fonts/LICENSE
@@ -50,8 +50,8 @@ def check(files, screenshots=None):
     from playwright.sync_api import sync_playwright
     faces = font_css()
     problems = 0
-    tmp = ROOT / 'out' / '_render.html'
-    with sync_playwright() as pw:
+    with tempfile.TemporaryDirectory(prefix='bench-fit-') as work, sync_playwright() as pw:
+        tmp = pathlib.Path(work) / '_render.html'
         b = pw.chromium.launch(); pg = b.new_page()
         for f in files:
             src = pathlib.Path(f).read_text()
@@ -76,7 +76,6 @@ def check(files, screenshots=None):
             if screenshots:
                 pg.screenshot(path=str(pathlib.Path(screenshots) / name.replace('.dc.html', '.png')))
         b.close()
-    tmp.unlink(missing_ok=True)
     print('all artboards fit' if not problems else f'{problems} problem(s)')
     return problems
 

@@ -2,7 +2,9 @@
 
 Errors stop the build. Warnings print but pass. Run: python build.py lint
 """
-import re, datetime, pathlib
+import re, datetime, pathlib, math
+
+SCHEMA_VERSION = 1
 
 CODE = re.compile(r'^[A-Z]{2}-\d{3}$')
 DATE = re.compile(r'^\d{4}-\d{2}-\d{2}$')
@@ -26,9 +28,20 @@ CARD_REQUIRED = ['code', 'name', 'yield', 'keeps', 'basis', 'contains', 'source'
 class Lint:
     def __init__(self):
         self.errors, self.warnings = [], []
+        self.diagnostics = []
 
-    def err(self, code, msg): self.errors.append(f'{code}: {msg}')
-    def warn(self, code, msg): self.warnings.append(f'{code}: {msg}')
+    def _add(self, severity, code, msg, path, file):
+        target = self.errors if severity == 'error' else self.warnings
+        target.append(f'{code}: {msg}')
+        if file is None:
+            file = 'library.yaml' if code == 'library' else f'recipes/{code}.yaml'
+        self.diagnostics.append(dict(code=code, file=file, path=path, severity=severity, message=msg))
+
+    def err(self, code, msg, path='$', file=None):
+        self._add('error', code, msg, path, file)
+
+    def warn(self, code, msg, path='$', file=None):
+        self._add('warning', code, msg, path, file)
 
 
 def _rows(F):
@@ -37,8 +50,39 @@ def _rows(F):
             yield part, row
 
 
+def lint_grams(row, code, L, path, stages=None):
+    """Accept only quantities the arithmetic understands, plus explicit placeholders."""
+    g = row.get('g')
+    name = row.get('name', '?')
+
+    def scalar(value, field):
+        if type(value) in (int, float):
+            if value >= 0 and (type(value) is int or math.isfinite(value)):
+                return
+        elif value == '—' or (value == '→' and row.get('carry') is True):
+            return
+        L.err(code, f'{field} ({name}): expected a finite, non-negative number in grams '
+              f'or "—" ("→" only with carry: true); got {value!r}. '
+              'Remove quotes around numeric weights; put quantity words or ranges in note.', path=field)
+
+    if stages:
+        if not isinstance(g, list):
+            L.err(code, f'{path} ({name}): expected a list of {len(stages)} stage quantities; got {g!r}', path=path)
+            return
+        if len(g) != len(stages):
+            L.err(code, f'{path} ({name}): {len(g)} stage values for {len(stages)} stages', path=path)
+        for i, value in enumerate(g):
+            scalar(value, f'{path}[{i}]')
+    else:
+        scalar(g, path)
+
+
 def lint_recipe(r, lib, recs, L, figs_dir):
     code = r.get('code', r.get('_file', '?'))
+    version = r.get('schema_version', SCHEMA_VERSION)
+    if type(version) is not int or version != SCHEMA_VERSION:
+        L.err(code, f'schema_version must be {SCHEMA_VERSION}; got {version!r}', path='schema_version')
+        return
     kind = r.get('kind', 'sheet')
     if kind not in KINDS: L.err(code, f'kind must be one of {sorted(KINDS)}')
     if r.get('status', 'standard') not in STATUSES: L.err(code, f'status must be one of {STATUSES}')
@@ -47,7 +91,7 @@ def lint_recipe(r, lib, recs, L, figs_dir):
     fam = str(r.get('code', ''))[:2]
     if fam not in {f['code'] for f in lib['families']}: L.err(code, f'family {fam} is not in library.yaml')
     for k in (SHEET_REQUIRED if kind == 'sheet' else CARD_REQUIRED):
-        if k not in r or r[k] in (None, '', []): L.err(code, f'missing {k}')
+        if k not in r or r[k] in (None, '', []): L.err(code, f'missing {k}', path=k)
     # allergens
     for a in r.get('contains') or []:
         base = a.split(' ')[0]
@@ -63,21 +107,17 @@ def lint_recipe(r, lib, recs, L, figs_dir):
     parts = F.get('parts') if kind == 'sheet' else [dict(rows=F.get('rows', []))]
     if not parts: L.err(code, 'formula has no parts/rows')
     seen_ids = set()
-    for part in parts or []:
+    for pi, part in enumerate(parts or []):
         pid = part.get('id')
         if kind == 'sheet' and pid:
             if pid in seen_ids: L.err(code, f'part id {pid} repeated')
             seen_ids.add(pid)
-        for row in part.get('rows', []):
+        for ri, row in enumerate(part.get('rows', [])):
             if not row.get('name'): L.err(code, f'formula row without a name in part {pid}')
             stray = set(row) - ROW_KEYS
             if stray: L.err(code, f'{row.get("name")}: unknown row keys {sorted(stray)} — a note with a comma must be quoted')
-            g = row.get('g')
-            if g is None and not row.get('carry'): L.err(code, f'{row.get("name")}: no grams (use "—" for none)')
-            if isinstance(g, list) and F.get('stages') and len(g) != len(F['stages']):
-                L.err(code, f'{row["name"]}: {len(g)} stage values for {len(F["stages"])} stages')
-            if isinstance(g, str) and g not in ('—', '') and not re.match(r'^[\d.,–-]+$', g) and not row.get('approx'):
-                L.warn(code, f'{row["name"]}: grams "{g}" is text; the sheet will print it as-is')
+            path = f'formula.parts[{pi}].rows[{ri}].g' if kind == 'sheet' else f'formula.rows[{ri}].g'
+            lint_grams(row, code, L, path, F.get('stages') if kind == 'sheet' else None)
     basis_rows = [row for _, row in _rows(F) if row.get('basis')]
     if kind == 'sheet' and not basis_rows and 'flour' in str(F.get('basis', '')).lower():
         L.err(code, 'basis says flour = 100 but no row is flagged basis: true')
@@ -131,9 +171,9 @@ def lint_recipe(r, lib, recs, L, figs_dir):
             if stray: L.err(code, f'variant {i}: unknown keys {sorted(stray)} (allowed: {sorted(VARIANT_KEYS)})')
             if not v.get('name'): L.err(code, f'variant {i}: no name')
             if not v.get('rows'): L.err(code, f'variant {v.get("name", i)}: no rows')
-            for row in v.get('rows') or []:
+            for ri, row in enumerate(v.get('rows') or []):
                 if not row.get('name'): L.err(code, f'variant {v.get("name")}: row without a name')
-                if row.get('g') is None: L.err(code, f'variant {v.get("name")} · {row.get("name")}: no grams (use "—" for none)')
+                lint_grams(row, code, L, f'variants.items[{i - 1}].rows[{ri}].g')
                 stray = set(row) - ROW_KEYS
                 if stray: L.err(code, f'variant {v.get("name")} · {row.get("name")}: unknown row keys {sorted(stray)}')
             for s in v.get('steps') or []:
@@ -186,11 +226,12 @@ def lint_library(lib, recs, L):
     if not isinstance(lib['index'].get('rev'), int): L.err('library', 'index.rev must be an integer')
 
 
-def run(lib, recs, figs_dir):
+def run(lib, recs, figs_dir, quiet=False):
     L = Lint()
     lint_library(lib, recs, L)
     for r in recs.values():
         lint_recipe(r, lib, recs, L, pathlib.Path(figs_dir))
-    for w in L.warnings: print('  warn', w)
-    for e in L.errors: print('  ERROR', e)
+    if not quiet:
+        for w in L.warnings: print('  warn', w)
+        for e in L.errors: print('  ERROR', e)
     return L

@@ -140,17 +140,35 @@ def live(recs):
     return {c: r for c, r in recs.items() if r.get('status', 'standard') in ('trial', 'standard')}
 
 
+class InputError(ValueError):
+    def __init__(self, path, message):
+        self.filename = str(path)
+        super().__init__(f'{path.name}: {message}')
+
+
+def load_yaml(path):
+    try:
+        value = yaml.safe_load(path.read_text(encoding='utf-8'))
+    except yaml.YAMLError as error:
+        raise InputError(path, str(error)) from error
+    if not isinstance(value, dict):
+        raise InputError(path, 'expected a YAML mapping')
+    return value
+
+
 def load_library():
-    return yaml.safe_load((ROOT / 'library.yaml').read_text())
+    return load_yaml(ROOT / 'library.yaml')
 
 
 def load_recipes():
     recs = {}
     for f in sorted(RECIPES.glob('*.yaml')):
-        r = yaml.safe_load(f.read_text())
+        r = load_yaml(f)
+        if not isinstance(r.get('code'), str):
+            raise InputError(f, 'code must be a string like BR-023')
         r['_file'] = f.name
         if r['code'] in recs:
-            raise SystemExit(f'duplicate code {r["code"]} in {f.name} and {recs[r["code"]]["_file"]}')
+            raise InputError(f, f'duplicate code {r["code"]}; already in {recs[r["code"]]["_file"]}')
         recs[r['code']] = r
     return recs
 
@@ -404,7 +422,7 @@ def build(check_only=False):
     return order
 
 
-def pdf(codes):
+def pdf(codes, source_dir=None, output_dir=None, quiet=False):
     """out/pdf/<CODE>.pdf per recipe (pages of a sheet in one file; tent and cards at their own size).
     Renders from the last build, so run `build` first. Drafts come from out/drafts/."""
     import re
@@ -413,14 +431,16 @@ def pdf(codes):
     faces = fit.font_css()
     recs = load_recipes()
     codes = [c.upper() for c in codes] or sorted(live(recs))
-    (OUT / 'pdf').mkdir(parents=True, exist_ok=True)
+    output_dir = pathlib.Path(output_dir) if output_dir is not None else OUT / 'pdf'
+    output_dir.mkdir(parents=True, exist_ok=True)
+    tmp = output_dir / '_pdf.html'
     written = []
     with sync_playwright() as pw:
         b = pw.chromium.launch(); pg = b.new_page()
         for code in codes:
             r = recs.get(code)
             if not r: raise SystemExit(f'no recipe {code}')
-            src_dir = OUT / ('drafts' if r.get('status') == 'draft' else 'project')
+            src_dir = pathlib.Path(source_dir) if source_dir is not None else OUT / ('drafts' if r.get('status') == 'draft' else 'project')
             groups = {code: [], f'{code}-tent': []}
             for f in sorted(src_dir.glob(f'{code}*.dc.html')):
                 (groups[f'{code}-tent'] if f.name.endswith('-tent.dc.html') else groups[code]).append(f)
@@ -448,15 +468,99 @@ def pdf(codes):
                            f".art{{position:absolute;left:{x}px;top:{y}px;width:{w}px;height:{h}px;overflow:hidden}}")
                     body = ''.join(f'<div class="pg"><div class="art">{p}</div>{marks}</div>' for p in pages)
                 html = f"<!doctype html><html><head><meta charset='utf-8'><style>{faces}{css}</style></head><body>{body}</body></html>"
-                tmp = OUT / '_pdf.html'; tmp.write_text(html)
+                tmp.write_text(html)
                 pg.goto('file://' + str(tmp)); pg.wait_for_timeout(300)
-                out = OUT / 'pdf' / f'{name}.pdf'
+                out = output_dir / f'{name}.pdf'
                 pg.pdf(path=str(out), width='8.5in', height='11in', print_background=True, prefer_css_page_size=True)
                 written.append(out)
         b.close()
-    (OUT / '_pdf.html').unlink(missing_ok=True)
-    for o in written: print('wrote', o.relative_to(ROOT))
+    tmp.unlink(missing_ok=True)
+    if not quiet:
+        for o in written: print('wrote', o.relative_to(ROOT))
     return written
+
+
+def preview(code):
+    """Validate, render, fit-check and print one recipe without rebuilding the binder."""
+    import tempfile
+    from tools import schema, fit
+    from tools import preview as previews
+
+    code = code.upper()
+    if not schema.CODE.fullmatch(code):
+        raise SystemExit('recipe code must look like BR-023')
+    destination = OUT / 'preview' / code
+    previews.recover(destination)
+    lib, recs = load_library(), load_recipes()
+    r = recs.get(code)
+    if r is None:
+        raise SystemExit(f'no recipe {code}')
+    if r.get('status') == 'retired':
+        raise SystemExit(f'{code} is retired; preview requires draft, trial or standard')
+
+    L = schema.Lint()
+    schema.lint_library(lib, recs, L)
+    schema.lint_recipe(r, lib, recs, L, FIGS)
+    for ref in uses_of(r):
+        if ref not in recs or recs[ref].get('status') == 'retired':
+            L.err(code, f'cites {ref}, which is missing or retired')
+    for warning in L.warnings: print('  warn', warning)
+    for error in L.errors: print('  ERROR', error)
+    if L.errors:
+        raise SystemExit(f'{code}: {len(L.errors)} lint error(s); preview not updated')
+
+    inputs = preview_inputs(code, recs)
+    derive(r, recs)
+    OUT.mkdir(parents=True, exist_ok=True)
+    # Work in a fresh directory so a failed draft cannot publish a stale or partial PDF.
+    # The previous successful preview remains available until every stage succeeds.
+    with tempfile.TemporaryDirectory(prefix=f'.preview-{code}-', dir=OUT) as tmp:
+        stage = pathlib.Path(tmp)
+        files = []
+        for name, html in render_recipe(env(), r):
+            path = stage / name
+            path.write_text(html)
+            files.append(path)
+        shots = stage / 'shots'; shots.mkdir()
+        if fit.check(files, screenshots=shots):
+            raise SystemExit(f'{code}: fit check failed; preview not updated')
+        written = pdf([code], source_dir=stage, output_dir=stage / 'pdf', quiet=True)
+        relative_pdfs = [p.relative_to(stage) for p in written]
+        if not written:
+            raise SystemExit(f'{code}: no PDFs generated; preview not updated')
+        if inputs != preview_inputs(code, load_recipes()):
+            raise SystemExit(f'{code}: inputs changed during preview; run it again')
+        previews.write_record(stage, r, inputs, relative_pdfs)
+        previews.publish(stage, destination)
+    result = [destination / p for p in relative_pdfs]
+    for path in result: print('preview ready:', path)
+    return result
+
+
+def preview_inputs(code, recs):
+    from tools import preview as previews
+    r = recs[code]
+    references = {ref: recs[ref] for ref in uses_of(r) if ref in recs}
+    return previews.fingerprint(ROOT, r, references)
+
+
+def preview_status(code):
+    from tools import preview as previews, schema
+    code = code.upper()
+    if not schema.CODE.fullmatch(code):
+        raise SystemExit('recipe code must look like BR-023')
+    destination = OUT / 'preview' / code
+    previews.recover(destination)
+    recs = load_recipes()
+    if code not in recs:
+        raise SystemExit(f'no recipe {code}')
+    try:
+        current = previews.is_current(destination, preview_inputs(code, recs))
+    except (OSError, ValueError):
+        current = False
+    print(f'{code}: preview {"current" if current else "missing or stale; run preview " + code}')
+    if not current:
+        raise SystemExit(1)
 
 
 def inner_html(doc):
@@ -521,9 +625,11 @@ def _broken_drafts(lib, recs):
 
 
 def scaffold(family, name, recs):
+    from tools.schema import SCHEMA_VERSION
     code = next_code(recs, family)
     today = datetime.date.today().isoformat()
-    doc = f'''code: {code}
+    doc = f'''schema_version: {SCHEMA_VERSION}
+code: {code}
 kind: sheet
 status: draft            # draft -> trial -> standard (-> retired); only trial and standard reach the site
 name: {name}
@@ -569,13 +675,44 @@ pages:
     print(f'wrote {path}')
 
 
+def lint(json_output=False):
+    """Strict authoring check; unlike build, invalid drafts are errors too."""
+    from tools import schema
+    L = schema.Lint()
+    recs = {}
+    try:
+        lib, recs = load_library(), load_recipes()
+        L = schema.run(lib, recs, FIGS, quiet=True)
+        for code, recipe in recs.items():
+            if recipe.get('status') == 'retired':
+                continue
+            for ref in uses_of(recipe):
+                if ref not in recs or recs[ref].get('status') == 'retired':
+                    L.err(code, f'cites {ref}, which is missing or retired', path='uses')
+    except (yaml.YAMLError, OSError, ValueError, KeyError, TypeError, AttributeError, SystemExit) as error:
+        L.err('input', str(error), file=getattr(error, 'filename', None) or '')
+    if json_output:
+        print(json.dumps(dict(report_version=1, schema_version=schema.SCHEMA_VERSION,
+                              ok=not L.errors, checked=len(recs), diagnostics=L.diagnostics), ensure_ascii=False))
+    else:
+        for warning in L.warnings: print('  warn', warning)
+        for error in L.errors: print('  ERROR', error)
+        if not L.errors: print(f'{len(recs)} recipes OK')
+    if L.errors:
+        raise SystemExit(1)
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('cmd', choices=['build', 'check', 'lint', 'list', 'next-code', 'new', 'pdf', 'site'])
+    ap.add_argument('cmd', choices=['build', 'check', 'lint', 'list', 'next-code', 'new', 'pdf', 'preview', 'preview-status', 'site'])
     ap.add_argument('args', nargs='*')
+    ap.add_argument('--json', action='store_true', help='machine-readable diagnostics (lint only)')
     a = ap.parse_args()
+    if a.json and a.cmd != 'lint':
+        ap.error('--json is supported only by lint')
     if a.cmd == 'lint':
-        build(check_only=True)
+        if a.args: ap.error('lint takes no recipe codes; use preview CODE for a selected recipe')
+        lint(json_output=a.json)
     elif a.cmd == 'build':
         build()
     elif a.cmd == 'check':
@@ -586,6 +723,10 @@ def main():
             raise SystemExit(1)
     elif a.cmd == 'pdf':
         build(); pdf(a.args)
+    elif a.cmd in ('preview', 'preview-status'):
+        if len(a.args) != 1:
+            ap.error(f'{a.cmd} requires exactly one recipe code, e.g. {a.cmd} SV-001')
+        (preview if a.cmd == 'preview' else preview_status)(a.args[0])
     elif a.cmd == 'site':
         site()
     elif a.cmd == 'list':

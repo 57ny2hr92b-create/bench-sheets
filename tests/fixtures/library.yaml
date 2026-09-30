@@ -1,0 +1,20 @@
+title: Test kitchen library
+lede: Every sheet, card and tent card, by code. Front of the binder; update it with every new Rev.
+
+# Bump when the index changes materially (a row added, a Rev changed).
+index:
+  rev: 20
+  date: 2026-09-28
+  blank_rows: 6
+
+# Code order, as the Bench Sheet README lists it. Add a family here before assigning a new prefix.
+families:
+- {code: BR, name: Bread}
+- {code: PA, name: Pastry}
+- {code: CA, name: Cake}
+- {code: CK, name: Cookie}
+- {code: CF, name: Confection}
+- {code: CR, name: Cream & custard}
+- {code: FR, name: Frosting}
+- {code: GA, name: Ganache}
+- {code: SV, name: Savory}

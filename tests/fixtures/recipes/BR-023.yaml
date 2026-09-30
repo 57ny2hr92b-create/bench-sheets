@@ -1,0 +1,312 @@
+code: BR-023
+kind: sheet
+name: Panettone
+cls: Bread · Enriched, two-dough
+lede: Two-dough panettone on a commercial-yeast biga in place of lievito madre. Raisins and candied orange,
+  shaped cold, proofed warm, cooled hanging.
+source: Jason Schreiber, Saveur · Adapted, metric
+contains:
+- Wheat
+- Milk
+- Egg
+equipment:
+- 2 paper molds 134 × 95 mm
+- Stand mixer, hook
+- 2 L lidded tub
+- Mist bottle
+- 4 skewers 30 cm
+- 2 deep pots
+- Probe
+key_figures:
+- label: Yield · 2 panettoni
+  value: 2 × 610 g
+- label: Hydration · water / all
+  value: 49 / 62%
+- label: Prefermented flour
+  value: 16.2%
+- label: Plan
+  value: 2 days
+- label: Oven · 350 °F
+  value: 175 °C
+last_change: Rev 03 · Grams labels
+method_rail:
+- sub: Day 1 · tick each step
+  notes: null
+- sub: Day 1 evening → day 2
+  notes: null
+method:
+- head: Biga.
+  text: Day 1. Yeast into warm water, stir in flour, knead 1 min. Cover until doubled, then chill.
+  time: 1–2 h
+  target: 45 °C water
+- head: Primo, hydrate.
+  text: Yeast into warm water in the mixer bowl. Add flour and biga; stir shaggy. Cover, rest.
+  time: 10 min
+  target: 45 °C water
+- head: Primo, knead.
+  text: Add sugar, milk powder, salt, yolk. Hook on low until smooth and tight; window tears.
+  time: 12 min
+  target: Low
+- head: Primo, butter.
+  text: A third on low, 2 min; rest in two adds on medium. Knead to a clear window.
+  time: 12 min
+  target: Medium
+- head: Bulk.
+  text: Ball up into the 2 L tub, mark the height, lid on. Warm until tripled, then chill 1 h.
+  time: 1–2 h
+  target: 30 °C, then 4 °C
+- head: Aromatics.
+  text: Mix honey, zest and vanilla seeds. Soak raisins in 45 g hot water; drain before use.
+  time: ≤ 24 h
+  target: Room temp
+- head: Secondo, mix.
+  text: Whisk flour + gluten. Yeast into cold water; add primo, yolks, flour. Low until wet.
+  time: 1 min
+  target: Low
+- head: Secondo, sugar.
+  text: Sugar in three adds on low, scraping down. Knead until it cleans the bowl.
+  time: 15 min
+  target: Low
+- head: Secondo, butter.
+  text: 14 g at a time on low; after a third, medium. Knead to a clear window.
+  time: 10–12 min
+  target: Medium
+- head: Inclusions.
+  text: 'Aromatics on medium until taken up. Low: peel, then drained raisins, until even.'
+  time: 1–2 + 5 min
+  target: Medium, then low
+- head: Divide, shape.
+  text: Oil the bench, halve by weight. Four slap-folds (fig. 1), round taut, into molds upright.
+  time: 15 min
+  target: 2 × 610 g
+- head: Retard.
+  text: Molds on a sheet inside a sealed produce bag. Refrigerate overnight.
+  time: 8–16 h
+  target: 4 °C
+- head: Proof.
+  text: Day 2. Out of the bag, warm and humid, until the dome peaks just over the rim. Preheat at 5 h.
+  time: 5–6 h
+  target: 30 °C
+- head: Bake.
+  text: Mist, pearl sugar. 20 min door shut, then drop; bake to 85 °C inside.
+  time: 35–40 min
+  target: 175 → 150 °C
+  target_f: 350 → 300 °F
+- head: Hang.
+  text: 'Straight out: two skewers 2.5 cm up (fig. 2); invert over the pots until fully cool.'
+  time: Until cool
+  target: 4–12 h
+formula:
+  basis: '% · all flour = 100'
+  notes:
+  - Bread flour 12.7% protein. The 8 g gluten stands in for panettone flour and sits outside flour = 100.
+  - Water 45 °C for biga and primo, cold for the secondo. Raisin soak is drained, not counted.
+  - 'Candied peel: sulfites, check label.'
+  parts:
+  - id: ''
+    name: ''
+    rows:
+    - name: Bread flour
+      note: 12.7% protein
+      basis: true
+      g:
+      - 60
+      - 175
+      - 135
+    - name: Vital wheat gluten
+      g:
+      - —
+      - —
+      - 8
+    - name: Water
+      note: warm / warm / cold
+      g:
+      - 40
+      - 90
+      - 50
+    - name: Active dry yeast
+      dagger: true
+      g:
+      - 1
+      - 3
+      - 5
+    - name: Granulated sugar
+      g:
+      - —
+      - 20
+      - 85
+    - name: Nonfat dry milk powder
+      g:
+      - —
+      - 10
+      - —
+    - name: Kosher salt
+      note: Diamond Crystal
+      g:
+      - —
+      - 5
+      - —
+    - name: Egg yolk
+      note: 1 + 5 large
+      g:
+      - —
+      - 18
+      - 80
+    - name: Unsalted butter, soft
+      g:
+      - —
+      - 50
+      - 113
+    - name: Honey
+      note: aromatic
+      g:
+      - —
+      - —
+      - 20
+    - name: Orange zest
+      note: aromatic
+      dagger: true
+      g:
+      - —
+      - —
+      - 3
+    - name: Vanilla seeds
+      note: 1 pod
+      dagger: true
+      g:
+      - —
+      - —
+      - —
+      pct: —
+    - name: Raisins
+      note: soaked, drained
+      g:
+      - —
+      - —
+      - 100
+    - name: Candied orange peel
+      note: 6 mm
+      g:
+      - —
+      - —
+      - 150
+    - name: Biga
+      note: all of it, cold
+      g:
+      - →
+      - 101
+      - —
+      carry: true
+      total: —
+    - name: Primo impasto
+      note: all, chilled 1 h
+      g:
+      - —
+      - →
+      - 472
+      carry: true
+      total: —
+  stages:
+  - Biga
+  - Primo
+  - Secondo
+  total:
+    label: Totals
+  scale_by_weight: true
+schedule:
+  sub: Both days from 8 am
+  notes: null
+  svg: BR-023-schedule.svg
+trials:
+  sub: Change one variable per trial
+  notes:
+  - Idaho Falls, ~4,700 ft. Yeast runs fast up here; Trial B cuts it and watches the rim, not the clock.
+  columns:
+  - Trial A
+  - Trial B
+  - Trial C
+  rows:
+  - var: Date
+    values:
+    - ''
+    - ''
+    - ''
+  - var: Yeast
+    values:
+    - As written
+    - −15% (altitude)
+    - As written
+  - var: Proof
+    values:
+    - 30 °C, humid
+    - 30 °C, humid
+    - 25 °C, tented
+  - var: Time to rim
+    values:
+    - ''
+    - ''
+    - ''
+  - var: Staff rating 1–5
+    values:
+    - ''
+    - ''
+    - ''
+figures:
+  title: Figures
+  sub: Not to scale
+  items:
+  - svg: BR-023-fig1.svg
+    label: Fig. 1
+    caption: Slap-fold. The dough stretches less each lift; stop at a tight mound, then round it.
+  - svg: BR-023-fig2.svg
+    label: Fig. 2
+    caption: Skewer hot, invert at once; the rim carries the skewers.
+done_when:
+- - Inside
+  - 85 °C per Saveur; many guides 90–93 °C
+- - Top
+  - Deep golden, split dome
+- - Before bake
+  - Dome ~1 cm over rim
+keeps:
+- - Whole
+  - 2 weeks, bagged, room temp
+- - Sliced
+  - 2–3 days
+- - Best after
+  - 1 day hanging out
+fixes:
+  sub: Most likely cause first
+  rows:
+  - - Butter won't take
+    - Dough too warm. Chill the bowl 15 min, add smaller pieces
+  - - No window
+    - Knead longer; flour under 12.5% protein won't get there
+  - - Dome fell
+    - Door opened before 20 min, or proofed past 1 cm over rim
+  - - Dense, sunk crumb
+    - Cooled upright. Skewer and invert within a minute
+revisions_blank: false   # page 3 is full; add the blank row back when a rev drops
+revisions:
+- rev: Rev 01
+  date: —
+  change: First draft, metric from Saveur
+  source: —
+- rev: Rev 02
+  date: —
+  change: Second draft (changes not recorded)
+  source: —
+- rev: Rev 03
+  date: '2026-09-26'
+  change: Grams labels, hang time, BR-023
+  source: Review
+pages:
+- - formula
+- - schedule
+  - method:1-10
+  - trials
+- - method:11-15
+  - figures
+  - done_when
+  - fixes
+  - revisions
