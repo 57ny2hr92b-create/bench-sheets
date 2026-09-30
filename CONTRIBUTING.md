@@ -4,6 +4,46 @@ The README says how the repo works. This file is the judgment: how to turn a rec
 that is right at the bench. It is written for anyone — a person, or an assistant picking the repo
 up cold — and it is the part that isn't enforced by the lint. Read it before writing `recipes/*.yaml`.
 
+## Shared editing workflow
+
+Bench Sheet turns a recipe into a consistent, print-ready kitchen worksheet with checked
+quantities and a clear method, so people can bake from it reliably and different AI tools
+can edit it without losing its structure.
+
+This workflow is shared by people, Codex, Claude, and other editors. The repository's
+files and commands carry the rules; a previous conversation is not required.
+
+1. **Inspect first.** Run `python build.py list`, read the recipe and its revision history,
+   and choose a comparable [example](tests/fixtures/README.md). Read the
+   [versioned contract](docs/recipe-contract.md) before adding unfamiliar fields.
+2. **Edit the source.** Change `recipes/CODE.yaml` and any required SVGs. Keep numeric
+   grams numeric; use `g: —` with a note for quantities that are not known. Append revisions;
+   preserve earlier entries. Templates own fonts, spacing, colors, and page sizes.
+3. **Validate.** Run `python build.py lint` (or `lint --json` for structured diagnostics).
+   Lint checks all recipes, including drafts. Fix errors in the edited recipe and report
+   unrelated failures rather than silently editing other recipes. `preview CODE` can
+   validate a selected recipe when an unrelated draft is unfinished.
+4. **Preview.** Run `python build.py preview CODE`. It checks every page, including tent
+   cards, before generating PDFs. Run one preview per recipe code at a time. A fit or print
+   failure keeps the last successful preview; that old PDF is not proof the new edit passed.
+5. **Inspect the result.** Open the new PDF and screenshots in `out/preview/CODE/`.
+   Check quantities, method order, page breaks, figures, and readability. Run
+   `python build.py preview-status CODE` to confirm the saved preview still matches its
+   inputs. If visual inspection was unavailable, state that limitation in the handoff.
+6. **Finish within the requested scope.** Keep drafts as drafts until ready for trial.
+   Drafts appear on the site's Drafts list but not in the printed index. Update the index
+   revision/date for live recipe changes. Commit or publish only within the user's request;
+   pushing to `main` can deploy the site. A local preview does not publish anything.
+
+Report the changed recipe codes, validation results, preview paths, and any remaining
+issues. Never say a recipe was baked, tasted, or visually inspected unless that happened.
+
+For renderer changes, run `python -m pytest -q` and `python build.py check`, then inspect
+representative PDFs. The frozen example tests protect printed output against accidental
+changes; do not regenerate their baselines merely to make a failing test green. Report
+existing failures separately from regressions. New schema rules belong in `tools/schema.py`;
+both human and JSON diagnostics must come from the same validator.
+
 ## The recipe
 
 1. **Get the real recipe.** A technique article usually links to the recipe page; that is where the
@@ -111,8 +151,8 @@ is written with altitude already applied, say so in the rail and give the sea-le
 - `revisions:` runs Rev 01, 02, … newest last. The running head, "Last change" and the index Rev
   all derive from the last row. Earlier drafts get rows even when their changes weren't recorded
   ("Second draft (changes not recorded)", date —). Never edit or delete an older row.
-- `status`: `draft` while writing (renders to `out/drafts/`, prints to PDF, never reaches the site
-  or index); `trial` once it's in the binder to be baked; `standard` when it's the house version;
+- `status`: `draft` while writing (renders to `out/drafts/`, prints to PDF, appears on the site's
+  Drafts list but not the printed index); `trial` once it's in the binder to be baked; `standard` when it's the house version;
   `retired` instead of deleting. Never delete a recipe file.
 - Any new live row or Rev change bumps `index.rev` and `index.date` in `library.yaml`.
 

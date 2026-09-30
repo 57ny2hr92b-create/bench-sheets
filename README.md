@@ -1,5 +1,9 @@
 # Bench sheets
 
+Bench Sheet turns a recipe into a consistent, print-ready kitchen worksheet with checked
+quantities and a clear method, so people can bake from it reliably and different AI tools
+can edit it without losing its structure.
+
 The test-kitchen recipe library as data. Each recipe is one YAML file; `build.py` renders every
 Bench Sheet, component card and tent card, the library index, the PDFs, and a static site that
 GitHub Pages serves from every push to `main`. The site is the binder: edit YAML, push, done.
@@ -20,6 +24,9 @@ out/                build output (ignored by git)
 
 `CONTRIBUTING.md` is the judgment side — how to write a recipe well (basis, voice, ranges, altitude,
 what to cut when a page is full). Read it before writing a YAML file.
+Its [shared editing workflow](CONTRIBUTING.md#shared-editing-workflow) applies equally to
+people, Codex, and Claude. See the [versioned recipe contract](docs/recipe-contract.md)
+and [runnable examples](tests/fixtures/README.md) for reusable data and checks.
 
 ## Setup
 
@@ -34,13 +41,36 @@ python -m playwright install chromium           # for `check`, `pdf`, `site`
 |---|---|
 | `python build.py list` | Every recipe in the repo — code, status, kind, name — drafts and retired included. Run it before scaffolding a new one. |
 | `python build.py lint` | Validate every recipe. Errors name the file and the field. |
+| `python build.py lint --json` | The same strict check, including drafts, as one JSON diagnostic report. Exits 1 on errors. |
 | `python build.py build` | Lint, then render `out/project/*.dc.html` and `Index.dc.html`. |
 | `python build.py check` | Build, then render every artboard in Chromium and fail if anything overflows, a step runs to three lines, an ingredient wraps, or the meta row breaks. Screenshots land in `out/shots/`. |
 | `python build.py new CA "Olive oil cake"` | Scaffold `recipes/CA-012.yaml` with the next free code. |
 | `python build.py next-code BR` | Just print the next free code. |
 | `python build.py site` | Build, print every live recipe and draft to PDF, and write `out/site/` — `index.html` (IX-00 with links, then a Drafts list), one page per recipe and tent, `pdf/`. This is what Pages serves. |
 | `python build.py pdf [CODE …]` | Print `out/pdf/CODE.pdf` (all pages of a sheet; tent and cards as their own files at their own size). No codes = every live recipe. |
+| `python build.py preview CODE` | Validate one recipe, render and fit-check all its pages (drafts and tent cards included), then print its PDFs under `out/preview/CODE/pdf/`. No site build or publication. |
+| `python build.py preview-status CODE` | Check whether the saved preview matches current inputs and its output files are intact. Exits 1 if missing or stale. |
 | `python -m pytest -q` | Regression tests (math, links, rendering, fit). |
+
+## Previewing one recipe
+
+Run `python build.py preview SV-001` while editing a draft. It validates that recipe,
+renders its artboards, checks every page in Chromium, and prints a PDF only after
+the fit check passes. Screenshots are in `out/preview/SV-001/shots/`; artboards are
+beside that folder. The command accepts exactly one code (case-insensitive).
+
+An invalid draft or an overflowing page exits with an error instead of being skipped.
+Unknown and retired codes are rejected. A failed run leaves the previous successful
+preview unchanged; use the success message to identify a newly generated PDF.
+Unrelated recipes are not linted, though the library YAML files must still parse.
+The ordinary `check` command continues to check the live binder; use `preview CODE`
+to check a draft. The preview never changes recipe status, the index, or the site.
+
+Each successful preview includes `preview.json` with a UTC generation time, input and
+renderer fingerprints, runtime versions, and output hashes. Run `preview-status CODE`
+before sharing an older PDF. The record stays off the printed pages. Failed publication
+restores the previous preview; an interrupted replacement is recovered on the next
+preview/status run. Run one operation per recipe code at a time.
 
 ## Recipe status
 
@@ -72,9 +102,14 @@ One-time setup: repo Settings → Pages → Source: **GitHub Actions**. After th
 
 ## Recipe schema
 
+New recipes declare `schema_version: 1`; existing files without it also mean version 1.
+Unsupported versions fail validation. See the [contract](docs/recipe-contract.md) for
+compatibility rules, structured diagnostics, and preview provenance.
+
 Sheets (`kind: sheet`, the default):
 
 ```yaml
+schema_version: 1              # omitted in legacy files = version 1
 code: CA-011                    # XX-NNN, unique across the library; must match the file name
 status: standard                # draft | trial | standard | retired (see Recipe status)
 name: Carrot cake cupcakes
@@ -148,10 +183,19 @@ Cards (`kind: card`): `code name yield keeps basis contains source formula: {row
 Card steps are one line of text plus `time` and `target`; keep the text under ~75 characters.
 
 What the lint enforces: codes and file names agree, the family exists, five key figures, every
-row has grams (or `—`), stage lists match the stage count, a flour basis has a `basis: true` row,
+row has finite, non-negative numeric grams (or `—`), stage lists match the stage count, a flour basis has a `basis: true` row,
 step heads end in a period, `pages` cover every method step exactly once, figure files exist,
 revisions run 01, 02, … with ISO dates, cited codes exist, every variant has a name and rows with grams, every `gen:` figure renders,
 `pages` reads in bake order and places done_when and revisions.
+
+Quantity rules apply to sheets, component cards, variants, and every entry in a stage
+list. Write `g: 250`, not `g: "250"`; quoted numbers, booleans, negative weights,
+infinity/NaN, ranges, and arbitrary text are errors. Use `g: —` for an unspecified
+quantity and put words such as `pinch` or `as needed` in `note`. A staged formula
+requires a list with one entry per stage; `→` is permitted only on `carry: true`
+rows. `approx: true` controls display and does not relax validation. Error messages
+include the recipe code and a zero-based field path, for example
+`formula.parts[0].rows[1].g`.
 
 ## Conventions the renderer owns
 
