@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" aria-label="Letter fold in three frames: flat with fold lines, first fold made, finished packet with an edge view of 3 layers" width="360" height="192" viewBox="0 0 360 192" fill="none" stroke="#000000" stroke-width="1">
+<rect x="20.5" y="20.5" width="60" height="120"/>
+<line x1="20.5" x2="80.5" y1="60.5" y2="60.5" stroke-dasharray="3 2"/>
+<line x1="20.5" x2="80.5" y1="100.5" y2="100.5" stroke-dasharray="3 2"/>
+<path d="M50.5 132.5 Q60.5 100.5 50.5 106.5"/><path d="M47.5 111.5 L50.5 106.5 L53.5 111.5"/>
+<text font-family="IBM Plex Sans, sans-serif" font-size="12" fill="#000000" stroke="none" text-anchor="middle" x="50.5" y="182.5">1</text>
+<rect x="120.5" y="60.5" width="60" height="80.0"/>
+<line x1="120.5" x2="180.5" y1="100.5" y2="100.5"/>
+<path d="M150.5 68.5 Q140.5 100.5 150.5 94.5"/><path d="M147.5 89.5 L150.5 94.5 L153.5 89.5"/>
+<text font-family="IBM Plex Sans, sans-serif" font-size="12" fill="#000000" stroke="none" text-anchor="middle" x="150.5" y="182.5">2</text>
+<rect x="220.5" y="100.5" width="60" height="40.0"/>
+<rect x="220.5" y="150.5" width="60" height="4" rx="2"/>
+<rect x="220.5" y="154.5" width="60" height="4" rx="2"/>
+<rect x="220.5" y="158.5" width="60" height="4" rx="2"/>
+<text font-family="IBM Plex Sans, sans-serif" font-size="12" fill="#000000" stroke="none" x="288.5" y="160.5">3 layers</text>
+<text font-family="IBM Plex Sans, sans-serif" font-size="12" fill="#000000" stroke="none" text-anchor="middle" x="250.5" y="182.5">3</text>
+</svg>

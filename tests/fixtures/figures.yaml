@@ -1,0 +1,11 @@
+# Geometry examples, not kitchen-tested recipes. Lengths are millimetres.
+tray: {gen: tray, pan: half, cols: 4, rows: 3, piece: 45, spread: 90}
+tray-oblong: {gen: tray, pan: half, cols: 3, rows: 4, piece: [100, 25], gap: 30}
+cut: {gen: cut, pan: 9x13, cols: 6, rows: 4, sling: long}
+section: {gen: section, layers: [[sponge, 25], [filling, 8], [sponge, 25]], frosting: 4, width: 120}
+dimensions: {gen: dimensions, width: 300, height: 200, thickness: 5}
+fold-letter: {gen: fold, kind: letter}
+fold-book: {gen: fold, kind: book}
+fold-single: {gen: fold, kind: single}
+gauge: {gen: gauge, diameters: [30, 40]}
+gauge-oblong: {gen: gauge, oblongs: [[100, 25]]}

@@ -172,5 +172,14 @@ Black text, one grey (#5C5C5C) for labels, hairline rules (#BDBDBD), IBM Plex Sa
 nothing below 12 px, no color, fills, shadows, rounded corners, photos or drawings of food.
 Sections hang in a 152 px left rail; content keeps one left edge. Percentages one decimal
 (half-up) in grey 400; grams whole in black 500 — weight and percent must never be mistaken for
-each other. The templates implement all of this; the spec they follow is the Bench Sheet design
-system (README, tokens and component previews), kept as a Design System artifact on claude.ai.
+each other. Templates implement these rules. The repository-owned [design system](docs/design-system.md)
+documents the current implementation; the [diagram handbook](docs/figures.md) covers generated
+and authored SVGs. The earlier Claude artifact is historical context, not required for maintenance.
+
+## Small contributions that help
+
+Reproduce the [quickstart](docs/quickstart.md), clarify a field, report a print problem, or
+contribute a sourced correction with a checked preview. Discuss new fields/generators first.
+Include what you verified and uncertain conversions. Read [reuse/provenance](docs/reuse-and-provenance.md)
+before submitting copied text/assets; source credit alone does not resolve permissions.
+Issues, contributions and published drafts are public; omit private source material/personal information.
