@@ -41,4 +41,10 @@ Restore into a fresh directory. Install requirements/browser, run tests/lint, th
 
 Review dependency/actions updates periodically in small batches. Recheck representative output after browser/font changes. Preserve schema meanings or provide explicit migrations.
 
+CI selects Ubuntu 24.04 and pins official action releases by commit, with version comments.
+This avoids an automatic switch to a different Ubuntu release or a moved action tag;
+the hosted image still receives updates. Review action runtime requirements and upstream
+release notes when updating those pins. PR checks exercise build/artifact upload; the
+main-only deployment action also needs verification when publication is authorized.
+
 If maintenance pauses, leave a last verified release, known limitations and a way to propose takeover. Keep repository/domain/archive ownership in an owner-controlled record and arrange a backup maintainer when someone accepts. No backup maintainer is assumed. A stable format is worthwhile without a hosted service.

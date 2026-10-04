@@ -32,6 +32,28 @@ workflow YAML structure and `git diff --check` passed. Hosted CI/deployment was 
 
 ## Deliberate compatibility decisions
 
+### Hosted follow-up
+
+On 2026-10-03, the exact committed `dd0e971` source archive passed its SHA-256 check,
+all 193 tests (45.56 seconds), and lint for 16 recipes after extraction into a new directory.
+[PR #2](https://github.com/57ny2hr92b-create/bench-sheets/pull/2) was then opened.
+Its [first hosted run](https://github.com/57ny2hr92b-create/bench-sheets/actions/runs/37174510973)
+passed all 193 tests on Python 3.12/Linux (58.47 seconds), the live fit check, the site build,
+and artifact upload. Deployment was skipped as intended for a PR.
+
+That run reported Node 20 action deprecations and the scheduled migration of `ubuntu-latest`.
+The workflow now selects Ubuntu 24.04 and pins official Node 24-compatible releases:
+[checkout 7.0.1](https://github.com/actions/checkout/releases/tag/v7.0.1),
+[setup-python 7.0.0](https://github.com/actions/setup-python/releases/tag/v7.0.0),
+[upload-artifact 7.0.1](https://github.com/actions/upload-artifact/releases/tag/v7.0.1),
+[upload-pages-artifact 5.0.0](https://github.com/actions/upload-pages-artifact/releases/tag/v5.0.0),
+and [deploy-pages 5.0.1](https://github.com/actions/deploy-pages/releases/tag/v5.0.1).
+Release commits and action inputs/runtimes were checked against their official repositories.
+See the PR checks for verification of this workflow revision. Actual deployment remains
+unverified until a separately authorized merge/publication.
+
+### Format compatibility
+
 Keep schema/report versions at 1. Diagnostics add `rule` without changing existing fields; clients must accept unknown fields/rules and older reports without `rule`. Root extensions warn; row/variant typos remain errors. Historical explicit null note lists retain their empty-note meaning. No recipes, template files or frozen artboard hashes were edited.
 
 Strict geometry rejects quoted/bool/nonfinite/negative measurements and invalid counts; these are invalid authored geometry under the documented numeric contract. Folds/gauges reject ignored scale overrides. This is a local authoring tool, not a resource-bounded service for hostile input; trusted SVG assets still require review. Optional schema coverage is improved, not exhaustive.
@@ -40,11 +62,11 @@ Strict geometry rejects quoted/bool/nonfinite/negative measurements and invalid 
 
 1. Owner selects licensing scopes/rights-holder names after reviewing [the options](reuse-and-provenance.md). No new license was applied.
 2. Reconcile the historical external design artifact if it becomes available; the new reference accurately describes the checked-in implementation rather than claiming to reproduce an unseen artifact.
-3. A new contributor independently tries setup/edit/preview. Windows instructions and Python 3.12 need their own environment verification; no second-maintainer readiness is claimed.
-4. Run hosted CI after an explicitly requested push/PR, and verify deployment only when publication is requested. Workflow syntax was reviewed locally; GitHub behavior has not been exercised by this change.
+3. A new contributor independently tries setup/edit/preview. Windows instructions still need environment verification; Python 3.12/Linux is now covered by hosted CI. No second-maintainer readiness is claimed.
+4. Review the PR's current checks, and verify deployment only when publication is requested. A passing PR build does not exercise the deployment action.
 5. Continue type/semantic coverage from actual reports; build a supported-field matrix before exposing an editor/importer. Arbitrary imports/OCR and automatic page planning remain later work.
 6. Trial release tagging, independent restore, archive ownership and backup-maintainer handoff with an actual participant. Local source recovery is a first step.
 
 An existing content discrepancy was visible during inspection: FR-003's authored yield says approximately 385 g while its computed ingredient total prints 388 g. It was left unchanged because this work preserves recipe content. It illustrates why valid data and good page fit do not establish that every authored statement agrees with the formula; a future recipe correction should receive its own revision/review.
 
-Publication status: local only; no push, merge, license application or site deployment performed.
+Publication status: feature branch pushed and PR #2 opened; no merge, license application or live-site deployment performed.
