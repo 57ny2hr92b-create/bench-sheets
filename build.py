@@ -501,7 +501,7 @@ def preview(code):
     L = schema.Lint()
     schema.lint_library(lib, recs, L)
     schema.lint_recipe(r, lib, recs, L, FIGS)
-    for ref in uses_of(r):
+    for ref in uses_of(r) if not L.errors else []:
         if ref not in recs or recs[ref].get('status') == 'retired':
             L.err(code, f'cites {ref}, which is missing or retired')
     for warning in L.warnings: print('  warn', warning)
@@ -683,8 +683,9 @@ def lint(json_output=False):
     try:
         lib, recs = load_library(), load_recipes()
         L = schema.run(lib, recs, FIGS, quiet=True)
+        invalid = {d['code'] for d in L.diagnostics if d['severity'] == 'error'}
         for code, recipe in recs.items():
-            if recipe.get('status') == 'retired':
+            if recipe.get('status') == 'retired' or code in invalid or 'library' in invalid:
                 continue
             for ref in uses_of(recipe):
                 if ref not in recs or recs[ref].get('status') == 'retired':

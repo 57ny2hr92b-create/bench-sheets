@@ -23,6 +23,11 @@ ORDER = {'formula': 0, 'components': 1, 'schedule': 2, 'method': 3, 'figures': 3
 VARIANT_KEYS = {'name', 'note', 'rows', 'steps'}
 SHEET_REQUIRED = ['code', 'name', 'cls', 'lede', 'source', 'contains', 'key_figures', 'formula', 'method', 'done_when', 'keeps', 'revisions']
 CARD_REQUIRED = ['code', 'name', 'yield', 'keeps', 'basis', 'contains', 'source', 'formula', 'method', 'revisions']
+ROOT_KEYS = set(SHEET_REQUIRED + CARD_REQUIRED) | {
+    '_file', 'schema_version', 'kind', 'status', 'equipment', 'uses', 'method_rail',
+    'pages', 'schedule', 'figures', 'components', 'fixes', 'trials', 'batch_log',
+    'variants', 'tent', 'dense', 'revisions_blank', 'foot', 'last_change', 'formula_note', 'note',
+}
 
 
 class Lint:
@@ -30,18 +35,160 @@ class Lint:
         self.errors, self.warnings = [], []
         self.diagnostics = []
 
-    def _add(self, severity, code, msg, path, file):
+    def _add(self, severity, code, msg, path, file, rule):
         target = self.errors if severity == 'error' else self.warnings
         target.append(f'{code}: {msg}')
         if file is None:
             file = 'library.yaml' if code == 'library' else f'recipes/{code}.yaml'
-        self.diagnostics.append(dict(code=code, file=file, path=path, severity=severity, message=msg))
+        self.diagnostics.append(dict(code=code, file=file, path=path, severity=severity, message=msg, rule=rule))
 
-    def err(self, code, msg, path='$', file=None):
-        self._add('error', code, msg, path, file)
+    def err(self, code, msg, path='$', file=None, rule='recipe.invalid'):
+        self._add('error', code, msg, path, file, rule)
 
-    def warn(self, code, msg, path='$', file=None):
-        self._add('warning', code, msg, path, file)
+    def warn(self, code, msg, path='$', file=None, rule='recipe.warning'):
+        self._add('warning', code, msg, path, file, rule)
+
+
+class _Shape:
+    """Small input guards for semantic lint, not a second schema or a coercing parser."""
+    def __init__(self, code, lint):
+        self.code, self.lint = code, lint
+        self.valid = True
+
+    def expect(self, value, types, path):
+        types = types if isinstance(types, tuple) else (types,)
+        if type(value) in types:
+            return True
+        names = {dict: 'mapping', list: 'list', str: 'string', bool: 'boolean', int: 'integer', float: 'number'}
+        wanted = ' or '.join(names.get(t, t.__name__) for t in types)
+        self.lint.err(self.code, f'{path}: expected {wanted}; got {type(value).__name__}', path=path, rule='input.type')
+        self.valid = False
+        return False
+
+    def mapping(self, value, path):
+        return value if self.expect(value, dict, path) else {}
+
+    def items(self, value, path, item_type):
+        if self.expect(value, list, path):
+            for i, item in enumerate(value):
+                location = f'{path}[{i}]'
+                if self.expect(item, item_type, location):
+                    yield item, location
+
+    def fields(self, obj, path='', strings=(), booleans=()):
+        for fields, kind in ((strings, str), (booleans, bool)):
+            for key in fields:
+                if key in obj:
+                    self.expect(obj[key], kind, f'{path}.{key}' if path else key)
+
+    def strings(self, obj, key, path=''):
+        if key in obj:
+            # Historical rail/schedule notes use explicit null for no notes.
+            if key == 'notes' and obj[key] is None:
+                return
+            list(self.items(obj[key], f'{path}.{key}' if path else key, str))
+
+
+def _recipe_shapes(r, code, L):
+    """Guard common authoring structures before any semantic rule traverses them."""
+    s = _Shape(code, L)
+    s.fields(r, strings=('code', 'kind', 'status', 'name', 'cls', 'lede', 'source', 'yield', 'basis'),
+             booleans=('dense', 'revisions_blank'))
+    for key in ('contains', 'equipment', 'uses', 'batch_log'):
+        s.strings(r, key)
+    for key in sorted(set(r) - ROOT_KEYS, key=str):
+        L.warn(code, f'{key}: unrecognized root field; retained in source but may not be rendered', path=str(key), rule='field.unknown')
+
+    def rows(obj, path, stages=None):
+        if 'rows' not in obj:
+            L.err(code, f'{path}: no rows; expected a list of ingredient mappings', path=path + '.rows', rule='input.type')
+            s.valid = False
+            return
+        for row, p in s.items(obj.get('rows'), f'{path}.rows', dict):
+            s.fields(row, p, strings=('name', 'note'), booleans=('basis', 'carry', 'outside', 'dagger', 'approx'))
+            lint_grams(row, code, L, p + '.g', stages)
+            for key in sorted(set(row) - ROW_KEYS, key=str):
+                L.err(code, f'{p}.{key}: unknown row key — quote notes containing commas', path=f'{p}.{key}', rule='field.unknown')
+
+    if 'formula' in r:
+        f = s.mapping(r['formula'], 'formula')
+        s.strings(f, 'stages', 'formula')
+        s.strings(f, 'notes', 'formula')
+        if r.get('kind', 'sheet') == 'card':
+            rows(f, 'formula')
+        if f.get('total') is not None:
+            s.expect(f['total'], str if r.get('kind') == 'card' else dict, 'formula.total')
+        if 'parts' in f:
+            for part, p in s.items(f['parts'], 'formula.parts', dict):
+                s.fields(part, p, strings=('id', 'name', 'note'), booleans=('outside',))
+                if part.get('subtotal') is not None:
+                    s.expect(part['subtotal'], dict, p + '.subtotal')
+                rows(part, p, f.get('stages') if isinstance(f.get('stages'), list) else None)
+    for key in ('method', 'revisions', 'key_figures', 'method_rail'):
+        if key not in r:
+            continue
+        for item, p in s.items(r[key], key, dict):
+            if key == 'method':
+                s.fields(item, p, strings=('head', 'text', 'time', 'target', 'target_f'))
+            elif key == 'key_figures':
+                s.fields(item, p, strings=('label',))
+                if 'value' in item:
+                    s.expect(item['value'], (str, int, float), p + '.value')
+            elif key == 'method_rail':
+                s.strings(item, 'notes', p)
+    for key in ('schedule', 'figures', 'fixes', 'trials', 'components', 'tent', 'variants'):
+        if key not in r:
+            continue
+        obj = s.mapping(r[key], key)
+        s.strings(obj, 'notes', key)
+        if key == 'schedule':
+            s.fields(obj, key, strings=('svg',))
+        if key == 'figures':
+            for it, p in s.items(obj.get('items'), key + '.items', dict):
+                s.fields(it, p, strings=('svg', 'gen', 'label', 'caption'), booleans=('below',))
+        if key == 'variants' and 'items' in obj:
+            for it, p in s.items(obj['items'], key + '.items', dict):
+                s.fields(it, p, strings=('name', 'note'))
+                s.strings(it, 'steps', p)
+                for extra in sorted(set(it) - VARIANT_KEYS, key=str):
+                    L.err(code, f'{p}: unknown keys {extra!r} (allowed: {sorted(VARIANT_KEYS)})', path=f'{p}.{extra}', rule='field.unknown')
+                rows(it, p)
+        if key in ('trials', 'components') and 'rows' in obj:
+            list(s.items(obj['rows'], key + '.rows', dict))
+        if key == 'fixes' and 'rows' in obj:
+            pairs(obj['rows'], key + '.rows', s)
+    if r.get('kind', 'sheet') == 'sheet':
+        for key in ('done_when', 'keeps'):
+            if key in r:
+                pairs(r[key], key, s)
+    elif 'keeps' in r:
+        s.expect(r['keeps'], str, 'keeps')
+    if 'pages' in r:
+        for page, p in s.items(r['pages'], 'pages', list):
+            for token, loc in s.items(page, p, str):
+                if ':' not in token:
+                    continue
+                match = re.fullmatch(r'method:([1-9][0-9]*)(?:-([1-9][0-9]*))?', token)
+                count = len(r['method']) if isinstance(r.get('method'), list) else 0
+                # Length bound avoids huge integers before conversion; steps already bounds valid ranges.
+                valid = match and all(len(n) <= len(str(count)) for n in match.groups() if n)
+                if valid:
+                    a, b = int(match[1]), int(match[2] or match[1])
+                    valid = 1 <= a <= b <= count
+                if not valid:
+                    L.err(code, f'{loc}: use method:a-b within the {count} method steps; got {token!r}', path=loc, rule='pages.range')
+                    s.valid = False
+    return s.valid
+
+
+def pairs(value, path, shape):
+    for row, p in shape.items(value, path, list):
+        if len(row) != 2:
+            shape.lint.err(shape.code, f'{p}: expected [label, text]; quote text containing commas', path=p, rule='input.type')
+            shape.valid = False
+        else:
+            for i, part in enumerate(row):
+                shape.expect(part, str, f'{p}[{i}]')
 
 
 def _rows(F):
@@ -63,14 +210,14 @@ def lint_grams(row, code, L, path, stages=None):
             return
         L.err(code, f'{field} ({name}): expected a finite, non-negative number in grams '
               f'or "—" ("→" only with carry: true); got {value!r}. '
-              'Remove quotes around numeric weights; put quantity words or ranges in note.', path=field)
+              'Remove quotes around numeric weights; put quantity words or ranges in note.', path=field, rule='quantity.invalid')
 
     if stages:
         if not isinstance(g, list):
-            L.err(code, f'{path} ({name}): expected a list of {len(stages)} stage quantities; got {g!r}', path=path)
+            L.err(code, f'{path} ({name}): expected a list of {len(stages)} stage quantities; got {g!r}', path=path, rule='quantity.stage-count')
             return
         if len(g) != len(stages):
-            L.err(code, f'{path} ({name}): {len(g)} stage values for {len(stages)} stages', path=path)
+            L.err(code, f'{path} ({name}): {len(g)} stage values for {len(stages)} stages', path=path, rule='quantity.stage-count')
         for i, value in enumerate(g):
             scalar(value, f'{path}[{i}]')
     else:
@@ -78,10 +225,17 @@ def lint_grams(row, code, L, path, stages=None):
 
 
 def lint_recipe(r, lib, recs, L, figs_dir):
+    if not isinstance(r, dict):
+        L.err('input', 'expected a recipe mapping', rule='input.type')
+        return
+    if any(d['code'] == 'library' and d['severity'] == 'error' for d in L.diagnostics):
+        return
     code = r.get('code', r.get('_file', '?'))
     version = r.get('schema_version', SCHEMA_VERSION)
     if type(version) is not int or version != SCHEMA_VERSION:
-        L.err(code, f'schema_version must be {SCHEMA_VERSION}; got {version!r}', path='schema_version')
+        L.err(code, f'schema_version must be {SCHEMA_VERSION}; got {version!r}', path='schema_version', rule='schema.version')
+        return
+    if not _recipe_shapes(r, code, L):
         return
     kind = r.get('kind', 'sheet')
     if kind not in KINDS: L.err(code, f'kind must be one of {sorted(KINDS)}')
@@ -114,10 +268,6 @@ def lint_recipe(r, lib, recs, L, figs_dir):
             seen_ids.add(pid)
         for ri, row in enumerate(part.get('rows', [])):
             if not row.get('name'): L.err(code, f'formula row without a name in part {pid}')
-            stray = set(row) - ROW_KEYS
-            if stray: L.err(code, f'{row.get("name")}: unknown row keys {sorted(stray)} — a note with a comma must be quoted')
-            path = f'formula.parts[{pi}].rows[{ri}].g' if kind == 'sheet' else f'formula.rows[{ri}].g'
-            lint_grams(row, code, L, path, F.get('stages') if kind == 'sheet' else None)
     basis_rows = [row for _, row in _rows(F) if row.get('basis')]
     if kind == 'sheet' and not basis_rows and 'flour' in str(F.get('basis', '')).lower():
         L.err(code, 'basis says flour = 100 but no row is flagged basis: true')
@@ -167,28 +317,27 @@ def lint_recipe(r, lib, recs, L, figs_dir):
         items = V.get('items') if isinstance(V, dict) else None
         if not items: L.err(code, 'variants needs items: a list of named variants')
         for i, v in enumerate(items or [], 1):
-            stray = set(v) - VARIANT_KEYS
-            if stray: L.err(code, f'variant {i}: unknown keys {sorted(stray)} (allowed: {sorted(VARIANT_KEYS)})')
             if not v.get('name'): L.err(code, f'variant {i}: no name')
             if not v.get('rows'): L.err(code, f'variant {v.get("name", i)}: no rows')
             for ri, row in enumerate(v.get('rows') or []):
                 if not row.get('name'): L.err(code, f'variant {v.get("name")}: row without a name')
-                lint_grams(row, code, L, f'variants.items[{i - 1}].rows[{ri}].g')
-                stray = set(row) - ROW_KEYS
-                if stray: L.err(code, f'variant {v.get("name")} · {row.get("name")}: unknown row keys {sorted(stray)}')
             for s in v.get('steps') or []:
                 if not isinstance(s, str): L.err(code, f'variant {v.get("name")}: steps are one-line strings')
                 elif len(s) > 60: L.warn(code, f'variant {v.get("name")}: step "{s[:30]}…" over ~60 characters will wrap in a two-column layout')
         if kind == 'sheet' and r.get('pages') and not any(sec == 'variants' for p in r['pages'] for sec in p):
             L.warn(code, 'recipe has variants but pages never places the variants section')
     # figures / schedule svgs exist
-    for it in (r.get('figures') or {}).get('items', []):
-        if it.get('gen'):
+    for i, it in enumerate((r.get('figures') or {}).get('items', [])):
+        path = f'figures.items[{i}]'
+        if bool(it.get('gen')) == bool(it.get('svg')):
+            L.err(code, f'{path}: give exactly one of gen or svg', path=path, rule='figure.invalid')
+        elif it.get('gen'):
             from tools import figures as figgen
             try: figgen.render(it)
-            except figgen.FigureError as e: L.err(code, f'figure {it.get("label", "?")}: {e}')
-            except Exception as e: L.err(code, f'figure {it.get("label", "?")}: {type(e).__name__}: {e}')
-        elif not (figs_dir / it.get('svg', '')).exists(): L.err(code, f'figure file {it.get("svg")} not found in recipes/figures/ (or give it a gen:)')
+            except figgen.FigureError as e: L.err(code, f'{path}: {e}', path=path, rule='figure.invalid')
+            except Exception as e: L.err(code, f'{path}: {type(e).__name__}: {e}', path=path, rule='figure.invalid')
+        elif not (figs_dir / it['svg']).is_file():
+            L.err(code, f'{path}: figure file {it["svg"]} not found in recipes/figures/', path=path, rule='figure.invalid')
     if (r.get('schedule') or {}).get('svg') and not (figs_dir / r['schedule']['svg']).exists():
         L.err(code, f'schedule svg {r["schedule"]["svg"]} not found')
     # two-column lists
@@ -220,6 +369,14 @@ def lint_recipe(r, lib, recs, L, figs_dir):
 
 
 def lint_library(lib, recs, L):
+    s = _Shape('library', L)
+    lib = s.mapping(lib, '$')
+    for f, p in s.items(lib.get('families'), 'families', dict):
+        s.expect(f.get('code'), str, p + '.code')
+        s.expect(f.get('name'), str, p + '.name')
+    s.mapping(lib.get('index'), 'index')
+    if not s.valid:
+        return
     codes = [f['code'] for f in lib['families']]
     if len(codes) != len(set(codes)): L.err('library', 'duplicate family codes')
     if not DATE.match(str(lib['index'].get('date', ''))): L.err('library', 'index.date must be YYYY-MM-DD')

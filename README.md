@@ -30,6 +30,10 @@ and [runnable examples](tests/fixtures/README.md) for reusable data and checks.
 
 ## Setup
 
+New here? Follow [your first checked preview](docs/quickstart.md). Also see the local
+[design system](docs/design-system.md), [diagram handbook](docs/figures.md),
+[maintenance/restore guide](docs/maintenance.md), and [reuse decisions](docs/reuse-and-provenance.md).
+
 ```
 pip install -r requirements.txt
 python -m playwright install chromium           # for `check`, `pdf`, `site`
@@ -101,6 +105,9 @@ index rev in `library.yaml`.
 One-time setup: repo Settings → Pages → Source: **GitHub Actions**. After that every push to `main` that passes the checks deploys `out/site/`. Each recipe page shows its sheet pages at true size (scaled to fit on a phone), with PDF and Print links; the index page is IX-00 with every code linked. IBM Plex Sans is vendored in `fonts/` (OFL) and served by the site itself; the PDFs embed the same files.
 
 ## Recipe schema
+
+The expanded example below is a field reference, not a complete copyable recipe.
+Start authoring from the [complete frozen examples](tests/fixtures/README.md).
 
 New recipes declare `schema_version: 1`; existing files without it also mean version 1.
 Unsupported versions fail validation. See the [contract](docs/recipe-contract.md) for

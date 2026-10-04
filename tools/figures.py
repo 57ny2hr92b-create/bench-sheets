@@ -286,7 +286,7 @@ def fold(spec):
     ys = 20.5 + h + 10
     for i in range(layers):
         b.append(f'<rect x="{x}" y="{ys+i*4:.1f}" width="{w}" height="4" rx="2"/>')
-    b.append(f'<text {FONT} fill="{GREY}" x="{x+w+8:.1f}" y="{ys+layers*2+4:.1f}">{layers} layers</text>')
+    b.append(f'<text {FONT} x="{x+w+8:.1f}" y="{ys+layers*2+4:.1f}">{layers} layers</text>')
     frames.append(('\n'.join(b), 3))
     body = []
     xs = [20.5, 20.5 + w + 40, 20.5 + 2 * (w + 40)]
@@ -327,11 +327,105 @@ def gauge(spec):
 GENERATORS = dict(tray=tray, cut=cut, section=section, dimensions=dimensions, fold=fold, gauge=gauge)
 
 
+def _number(value, field, zero=False, integer=False):
+    valid = type(value) in ((int,) if integer else (int, float))
+    if valid:
+        try:
+            valid = math.isfinite(value) and (value >= 0 if zero else value > 0)
+        except OverflowError:
+            valid = False
+    if not valid:
+        raise FigureError(f'{field}: expected a finite {"non-negative" if zero else "positive"} '
+                          f'{"integer count" if integer else "number"}')
+
+
+def _pair(value, field):
+    if not isinstance(value, (list, tuple)) or len(value) != 2:
+        raise FigureError(f'{field}: expected two measurements [length, width] in mm')
+    for i, number in enumerate(value):
+        _number(number, f'{field}[{i}]')
+
+
+def _validate(spec, g):
+    """Reject invalid geometry before arithmetic/drawing; never coerce author input."""
+    if g in ('fold', 'gauge') and 'scale' in spec:
+        raise FigureError(f'{g}: scale is not supported; gauges must retain actual size')
+    for key in ('scale', 'width', 'height', 'spread'):
+        if key in spec:
+            _number(spec[key], key)
+    for key in ('gap', 'frosting', 'thickness'):
+        if key in spec:
+            _number(spec[key], key, zero=True)
+    if g in ('tray', 'cut'):
+        for key in ('cols', 'rows'):
+            _number(spec[key], key, integer=True)
+        if 'size' in spec:
+            _pair(spec['size'], 'size')
+        if 'first_cuts' in spec and type(spec['first_cuts']) is not bool:
+            raise FigureError('first_cuts: expected a boolean')
+    if g == 'tray':
+        if isinstance(spec['piece'], (list, tuple)):
+            _pair(spec['piece'], 'piece')
+        else:
+            _number(spec['piece'], 'piece')
+    if g == 'dimensions':
+        for key in ('width', 'height'):
+            _number(spec[key], key)
+    if g == 'section':
+        layers = spec['layers']
+        if not isinstance(layers, (list, tuple)) or not layers:
+            raise FigureError('layers: expected nonempty [kind, height_mm] pairs, bottom to top')
+        for i, layer in enumerate(layers):
+            if not isinstance(layer, (list, tuple)) or len(layer) != 2:
+                raise FigureError(f'layers[{i}]: expected [kind, height_mm]')
+            if not isinstance(layer[0], str) or layer[0] not in KINDS:
+                raise FigureError(f'layers[{i}][0]: expected one of {sorted(KINDS)}')
+            _number(layer[1], f'layers[{i}][1]')
+    if g == 'fold' and not isinstance(spec.get('kind', 'letter'), str):
+        raise FigureError('kind: expected letter, book or single')
+    if g == 'gauge':
+        for key in ('diameters', 'oblongs'):
+            if key not in spec:
+                continue
+            if not isinstance(spec[key], (list, tuple)):
+                raise FigureError(f'{key}: expected a list of measurements')
+            for i, value in enumerate(spec[key]):
+                (_pair if key == 'oblongs' else _number)(value, f'{key}[{i}]')
+    # Finite inputs can still overflow when scaled or combined. Check extents
+    # before drawing (especially before section texture loops allocate marks).
+    if g in ('tray', 'cut'):
+        (width, height), _ = _pan(spec)
+        scale = spec.get('scale', 0.5)
+    elif g == 'dimensions':
+        width, height = spec['width'], spec['height'] + spec.get('thickness', 0)
+        scale = spec.get('scale', 0.5)
+    elif g == 'section':
+        width = spec.get('width', 120) + 2 * spec.get('frosting', 0)
+        height = sum(h for _, h in spec['layers']) + 2 * spec.get('frosting', 0)
+        scale = spec.get('scale', 1.6)
+    elif g == 'gauge':
+        ds, obs = spec.get('diameters', []), spec.get('oblongs', [])
+        width = sum(ds) + sum(a for a, _ in obs)
+        height = max(list(ds) + [b for _, b in obs], default=0)
+        scale = 96 / 25.4
+    else:
+        return
+    _number(width * scale, 'rendered width')
+    _number(height * scale, 'rendered height')
+    if g == 'section':
+        _number(width * scale * height * scale, 'rendered texture area')
+
+
 def render(spec):
     """spec: a figure item with `gen`. Returns SVG text; raises FigureError on a bad spec."""
+    if not isinstance(spec, dict):
+        raise FigureError('figure: expected a mapping with gen')
     g = spec.get('gen')
-    if g not in GENERATORS: raise FigureError(f'gen must be one of {sorted(GENERATORS)}')
+    if not isinstance(g, str) or g not in GENERATORS: raise FigureError(f'gen must be one of {sorted(GENERATORS)}')
     try:
+        _validate(spec, g)
         return GENERATORS[g](spec)
     except KeyError as e:
         raise FigureError(f'{g}: missing {e.args[0]}')
+    except OverflowError as e:
+        raise FigureError(f'{g}: geometry exceeds finite rendering limits') from e

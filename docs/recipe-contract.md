@@ -53,6 +53,8 @@ a separate recipe, not an instruction to inline its quantities into the parent f
 Sheet `key_figures` is exactly five `{label, value}` mappings. Sheet `done_when` and
 `keeps` are lists of `[label, text]` pairs; card `keeps` is a short string.
 Row flags such as `basis`, `carry`, `dagger`, and `approx` are YAML booleans, not strings.
+Legacy `notes: null` remains valid for empty rail/formula/schedule notes. Do not
+generalize that exception to required containers or to `uses`, which must be a list.
 
 Use explicit `pages` lists in reusable sheet examples. Each page is an ordered list of
 sections: `formula`, `components`, `schedule`, `method`, `figures`, `done_when`, `fixes`,
@@ -102,6 +104,7 @@ JSON mode writes one object to stdout, with no progress text:
     "file": "recipes/FR-003.yaml",
     "path": "formula.rows[0].g",
     "severity": "error",
+    "rule": "quantity.invalid",
     "message": "Expected numeric grams; remove quotes around the weight."
   }]
 }
@@ -113,6 +116,34 @@ for recipe diagnostics and may be absolute for loader failures. A load failure u
 `code: input`; `checked` is the number of recipes loaded, not a guarantee every rule ran
 after a malformed structure. Syntax/load errors remain JSON in JSON mode. The current
 lint combines field and semantic checks; it is not a general-purpose YAML type checker.
+
+`rule` is an additive report-version-1 field; old reports may omit it. Consumers must
+ignore unrecognized fields and provide a generic display for missing/unknown rules.
+Existing field meanings and exit statuses remain unchanged. Rule identifiers are stable
+categories, not permission to skip the message or assume every rule has a unique identifier:
+
+| Rule | Meaning |
+|---|---|
+| `input.type` | Wrong container/scalar type or pair shape; repair the indicated field. |
+| `schema.version` | Unsupported recipe version. |
+| `quantity.invalid` | Invalid numeric quantity or placeholder. |
+| `quantity.stage-count` | Expected a quantity list with one entry per stage. |
+| `pages.range` | Malformed/out-of-bounds method range or range on another section. |
+| `field.unknown` | Unrecognized field; severity determines whether it blocks. |
+| `figure.invalid` | Missing/ambiguous diagram source, missing file, or bad generated geometry. |
+| `recipe.invalid`, `recipe.warning` | General semantic error/warning; some older rules still use `$`. |
+
+Structural guards cover common containers, list members, flags and method fields before
+semantic traversal. A malformed recipe can stop its later semantic checks; other recipes
+continue. Invalid library structure prevents dependent recipe validation. This is not a
+complete validator for every optional nested field or an untrusted-upload service.
+Unknown root keys warn and remain in source; unknown ingredient-row/variant keys remain
+errors. A warning does not promise that a renderer or future editor preserves an extension.
+
+Generated figures use finite positive numeric dimensions/scale and positive integer counts;
+gap, frosting and thickness can be zero. Booleans and quoted measurements are not numbers.
+Each figure item chooses exactly one `gen` or `svg`. Gauges have fixed physical scale;
+neither gauges nor schematic folds accept `scale`. See [the diagram handbook](figures.md).
 
 ## Preview provenance
 

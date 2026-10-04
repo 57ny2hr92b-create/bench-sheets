@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" aria-label="Half sheet to scale, 43 by 30 centimetres, with 12 pieces of 10 by 2.5 centimetres in 4 rows of 3, gaps labelled" width="300" height="186" viewBox="0 0 300 186" fill="none" stroke="#000000" stroke-width="1">
+<rect x="20.5" y="24.5" width="215.0" height="150.0"/>
+<rect x="38.0" y="52.0" width="50.0" height="12.5" rx="6.2" fill="#000000"/>
+<rect x="103.0" y="52.0" width="50.0" height="12.5" rx="6.2" fill="#000000"/>
+<rect x="168.0" y="52.0" width="50.0" height="12.5" rx="6.2" fill="#000000"/>
+<rect x="38.0" y="79.5" width="50.0" height="12.5" rx="6.2" fill="#000000"/>
+<rect x="103.0" y="79.5" width="50.0" height="12.5" rx="6.2" fill="#000000"/>
+<rect x="168.0" y="79.5" width="50.0" height="12.5" rx="6.2" fill="#000000"/>
+<rect x="38.0" y="107.0" width="50.0" height="12.5" rx="6.2" fill="#000000"/>
+<rect x="103.0" y="107.0" width="50.0" height="12.5" rx="6.2" fill="#000000"/>
+<rect x="168.0" y="107.0" width="50.0" height="12.5" rx="6.2" fill="#000000"/>
+<rect x="38.0" y="134.5" width="50.0" height="12.5" rx="6.2" fill="#000000"/>
+<rect x="103.0" y="134.5" width="50.0" height="12.5" rx="6.2" fill="#000000"/>
+<rect x="168.0" y="134.5" width="50.0" height="12.5" rx="6.2" fill="#000000"/>
+<line x1="88.0" x2="103.0" y1="16.5" y2="16.5"/><line x1="88.0" x2="88.0" y1="13.5" y2="19.5"/><line x1="103.0" x2="103.0" y1="13.5" y2="19.5"/><text font-family="IBM Plex Sans, sans-serif" font-size="12" fill="#000000" stroke="none" text-anchor="middle" x="95.5" y="12.5">3 cm</text>
+<line x1="245.5" x2="245.5" y1="64.5" y2="79.5"/><line x1="242.5" x2="248.5" y1="64.5" y2="64.5"/><line x1="242.5" x2="248.5" y1="79.5" y2="79.5"/><text font-family="IBM Plex Sans, sans-serif" font-size="12" fill="#000000" stroke="none" x="251.5" y="76.0">3 cm</text>
+</svg>
