@@ -1,0 +1,145 @@
+schema_version: 1
+code: CA-015
+kind: sheet
+status: trial            # draft -> trial -> standard (-> retired); only trial and standard reach the site
+name: Burnt honey basque cheesecake
+cls: Cake · Basque cheesecake, crustless
+lede: A crustless cheesecake baked hot until the top scorches, then brushed with honey taken to deep amber.
+source: Reynold Poernomo · Adapted, metric
+contains: [Wheat, Milk, Egg]
+equipment:
+- 18 cm springform
+- Parchment
+- Stand mixer, paddle
+- Small saucepan
+- Pastry brush
+- Probe
+key_figures:
+- {label: Yield · slices, value: '8'}
+- {label: Batter, value: 980 g}
+- {label: Honey / cream cheese, value: 35%}
+- {label: Plan · plus chilling, value: 1 h + 4 h}
+- {label: Oven · 400 °F, value: 200 °C}
+method_rail:
+- sub: Tick each step as done
+  notes:
+  - Cream cheese soft before it goes in the bowl. Cold, it lumps, and no amount of mixing fixes it.
+  - Pull it while the centre still wobbles. It sets as it cools and sinks; that is the style.
+  - Glaze the cake cold and the honey warm, 35–40 °C. Hot honey slides off.
+formula:
+  basis: '% · cream cheese = 100'
+  notes:
+  - 'Pan: line with two crossed sheets of parchment, crumpled, standing 5 cm above the rim. Outside the formula.'
+  - 'Altitude, 4,700 ft: no leavening, nothing to adjust. The custard may puff higher; judge by the wobble.'
+  - 'Glaze: thin a set glaze with a little water to the body of liquid glucose; 8–10 s in the microwave loosens it.'
+  - 'Honey: the source stops at deep amber. CR-002 takes honey to mahogany; that is trial C.'
+  - † Doesn't scale in a straight line past 2×.
+  scale_by_pan:
+  - {pan: 18 cm round, factor: '1', count: 8, bold: true}
+  - {pan: 20 cm round, factor: '1.25', count: 10}
+  - {pan: 23 cm round, factor: '1.6', count: 12}
+  parts:
+  - id: A
+    name: Cheesecake
+    rows:
+    - {name: Cream cheese, note: 'full-fat, soft', g: 430, basis: true}
+    - {name: Granulated sugar, g: 100}
+    - {name: Eggs, note: 3 large, g: 150}
+    - {name: All-purpose flour, g: 15}
+    - {name: Heavy cream, note: 270 ml, g: 270}
+    - {name: Lemon juice, note: 1 tbsp, g: 15}
+    - {name: Vanilla bean, note: '1 pod, seeds', g: —, dagger: true}
+    subtotal: {label: Batter}
+  - id: B
+    name: Burnt honey glaze
+    rows:
+    - {name: Honey, g: 150}
+    - {name: Water, note: 50 ml, g: 50}
+method:
+- head: Prep.
+  text: Rack in the middle; heat the oven. Line the tin with the crumpled parchment.
+  time: —
+  target: 200 °C
+  target_f: 400 °F
+- head: Beat.
+  text: Cream cheese and sugar, paddle on medium. Scrape the bowl once.
+  time: 5 min
+  target: Smooth
+- head: Eggs.
+  text: One at a time on medium, each mixed in before the next.
+  time: —
+- head: Flour.
+  text: Add the flour; mix on medium.
+  time: 3 min
+- head: Cream.
+  text: On low, pour in the cream, lemon juice and vanilla seeds. Scrape; mix smooth.
+  time: —
+  target: No lumps
+- head: Bake.
+  text: Pour into the tin. Bake until the top is dark and the centre still wobbles.
+  time: 25–27 min
+  target: 200 °C
+  target_f: 400 °F
+- head: Cool.
+  text: In the tin on a rack. It sinks as it cools.
+  time: Until cool
+  target: 1–2 h
+- head: Chill.
+  text: Cover; refrigerate in the tin.
+  time: Until cold
+  target: 4–12 h
+- head: Burn.
+  text: Honey in the small pan on medium; stir now and then until deep amber.
+  time: 5–8 min
+  target: Deep amber
+- head: Stop.
+  text: Off heat. Whisk in the water a little at a time — it spits. Simmer; off heat.
+  time: —
+  target: Simmer
+- head: Glaze.
+  text: Cool the honey. Brush over the dark top of the cold cake.
+  time: —
+  target: 35–40 °C
+- head: Serve.
+  text: Lift out by the parchment; peel it back. Cut cold with a hot, wiped knife.
+  time: —
+  target: Serve cold
+done_when:
+- [Top, 'Dark brown to near black']
+- [Centre, 'Middle 5 cm wobbles']
+- [Glaze, '35–40 °C; brushes on']
+- [Set, 'Clean slice after 4 h cold']
+keeps:
+- [Fridge, '3 days, covered']
+- [Frozen, 'Unglazed, 1 month']
+fixes:
+  sub: Most likely cause first
+  rows:
+  - [Lumpy batter, 'Cream cheese cold. Soften fully before beating']
+  - [Top pale, 'Oven runs cool, or rack too low. Trial B: 220 °C']
+  - [Centre runny cold, 'Pulled too early. Only the middle 5 cm should wobble']
+  - [Grainy, 'Overbaked. Pull at the wobble; it sets as it cools']
+  - [Glaze set hard, 'Thin with a little water; 8–10 s in the microwave']
+  - [Glaze bitter, 'Past amber. Pull the honey a shade earlier']
+trials:
+  sub: Change one variable per trial
+  notes:
+  - A is the sheet as written.
+  - B bakes at 220 °C for a darker top; start checking at 20 min.
+  - C takes the honey to mahogany, as in CR-002.
+  columns: [Trial A, Trial B, Trial C]
+  rows:
+  - {var: Date, values: ['', '', '']}
+  - {var: Change, values: [As written, 220 °C, Honey darker]}
+  - {var: Top colour, values: ['', '', '']}
+  - {var: Centre at pull, values: ['', '', '']}
+  - {var: Staff rating 1–5, values: ['', '', '']}
+revisions:
+- {rev: Rev 01, date: '2026-10-10', change: First issue, source: —}
+pages:
+- [formula]
+- [method:1-8, trials]
+- [method:9-12, done_when, fixes, revisions]
+tent:
+  name: Burnt honey basque cheesecake
+  note: Contains wheat, milk, egg. No nuts.
