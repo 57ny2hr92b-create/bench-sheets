@@ -3,7 +3,7 @@ lede: Every sheet, card and tent card, by code. Front of the binder; update it w
 
 # Bump when the index changes materially (a row added, a Rev changed).
 index:
-  rev: 22
+  rev: 23
   date: 2026-10-10
   blank_rows: 6
 
