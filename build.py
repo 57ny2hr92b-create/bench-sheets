@@ -352,8 +352,8 @@ def index_entries(recs, lib):
 
 def paginate_index(families, blank_rows):
     """Rows per page: 21 data-ish rows fit under the title. Split families across pages if needed."""
-    # weights: family header 32px, entry 27px; budget ~ 560px on page 1 (title+lede), ~ 730 on later pages
-    pages, cur, h, budget = [], [], 0, 560
+    # weights: family header 32px, entry 27px; budget ~ 530px on page 1 (title+lede; real rows run a little taller), ~ 730 on later pages
+    pages, cur, h, budget = [], [], 0, 530
     for fam in families:
         fh = 32 + 27 * len(fam['entries'])
         if cur and h + fh > budget:
@@ -364,7 +364,7 @@ def paginate_index(families, blank_rows):
     for i, fams in enumerate(pages, 1):
         blanks = 0
         if i == len(pages):
-            room = (560 if i == 1 else 730) - sum(32 + 27 * len(f['entries']) for f in fams) - 32
+            room = (530 if i == 1 else 730) - sum(32 + 27 * len(f['entries']) for f in fams) - 32
             blanks = max(0, min(blank_rows, room // 27))
         out.append(dict(n=i, total=len(pages), families=fams, blank_rows=blanks))
     return out

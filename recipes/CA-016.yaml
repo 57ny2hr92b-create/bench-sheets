@@ -1,0 +1,134 @@
+schema_version: 1
+code: CA-016
+kind: sheet
+status: trial
+name: Brown butter banana bread
+cls: Cake · Quick bread loaf, one bowl
+lede: A tall, tender banana loaf mixed in one bowl, with the butter browned first for a toasty, nutty depth.
+source: Justine Doiron · Adapted, metric
+contains: [Wheat, Milk, Egg]
+equipment:
+- 9 × 5 in loaf pan
+- Light-colored saucepan
+- Large bowl, whisk, fork
+- Parchment, cake tester
+key_figures:
+- {label: Yield · slices, value: '10'}
+- {label: Batter, value: 955 g}
+- {label: Banana · % flour, value: 167%}
+- {label: Plan · plus cooling, value: 1.25 h}
+- {label: Oven · 375 °F, value: 190 °C}
+method_rail:
+- sub: Tick each step as done
+  notes:
+  - Bananas black-spotted to fully black. Frozen ones count; weigh them with their liquid.
+  - One bowl, no separate dry mix. Stir the flour in only until no dry streaks show.
+formula:
+  basis: '% · flour = 100'
+  notes:
+  - 'Butter is weighed before browning; it loses about 15–20% as water cooks off. Scrape in every fleck.'
+  - 'Salt by weight, so any brand. The source''s "half for Morton''s" is a volume rule.'
+  - 'Optional, from the source: ½ tsp cinnamon or other warm spice with the flour.'
+  - 'Altitude, 4,700 ft: 2½ tsp powder is generous. Run B (powder −20%) before changing the sheet.'
+  - † Doesn't scale in a straight line past 2×.
+  scale_by_pan:
+  - {pan: 9 × 5 in loaf, factor: '1', count: 10 slices, bold: true}
+  - {pan: 8½ × 4½ in loaf, factor: '0.85', count: 9 slices}
+  - {pan: 12-cup muffin tin, factor: '1', count: 20–24 min}
+  parts:
+  - id: A
+    name: Batter
+    rows:
+    - {name: Unsalted butter, note: 'browned, weighed raw', g: 113}
+    - {name: Granulated sugar, g: 165}
+    - {name: Eggs, note: 2 large, g: 100}
+    - {name: Vanilla extract, note: 1 tsp, g: 4, dagger: true}
+    - {name: Bananas, note: '3 large, very ripe', g: 350}
+    - {name: All-purpose flour, g: 210, basis: true}
+    - {name: Baking powder, note: 2½ tsp, g: 10, dagger: true}
+    - {name: Kosher salt, note: '1 tsp Diamond Crystal', g: 3}
+    subtotal: {label: Batter}
+method:
+- head: Prep.
+  text: Rack in the middle; heat the oven. Line the loaf pan with a parchment sling.
+  time: —
+  target: 190 °C
+  target_f: 375 °F
+- head: Brown.
+  text: Melt the butter; let it foam, stirring, until the flecks are brown and it smells nutty.
+  time: 3–5 min
+  target: Amber, nutty
+- head: Sugar.
+  text: Scrape it into the bowl, flecks and all. Whisk in the sugar to cool it a little.
+  time: 1 min
+- head: Eggs.
+  text: Add the eggs and vanilla; whisk hard until smooth and glossy.
+  time: 1 min
+  target: Smooth
+- head: Banana.
+  text: Add the bananas to the bowl; mash with a fork, leaving some chunks. Whisk through.
+  time: —
+  target: Some chunks
+- head: Dry in.
+  text: Flour on top, powder and salt scattered over it. Stir only until no dry flour shows.
+  time: —
+  target: Thick batter
+- head: Bake.
+  text: Scrape into the pan; level. Bake until domed, split and a tester comes out clean.
+  time: 50–55 min
+  target: ≈ 96 °C inside
+- head: Cool.
+  text: In the pan 10 min; lift out by the sling. Cool on a rack before slicing.
+  time: 10 min
+  target: 1–2 h
+done_when:
+- [Top, 'Domed and split, the split no longer wet']
+- [Tester, 'Clean, or a few moist crumbs — no wet batter']
+- [Inside, '≈ 96 °C, if you probe']
+keeps:
+- [Room temp, '3 days, wrapped']
+- [Frozen, '1 month, sliced; toast from frozen']
+fixes:
+  sub: Most likely cause first
+  rows:
+  - ['Dark crust, raw middle', 'Oven runs hot at 190 °C. Tent with foil at 35 min; run C']
+  - [Gummy band at the bottom, 'Underbaked. Bake to 96 °C inside; the dome hides a wet center']
+  - [Sunk in the middle, 'Underbaked, or too much lift at altitude. Bake longer; run B']
+  - ['Dense, with tunnels', 'Overmixed after the flour. Stop at the last dry streak']
+  - ['Bitter, black flecks', 'Butter went past amber. Pull it off as soon as it smells nutty']
+trials:
+  sub: Change one variable per trial
+  notes:
+  - A is the sheet as written.
+  - B tests the altitude rule for 4,700 ft.
+  - C is a gentler oven for a paler crust.
+  columns: [Trial A, Trial B, Trial C]
+  rows:
+  - {var: Date, values: ['', '', '']}
+  - {var: Change, values: [As written, 'Powder 8 g', '175 °C, 60–65 min']}
+  - {var: Bake time, values: ['', '', '']}
+  - {var: Dome and crust, values: ['', '', '']}
+  - {var: Staff rating 1–5, values: ['', '', '']}
+revisions:
+- {rev: Rev 01, date: '2026-10-10', change: First issue, source: —}
+variants:
+  title: Variants
+  sub: Inclusions · as % of batter
+  of: batter
+  items:
+  - name: Chocolate chip
+    note: semisweet or bittersweet
+    rows:
+    - {name: Chocolate chips, note: 'in, ¾ cup', g: 130}
+    - {name: Chocolate chips, note: 'on top, ¼ cup', g: 40}
+    steps:
+    - Step 06 · folded in with the last streaks of flour.
+    - Step 07 · scattered over the leveled batter.
+pages:
+- [formula]
+- [method, variants, done_when, fixes]
+- [trials, revisions, batch_log]
+batch_log: [Date, Batch ×, Banana g, Oven, Bake time, Inside °C, Notes]
+tent:
+  name: Brown butter banana bread
+  note: Contains wheat, milk, egg.
