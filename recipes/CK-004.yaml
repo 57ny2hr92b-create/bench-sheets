@@ -1,0 +1,137 @@
+schema_version: 1
+code: CK-004
+kind: sheet
+status: trial            # draft -> trial -> standard (-> retired); only trial and standard reach the site
+name: Perfect chocolate chip cookies
+cls: Cookie · Drop, browned butter
+lede: Browned butter and a rested sugar whisk give crisp edges, a chewy middle and deep butterscotch.
+source: The Perfect Cookie (ATK) · Adapted, metric
+contains: [Wheat, Milk, Egg, Soy]
+equipment:
+- 2 half-sheet pans, parchment
+- 25 cm (10 in) skillet
+- Large bowl, whisk, spatula
+- '#20 scoop · 3 tbsp'
+key_figures:
+- {label: Yield · cookies, value: 16 × ≈ 60 g}
+- {label: Dough · raw, value: ≈ 990 g}
+- {label: Butter · g browned / all, value: 141 / 198}
+- {label: Plan, value: 1 h}
+- {label: Oven · 375 °F, value: 190 °C}
+method_rail:
+- sub: Tick each step as done
+  notes:
+  - Dark brown sugar is the flavour. Light works; the cookie is milder.
+  - Frozen balls keep 1 month. Bake from frozen at 150 °C · 300 °F, 30–35 min.
+formula:
+  basis: '% · flour = 100'
+  notes:
+  - Grams converted from the book's ounces and spoon measures.
+  - '1.5×: whisk 2 eggs + 1 yolk, use 102 g. 2×: brown in a 30 cm skillet.'
+  - 'Altitude, 4,700 ft: try B before changing the sheet.'
+  - † Doesn't scale in a straight line past 2×.
+  scale_by_pan:
+  - {pan: 2 sheets · 8 each, factor: '1', count: '16', bold: true}
+  - {pan: 3 sheets, factor: '1.5', count: '24'}
+  - {pan: 4 sheets, factor: '2', count: '32'}
+  scale_by_weight: true
+  parts:
+  - id: A
+    name: Dough
+    rows:
+    - {name: All-purpose flour, note: 1¾ cups, g: 248, basis: true}
+    - {name: Baking soda, note: ½ tsp, g: 3, dagger: true}
+    - {name: Unsalted butter, note: '10 tbsp, to brown', g: 141}
+    - {name: Unsalted butter, note: '4 tbsp, cold', g: 57}
+    - {name: Dark brown sugar, note: packed, g: 149}
+    - {name: Granulated sugar, g: 99}
+    - {name: Vanilla extract, note: 2 tsp, g: 8, dagger: true}
+    - {name: Table salt, note: 1 tsp, g: 6}
+    - {name: Egg, note: 1 large, g: 50}
+    - {name: Egg yolk, note: 1 large, g: 18}
+    - {name: Chocolate chips, note: semi- or bittersweet, g: 213}
+    subtotal: {label: Dough}
+method:
+- head: Prep.
+  text: Rack in the middle; heat the oven. Line two sheets. Whisk flour and soda.
+  time: —
+  target: 190 °C
+  target_f: 375 °F
+- head: Brown.
+  text: Brown the 141 g in the skillet, medium-high, swirling. Into the bowl; stir in the cold 57 g.
+  time: 1–3 min
+  target: Dark gold, nutty
+- head: Sugar.
+  text: Whisk in both sugars, vanilla and salt, then egg and yolk, until smooth.
+  time: 30 s
+  target: No lumps
+- head: Rest.
+  text: Stand 3 min, then whisk 30 s. Twice more, until thick, smooth and shiny.
+  time: 3 × 3½ min
+  target: Shiny
+- head: Flour.
+  text: With the spatula, stir in the flour just until combined. Stir in the chips.
+  time: ≈ 1 min
+- head: Portion.
+  text: Roll 3-tbsp balls. Eight per sheet, 5 cm apart.
+  time: —
+  target: ≈ 60 g each
+- head: Bake.
+  text: One sheet at a time, rotating halfway, until golden with soft, puffy centres.
+  time: 10–14 min
+  target: Edges set
+- head: Cool.
+  text: Sheet onto a wire rack; cool the cookies on it completely.
+  time: Until cold
+  target: 20–30 min
+done_when:
+- [Edges, 'Golden brown, just beginning to set']
+- [Centres, 'Still soft and puffy; they set as they cool']
+keeps:
+- [Baked, '3 days, airtight']
+- [Dough balls, '1 month, frozen']
+fixes:
+  sub: Most likely cause first
+  rows:
+  - [Cakey, 'Butter not browned far enough, or flour packed. Weigh it']
+  - [Gritty, 'Rest-and-whisk cut short. Go until thick and shiny']
+  - [Spread flat, 'Sheet still warm, or altitude. Cool the sheet; try B']
+figures:
+  title: Figures
+  sub: To scale
+  items:
+  - {gen: tray, pan: half, cols: 4, rows: 2, piece: 50, spread: 90, label: Fig. 1, caption: 'Half sheet, 4 × 2; dashed = baked, ≈ 9 cm.'}
+variants:
+  title: Variants
+  sub: Nuts · as % of dough
+  of: dough
+  items:
+  - name: With nuts
+    note: pecans or walnuts
+    rows:
+    - {name: Nuts, note: 'toasted, ¾ cup', g: 85}
+    steps:
+    - Step 05 · stirred in with the chips.
+trials:
+  sub: Change one variable per trial
+  notes:
+  - A is the sheet as written.
+  - B tests less soda for 4,700 ft.
+  - C checks the 1.5× batch before scaling up.
+  columns: [Trial A, Trial B, Trial C]
+  rows:
+  - {var: Date, values: ['', '', '']}
+  - {var: Change, values: [As written, 'Soda 2 g', 'Batch 1.5×']}
+  - {var: Bake time, values: ['', '', '']}
+  - {var: Edge · centre, values: ['', '', '']}
+  - {var: Rating 1–5, values: ['', '', '']}
+revisions:
+- {rev: Rev 01, date: '2026-10-18', change: First issue, p. 27, source: —}
+pages:
+- [formula]
+- [method, figures, variants, done_when]
+- [fixes, trials, revisions, batch_log]
+batch_log: [Date, Batch ×, Sugar, Oven, Bake time, Spread, Notes]
+tent:
+  name: Chocolate chip cookies
+  note: Contains wheat, milk, egg, soy. One each, please.
