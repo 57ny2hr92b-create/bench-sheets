@@ -58,11 +58,11 @@ method:
   target: 190 °C
   target_f: 375 °F
 - head: Brown.
-  text: Brown the 141 g in the skillet, medium-high, swirling. Into the bowl; stir in the cold 57 g.
+  text: Brown 141 g in the skillet, medium-high, swirling. Pour into the bowl; stir in the cold 57 g.
   time: 1–3 min
   target: Dark gold, nutty
 - head: Sugar.
-  text: Whisk in both sugars, vanilla and salt, then egg and yolk, until smooth.
+  text: In that bowl, whisk in sugars, vanilla, all the salt, then egg and yolk.
   time: 30 s
   target: No lumps
 - head: Rest.
@@ -115,18 +115,19 @@ variants:
 trials:
   sub: Change one variable per trial
   notes:
-  - A is the sheet as written.
+  - A, 2026-10-18 · salt cut, a mistake. Keep the full 6 g.
   - B tests less soda for 4,700 ft.
   - C checks the 1.5× batch before scaling up.
   columns: [Trial A, Trial B, Trial C]
   rows:
-  - {var: Date, values: ['', '', '']}
-  - {var: Change, values: [As written, 'Soda 2 g', 'Batch 1.5×']}
+  - {var: Date, values: ['2026-10-18', '', '']}
+  - {var: Change, values: [Salt cut, 'Soda 2 g', 'Batch 1.5×']}
   - {var: Bake time, values: ['', '', '']}
   - {var: Edge · centre, values: ['', '', '']}
   - {var: Rating 1–5, values: ['', '', '']}
 revisions:
 - {rev: Rev 01, date: '2026-10-18', change: First issue, p. 27, source: —}
+- {rev: Rev 02, date: '2026-10-18', change: Bowl named, source: Bake A}
 pages:
 - [formula]
 - [method, figures, variants, done_when]
